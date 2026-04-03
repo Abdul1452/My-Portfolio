@@ -1,0 +1,85 @@
+// Prisma Schema — Abdulwasiu Portfolio
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Projects ──────────────────────────────────────────────────────────────────
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  tag         String
+  description String
+  year        String
+  category    String   @default("engineering")
+  linkLabel   String
+  linkUrl     String?
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+// ── PM Projects ───────────────────────────────────────────────────────────────
+model PMProject {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  tag         String
+  description String
+  icon        String
+  year        String
+  linkLabel   String
+  linkUrl     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pm_projects")
+}
+
+// ── Skills ────────────────────────────────────────────────────────────────────
+model SkillCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  order     Int      @default(0)
+  skills    Skill[]
+  createdAt DateTime @default(now())
+
+  @@map("skill_categories")
+}
+
+model Skill {
+  id         String        @id @default(cuid())
+  name       String
+  percentage Int
+  category   SkillCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  order      Int           @default(0)
+  createdAt  DateTime      @default(now())
+
+  @@map("skills")
+}
+
+// ── Contact Submissions ───────────────────────────────────────────────────────
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}
