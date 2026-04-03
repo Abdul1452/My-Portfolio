@@ -8,7 +8,7 @@
 
 ---
 
-## 🗂 Project Structure
+##  Project Structure
 
 ```
 abdulwasiu-portfolio/
@@ -24,7 +24,7 @@ abdulwasiu-portfolio/
 
 ---
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 ### Frontend
 | Tech | Purpose |
@@ -110,4 +110,4 @@ See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## 📄 License
 
-MIT © 2025 Abdulwasiu Abdullahi Olamilekan
+MIT © 2026 Abdulwasiu Abdullahi Olamilekan
