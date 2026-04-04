@@ -49,7 +49,7 @@ abdulwasiu-portfolio/
 
 ---
 
-## ⚡ Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js >= 18
@@ -59,7 +59,7 @@ abdulwasiu-portfolio/
 
 ### 1. Clone & install
 ```bash
-git clone https://github.com/abdulwasiu/portfolio.git
+git clone https://github.com/Abdul1452/My-Portfolio
 cd abdulwasiu-portfolio
 ```
 
