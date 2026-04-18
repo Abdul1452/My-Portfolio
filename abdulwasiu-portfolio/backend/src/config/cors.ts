@@ -54,7 +54,7 @@ export const corsOptions: CorsOptions = {
   //   - a function: called for every request, returns true/false
   //
   // We use a function so we can check against our dynamic list of allowed origins.
-  origin(requestOrigin, callback) {
+  origin(requestOrigin: string | undefined, callback: (err: Error | null, allow?: boolean) => void): void {
     // requestOrigin is undefined for:
     //   - Same-origin requests (browser → same server)
     //   - Server-to-server requests (curl, Postman, backend calls)
