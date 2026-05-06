@@ -19,9 +19,9 @@ import { ErrorCode } from '@types/index'
 // Applied to all API routes
 export const globalLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS, // Time window (default: 15 min)
-  max: env.RATE_LIMIT_MAX,            // Max requests per window per IP
-  standardHeaders: true,  // Send standard RateLimit-* headers in response
-  legacyHeaders: false,   // Don't send old X-RateLimit-* headers
+  max: env.RATE_LIMIT_MAX, // Max requests per window per IP
+  standardHeaders: true, // Send standard RateLimit-* headers in response
+  legacyHeaders: false, // Don't send old X-RateLimit-* headers
 
   // Custom handler so the response uses our standard error format
   handler: (_req, res) => {
@@ -32,7 +32,7 @@ export const globalLimiter = rateLimit({
 // Applied only to POST /contact — much stricter
 export const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour window
-  max: 5,                    // Only 5 contact submissions per hour per IP
+  max: 5, // Only 5 contact submissions per hour per IP
   standardHeaders: true,
   legacyHeaders: false,
   handler: (_req, res) => {
