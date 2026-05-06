@@ -43,8 +43,8 @@ import { AppError, ErrorCode } from '@types/index'
 interface JwtPayload {
   userId: string
   role: 'admin'
-  iat: number   // "issued at" — Unix timestamp (added automatically by jwt.sign)
-  exp: number   // "expires at" — Unix timestamp (added when you set expiresIn)
+  iat: number // "issued at" — Unix timestamp (added automatically by jwt.sign)
+  exp: number // "expires at" — Unix timestamp (added when you set expiresIn)
 }
 
 // ─── Augment Express Request type ────────────────────────────────────────────
