@@ -1,0 +1,104 @@
+/**
+ * globals.css — Global Stylesheet Entry Point
+ *
+ * WHAT THIS FILE DOES:
+ *   The ONE stylesheet imported by main.tsx.
+ *   It pulls in all the other CSS files in the correct order and adds
+ *   Tailwind's directives plus a few global rules.
+ *
+ * IMPORT ORDER MATTERS:
+ *   1. reset      — clear browser defaults first
+ *   2. tokens     — define variables before anything uses them
+ *   3. typography — depends on tokens (fonts, sizes)
+ *   4. animations — depends on tokens (transitions)
+ *   5. Tailwind   — utility classes last so they can override
+ */
+
+@import './reset.css';
+@import './tokens.css';
+@import './typography.css';
+@import './animations.css';
+
+/* ── Tailwind directives ──────────────────────────────────────────────────────
+ * These three lines inject Tailwind's generated utility classes.
+ * @tailwind base    → Tailwind's own light reset + base styles
+ * @tailwind components → component classes (@apply usage)
+ * @tailwind utilities → the utility classes (flex, p-4, text-accent, etc.)
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme classes ────────────────────────────────────────────────────────────
+ * The ThemeContext toggles a class on <html>: either .theme-light or .theme-dark.
+ * For now the portfolio is designed light-first, but this structure lets us
+ * add a full dark mode later by overriding tokens inside .theme-dark.
+ */
+html.theme-dark {
+  /* When dark mode is active, we could swap background/text tokens here.
+   * Example (commented until we build the dark theme fully):
+   * --color-bg-light: #141419;
+   * --color-ink: #f5f5f0;
+   */
+  color-scheme: dark;
+}
+
+html.theme-light {
+  color-scheme: light;
+}
+
+/* ── Smooth scrolling ─────────────────────────────────────────────────────────
+ * When clicking nav links (#about, #projects), the page scrolls smoothly
+ * instead of jumping. scroll-padding-top offsets the fixed navbar so the
+ * section title isn't hidden behind it.
+ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--navbar-height);
+}
+
+/* ── Body base ────────────────────────────────────────────────────────────────*/
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-ink);
+  overflow-x: hidden;  /* Prevent horizontal scroll from any overflow */
+}
+
+/* ── Custom scrollbar (WebKit browsers) ───────────────────────────────────────
+ * A subtle branded scrollbar instead of the default chunky gray one.
+ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-bg-light);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* ── Focus styles (accessibility) ─────────────────────────────────────────────
+ * Keyboard users navigate with Tab. A visible focus ring shows them where
+ * they are. We use :focus-visible so the ring appears for keyboard users
+ * but NOT on mouse clicks (which would look cluttered).
+ */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Container utility ────────────────────────────────────────────────────────
+ * Centers content and constrains it to the max width.
+ */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--section-padding-x);
+}
