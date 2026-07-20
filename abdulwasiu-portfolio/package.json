@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Personal portfolio website for Abdulwasiu Abdullahi Olamilekan — Software Engineer & PM Student",
-  "author": "Abdulwasiu Abdullahi Olamilekan <abdulwasiu@example.fi>",
+  "author": "Abdulwasiu Abdullahi Olamilekan <abdulwasiuabdullah@gmail.com>",
   "license": "MIT",
   "workspaces": [
     "frontend",
