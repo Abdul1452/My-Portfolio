@@ -1,0 +1,42 @@
+/**
+ * SkillBar.module.css
+ * Bar sits on the dark Skills section background.
+ */
+.skill {
+  margin-bottom: var(--space-6);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-2);
+}
+
+.name {
+  font-size: var(--text-sm);
+  color: rgba(245, 245, 240, 0.75);
+}
+
+.percent {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--color-muted);
+}
+
+.track {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  /* The width change is animated over 1.2s with an ease-out curve.
+     This is what makes the bar "fill up" when it scrolls into view. */
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}

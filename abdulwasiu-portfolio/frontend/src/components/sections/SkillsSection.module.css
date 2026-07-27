@@ -1,0 +1,32 @@
+/**
+ * SkillsSection.module.css
+ * Dark section; a responsive grid of skill-category columns.
+ */
+.title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  color: var(--color-ink-light);
+  margin: var(--space-3) 0 var(--space-16);
+}
+
+.grid {
+  display: grid;
+  /* auto-fit + minmax = responsive columns without media queries:
+     as many columns as fit at 240px min, stretching to fill. */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-12);
+}
+
+.categoryTitle {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+  margin-bottom: var(--space-6);
+}
+
+.skeleton {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  padding: var(--space-12) 0;
+}

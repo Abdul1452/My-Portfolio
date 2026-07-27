@@ -1,0 +1,14 @@
+/**
+ * Pill.module.css
+ * Tech-stack pills for the dark hero background.
+ */
+.pill {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-bg-elevated);
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
