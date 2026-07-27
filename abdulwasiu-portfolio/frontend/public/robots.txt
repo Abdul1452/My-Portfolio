@@ -1,0 +1,7 @@
+# robots.txt — tells search engine crawlers what they may index.
+# We allow everything (it's a public portfolio) and point to the sitemap.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://abdulwasiu.dev/sitemap.xml
