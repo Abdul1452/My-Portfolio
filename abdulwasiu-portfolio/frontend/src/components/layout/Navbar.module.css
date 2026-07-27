@@ -1,0 +1,92 @@
+/**
+ * Navbar.module.css
+ * Fixed top bar with a scroll-aware backdrop.
+ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  z-index: var(--z-navbar);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--section-padding-x);
+  /* Start transparent; transition to backdrop when scrolled. */
+  background-color: transparent;
+  transition: background-color var(--transition), border-color var(--transition),
+    backdrop-filter var(--transition);
+  border-bottom: 1px solid transparent;
+}
+
+/* Applied once the user scrolls down. */
+.scrolled {
+  background-color: rgba(20, 20, 25, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--color-border-dark);
+}
+
+.logo {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-accent);
+  padding: 0;
+}
+
+/* ── Desktop links ─────────────────────────────────────────────────────────── */
+.links {
+  display: flex;
+  gap: var(--space-8);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: rgba(255, 255, 255, 0.6);
+  transition: color var(--transition);
+  padding: 0;
+}
+.link:hover {
+  color: var(--color-ink-light);
+}
+
+/* ── Hamburger (hidden on desktop) ─────────────────────────────────────────── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  transition: all var(--transition);
+}
+
+/* ── Responsive: swap links for hamburger on mobile ────────────────────────── */
+@media (max-width: 600px) {
+  .links {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
