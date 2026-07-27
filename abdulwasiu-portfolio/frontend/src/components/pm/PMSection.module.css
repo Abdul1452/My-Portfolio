@@ -1,0 +1,63 @@
+/**
+ * PMSection.module.css
+ */
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+.badge {
+  /* Badge already styled; just spacing here if needed */
+}
+.title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-4);
+  max-width: 20ch;
+}
+.intro {
+  font-size: var(--text-body-lg);
+  color: var(--color-muted);
+  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: var(--space-16);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-16);
+}
+
+.featured {
+  margin-bottom: var(--space-16);
+}
+
+.subheading {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-3);
+}
+.subtext {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: var(--space-6);
+}
+
+.ganttWrap {
+  margin-bottom: var(--space-16);
+}
+
+.sprintsWrap {
+  /* last block, no bottom margin needed */
+}
+.sprints {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+}

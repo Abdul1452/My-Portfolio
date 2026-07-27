@@ -1,0 +1,118 @@
+/**
+ * HeroSection.module.css
+ * Full-height dark hero with a decorative dot grid and accent bar.
+ */
+.hero {
+  position: relative;
+  min-height: 100svh; /* svh = "small viewport height" — accounts for mobile browser chrome */
+  background-color: var(--color-bg-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--navbar-height) + var(--space-12)) var(--section-padding-x)
+    var(--space-16);
+  overflow: hidden;
+}
+
+/* Dot-grid texture via a repeating radial-gradient (no image needed). */
+.dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 72px 72px;
+}
+
+.accentBar {
+  position: absolute;
+  left: var(--section-padding-x);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 200px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+
+.content {
+  position: relative; /* sit above the dots layer */
+  max-width: var(--max-width);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.badge {
+  margin-bottom: var(--space-6);
+}
+
+/* ── Headline ──────────────────────────────────────────────────────────────── */
+.headline {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-6);
+}
+.line1,
+.line2,
+.line3 {
+  font-size: var(--text-hero);
+  font-weight: var(--weight-extrabold);
+}
+.line1 {
+  color: var(--color-ink-light);
+}
+.line2 {
+  color: var(--color-accent);
+}
+.line3 {
+  color: rgba(245, 245, 240, 0.18);
+}
+
+.tagline {
+  max-width: 500px;
+  font-size: var(--text-body-lg);
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.7;
+  margin-bottom: var(--space-8);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-12);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Hide the accent bar on small screens (not enough room) */
+@media (max-width: 900px) {
+  .accentBar {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .ctas {
+    flex-direction: column;
+  }
+  .ctas > * {
+    width: 100%;
+  }
+}
