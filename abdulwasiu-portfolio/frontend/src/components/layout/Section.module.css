@@ -1,0 +1,28 @@
+/**
+ * Section.module.css
+ * Consistent padding + background variants for every page section.
+ */
+.section {
+  width: 100%;
+  padding-block: var(--section-padding-y);
+  padding-inline: var(--section-padding-x);
+  scroll-margin-top: var(--navbar-height);
+}
+
+.light {
+  background-color: var(--color-bg-light);
+  color: var(--color-ink);
+}
+
+.dark {
+  background-color: var(--color-bg-dark);
+  color: var(--color-ink-light);
+}
+
+/* Inner container: centers content and caps its width so text lines
+   don't stretch too wide on large monitors. */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
