@@ -15,6 +15,9 @@
     "db:seed": "ts-node database/seeds/seed.ts",
     "db:studio": "prisma studio"
   },
+  "prisma": {
+  "schema": "../database/schemas/schema.prisma"
+},
   "dependencies": {
     "@prisma/client": "^5.11.0",
     "cors": "^2.8.5",
