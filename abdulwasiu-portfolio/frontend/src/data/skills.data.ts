@@ -13,7 +13,7 @@
  *   this same shape via a JOIN; here we just write it out by hand.
  */
 
-import type { SkillCategory } from '@types'
+import type { SkillCategory } from '@app-types'
 
 export const skillCategories: SkillCategory[] = [
   {

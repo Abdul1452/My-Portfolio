@@ -21,11 +21,12 @@
       "@controllers/*": ["src/controllers/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
-      "@models/*": ["src/types/models/*"],
+      "@models/*": ["src/models/*"],
       "@middleware/*": ["src/middleware/*"],
       "@utils/*": ["src/utils/*"],
       "@config/*": ["src/config/*"],
-      "@types/*": ["src/types/*"]
+      "@app-types": ["src/types/index.ts"],
+      "@app-types/*": ["src/types/*"]
     }
   },
   "include": ["src/**/*"],

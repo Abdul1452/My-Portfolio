@@ -9,7 +9,7 @@
  *   The name MUST match or the import breaks.
  */
 
-import type { PMProject } from '@types'
+import type { PMProject } from '@app-types'
 
 export const pmProjects: PMProject[] = [
   {

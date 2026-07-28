@@ -13,7 +13,7 @@
 import { ContactModel }   from '@models/Contact.model'
 import { EmailService }   from './email.service'
 import { sanitizeContactInput } from '@utils/sanitize'
-import type { ContactInput, ContactDTO } from '@types/index'
+import type { ContactInput, ContactDTO } from '@app-types'
 
 export const ContactService = {
   /**

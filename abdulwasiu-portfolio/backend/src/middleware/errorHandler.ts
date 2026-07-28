@@ -23,7 +23,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import { ZodError } from 'zod'
 import { Prisma } from '@prisma/client'
-import { AppError, ErrorCode } from '@types/index'
+import { AppError, ErrorCode } from '@app-types'
 import { logger } from '@config/logger'
 import { sendError } from '@utils/response'
 

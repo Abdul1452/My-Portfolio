@@ -26,7 +26,7 @@
  */
 
 import { db } from '@config/database'
-import type { ProjectQueryParams, ProjectDTO } from '@types/index'
+import type { ProjectQueryParams, ProjectDTO } from '@app-types'
 
 // The SELECT object tells Prisma exactly which columns to fetch.
 // This is a security and performance best practice:

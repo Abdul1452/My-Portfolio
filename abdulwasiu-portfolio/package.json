@@ -5,18 +5,19 @@
   "description": "Personal portfolio website for Abdulwasiu Abdullahi Olamilekan — Software Engineer & PM Student",
   "author": "Abdulwasiu Abdullahi Olamilekan <abdulwasiuabdullah@gmail.com>",
   "license": "MIT",
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
+
   "scripts": {
     "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter backend dev\"",
     "build": "pnpm --filter frontend build && pnpm --filter backend build",
     "lint": "pnpm --filter frontend lint && pnpm --filter backend lint",
     "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",
+    "setup": "bash ./setup.sh",
+    "db:generate": "pnpm --filter backend db:generate",
     "db:migrate": "pnpm --filter backend db:migrate",
     "db:seed": "pnpm --filter backend db:seed",
-    "docker:up": "docker-compose up -d",
+    "db:studio": "pnpm --filter backend db:studio",
+    "docker:up": "docker-compose up -d db",
+    "docker:all": "docker-compose up -d",
     "docker:down": "docker-compose down"
   },
   "devDependencies": {

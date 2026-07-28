@@ -14,7 +14,7 @@
 import rateLimit from 'express-rate-limit'
 import { env } from '@config/env'
 import { sendError } from '@utils/response'
-import { ErrorCode } from '@types/index'
+import { ErrorCode } from '@app-types'
 
 // Applied to all API routes
 export const globalLimiter = rateLimit({

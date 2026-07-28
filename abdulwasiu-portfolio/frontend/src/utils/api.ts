@@ -20,8 +20,8 @@
  *   will be Project[]". You get full autocomplete on the result.
  */
 
-import { ApiError } from '@types/api.types'
-import type { ApiResponse, ApiErrorResponse } from '@types/api.types'
+import { ApiError } from '@app-types/api.types'
+import type { ApiResponse, ApiErrorResponse } from '@app-types/api.types'
 
 // Read the base URL from Vite env vars (defined in .env.local).
 // import.meta.env is how Vite exposes environment variables to the browser.

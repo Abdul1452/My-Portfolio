@@ -10,7 +10,7 @@
  */
 
 import { db } from '@config/database'
-import type { ContactInput, ContactDTO } from '@types/index'
+import type { ContactInput, ContactDTO } from '@app-types'
 
 export const ContactModel = {
   /**

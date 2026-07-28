@@ -22,12 +22,12 @@
 
 import { useState, useCallback } from 'react'
 import { api } from '@utils/api'
-import { ApiError } from '@types'
+import { ApiError } from '@app-types'
 import type {
   ContactFormData,
   ContactFormErrors,
   ContactFormStatus,
-} from '@types'
+} from '@app-types'
 
 // The empty starting state for the form.
 const EMPTY_FORM: ContactFormData = {

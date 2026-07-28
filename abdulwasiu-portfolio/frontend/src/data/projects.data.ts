@@ -18,7 +18,7 @@
  *   from the API and treat this purely as an offline safety net).
  */
 
-import type { Project } from '@types'
+import type { Project } from '@app-types'
 
 // The `: Project[]` annotation makes TypeScript enforce the shape.
 export const projects: Project[] = [
