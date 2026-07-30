@@ -43,9 +43,10 @@ export const SkillModel = {
     const categories = await db.skillCategory.findMany({
       orderBy: { order: 'asc' },
 
-      // include: { skills: ... } tells Prisma to JOIN the skills table
-      // and nest results inside each category object
-      include: {
+      select: {
+        id: true,
+        name: true,
+        order: true,
         skills: {
           // We can orderBy on the nested relation too
           orderBy: { order: 'asc' },
@@ -57,13 +58,6 @@ export const SkillModel = {
             // Deliberately NOT selecting categoryId (internal FK)
           },
         },
-      },
-
-      select: {
-        id: true,
-        name: true,
-        order: true,
-        skills: true, // must be true when using include + select together
       },
     })
 

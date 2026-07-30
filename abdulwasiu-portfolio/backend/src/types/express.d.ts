@@ -33,6 +33,12 @@ declare global {
       // It's unknown by default and cast to the proper type in each controller.
       // Using unknown (not any) forces you to narrow the type before using it.
       validatedBody?: unknown
+      user?: {
+        userId: string
+        role: 'admin'
+        iat: number
+        exp: number
+      }
     }
   }
 }

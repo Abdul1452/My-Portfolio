@@ -21,7 +21,7 @@
  *   With generics: one type, works for everything.
  *
  * USAGE:
- *   import type { ApiResponse, PaginationParams } from '@types/common.types'
+ *   import type { ApiResponse, PaginationParams } from '@app-types/common.types'
  */
 
 // ─── API Response Wrapper ────────────────────────────────────────────────────

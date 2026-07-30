@@ -1,7 +1,7 @@
 /**
  * pm-projects.data.ts — Static Fallback Data for PM Projects
  *
- * Mirrors backend/database/seeds/projects.seed.ts (the PM section).
+ * Mirrors database/seeds/projects.seed.ts (the PM section).
  * Matches the PMProject type. Used by AppContext when the API is offline.
  *
  * NOTE: The export is named `pmProjects` — AppContext imports it as

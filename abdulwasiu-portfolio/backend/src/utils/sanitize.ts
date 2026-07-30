@@ -25,13 +25,19 @@ export function sanitizeString(str: string): string {
   return stripHtml(str.trim())
 }
 
-// Sanitize all string fields in an object
-export function sanitizeContactInput<T extends Record<string, string>>(input: T): T {
-  const sanitized = { ...input }
-  for (const key in sanitized) {
-    if (typeof sanitized[key] === 'string') {
-      sanitized[key] = sanitizeString(sanitized[key]) as T[typeof key]
-    }
+interface ContactLikeInput {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
+
+export function sanitizeContactInput<T extends ContactLikeInput>(input: T): T {
+  return {
+    ...input,
+    name: sanitizeString(input.name),
+    email: sanitizeString(input.email),
+    subject: sanitizeString(input.subject),
+    message: sanitizeString(input.message),
   }
-  return sanitized
 }

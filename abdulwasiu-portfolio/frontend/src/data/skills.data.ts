@@ -1,7 +1,7 @@
 /**
  * skills.data.ts — Static Fallback Data for Skills
  *
- * Mirrors backend/database/seeds/skills.seed.ts.
+ * Mirrors database/seeds/skills.seed.ts.
  * Matches the SkillCategory type (categories WITH nested skills).
  *
  * The export is named `skillCategories` — AppContext imports it as

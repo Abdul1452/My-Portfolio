@@ -30,7 +30,6 @@ import { sendError } from '@utils/response'
 // The `_next` parameter is required by Express to identify this as an
 // error handler (4 params), even if we don't use it.
 // The underscore prefix tells ESLint/TypeScript we're intentionally not using it.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: unknown, req: Request, res: Response, _next: NextFunction): void {
   // ── 1. Our custom AppError ──────────────────────────────────────────────────
   if (err instanceof AppError) {

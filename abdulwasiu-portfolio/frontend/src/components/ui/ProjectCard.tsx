@@ -15,7 +15,7 @@
  *   placeholder. When you add imageUrl later, it renders the real image.
  */
 
-import type { Project } from '@types'
+import type { Project } from '@app-types'
 import { Button } from './Button'
 import styles from './ProjectCard.module.css'
 
