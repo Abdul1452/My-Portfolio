@@ -22,7 +22,7 @@ import { PrismaClient } from '@prisma/client'
 const db = new PrismaClient()
 
 export async function seedSkills() {
-  console.log('  🎯 Seeding skill categories and skills...')
+  console.log('   Seeding skill categories and skills...')
 
   const categories = [
     {
