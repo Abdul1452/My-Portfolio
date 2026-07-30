@@ -1,21 +1,6 @@
--- ============================================================
--- schema.sql — Combined Canonical SQL Schema
--- ============================================================
---
--- PURPOSE:
---   This file combines the SQL schema into a single reference file.
---   Prisma migrations in backend/prisma/migrations are the executable
---   migration path for local development and production.
---
--- NOTE:
---   Keep this file in sync with backend/prisma/schema.prisma and the
---   committed Prisma migrations when the database model changes.
-
--- Extensions
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE EXTENSION IF NOT EXISTS "citext";
 
--- Projects
 CREATE TABLE IF NOT EXISTS projects (
   id           TEXT        PRIMARY KEY,
   slug         TEXT        NOT NULL UNIQUE,
@@ -39,14 +24,13 @@ CREATE INDEX IF NOT EXISTS idx_projects_category ON projects (category);
 CREATE INDEX IF NOT EXISTS idx_projects_featured ON projects (featured);
 CREATE INDEX IF NOT EXISTS idx_projects_order    ON projects ("order");
 
--- PM Projects
 CREATE TABLE IF NOT EXISTS pm_projects (
   id           TEXT        PRIMARY KEY,
   slug         TEXT        NOT NULL UNIQUE,
   title        TEXT        NOT NULL,
   tag          TEXT        NOT NULL,
   description  TEXT        NOT NULL,
-  icon         TEXT        NOT NULL DEFAULT '📋',
+  icon         TEXT        NOT NULL DEFAULT 'pm',
   year         TEXT        NOT NULL,
   link_label   TEXT        NOT NULL,
   link_url     TEXT,
@@ -58,7 +42,6 @@ CREATE TABLE IF NOT EXISTS pm_projects (
 CREATE INDEX IF NOT EXISTS idx_pm_projects_slug  ON pm_projects (slug);
 CREATE INDEX IF NOT EXISTS idx_pm_projects_order ON pm_projects ("order");
 
--- Contacts
 CREATE TABLE IF NOT EXISTS contacts (
   id         TEXT        PRIMARY KEY,
   name       TEXT        NOT NULL,
@@ -73,7 +56,6 @@ CREATE INDEX IF NOT EXISTS idx_contacts_read       ON contacts (read);
 CREATE INDEX IF NOT EXISTS idx_contacts_created_at ON contacts (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_contacts_email      ON contacts (email);
 
--- Skill Categories
 CREATE TABLE IF NOT EXISTS skill_categories (
   id         TEXT        PRIMARY KEY,
   name       TEXT        NOT NULL UNIQUE,
@@ -83,7 +65,6 @@ CREATE TABLE IF NOT EXISTS skill_categories (
 
 CREATE INDEX IF NOT EXISTS idx_skill_categories_order ON skill_categories ("order");
 
--- Skills
 CREATE TABLE IF NOT EXISTS skills (
   id          TEXT        PRIMARY KEY,
   name        TEXT        NOT NULL,

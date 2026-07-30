@@ -6,7 +6,7 @@
  * section to showcase the Guidebook, Gantt tool, and Sprint planner.
  */
 
-import type { PMProject } from '@types'
+import type { PMProject } from '@app-types'
 import { Button } from './Button'
 import styles from './PMCard.module.css'
 

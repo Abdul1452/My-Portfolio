@@ -101,7 +101,7 @@ import { Button } from '@ui/Button'
 import { HeroSection } from '@sections/HeroSection'
 import { useScrollAnimation } from '@hooks/useScrollAnimation'
 import { projects } from '@data/projects.data'
-import type { Project } from '@types/project.types'
+import type { Project } from '@app-types/project.types'
 ```
 
 ## 🛠 Available Scripts

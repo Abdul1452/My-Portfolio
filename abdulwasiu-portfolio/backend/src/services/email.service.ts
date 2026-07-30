@@ -26,7 +26,7 @@
 import nodemailer from 'nodemailer'
 import { env }    from '@config/env'
 import { logger } from '@config/logger'
-import type { ContactInput } from '@types/index'
+import type { ContactInput } from '@app-types'
 
 // ─── Create the transporter singleton ────────────────────────────────────────
 

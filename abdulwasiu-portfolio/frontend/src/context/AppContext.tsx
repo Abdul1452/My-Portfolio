@@ -23,7 +23,7 @@
  */
 
 import { createContext, useEffect, useState, type ReactNode } from 'react'
-import type { Project, PMProject, SkillCategory } from '@types'
+import type { Project, PMProject, SkillCategory } from '@app-types'
 import { api } from '@utils/api'
 // Static fallback data (Phase 4 — created next session).
 // These imports work once we write the data files; for now they're referenced.

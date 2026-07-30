@@ -1,113 +1,94 @@
-# Abdulwasiu Abdullahi Olamilekan — Portfolio
+# Abdulwasiu Abdullahi Olamilekan - Portfolio
 
-> Full-stack portfolio website built with React + TypeScript (frontend) and Node.js + Express + TypeScript (backend), backed by a PostgreSQL database.
+Full-stack portfolio website built with React, TypeScript, Express, Prisma, and PostgreSQL.
 
 **Live:** https://abdulwasiu.dev  
 **Figma Design:** https://www.figma.com/design/yvwX9f1hdoEpidLPBewcV6  
 **Author:** Abdulwasiu Abdullahi Olamilekan
 
----
+## Project Structure
 
-## 🗂 Project Structure
-
-```
+```text
 abdulwasiu-portfolio/
-├── frontend/          # React + TypeScript + Vite + Tailwind
-├── backend/           # Node.js + Express + TypeScript REST API
-├── database/          # PostgreSQL schema, migrations & seeds
-├── docs/              # Architecture, API, and design documentation
-├── .github/           # CI/CD GitHub Actions workflows
-├── docker-compose.yml # Local development orchestration
-├── .env.example       # Root-level environment variable template
-└── README.md          # You are here
+├── frontend/          # React + TypeScript + Vite
+├── backend/           # Express + TypeScript + Prisma API
+├── backend/prisma/    # Prisma schema
+├── database/          # SQL reference files and seed data
+├── docs/              # Architecture, API, and setup docs
+├── docker-compose.yml # Local PostgreSQL service
+└── setup.sh           # First-time setup helper
 ```
 
----
+## Tech Stack
 
-## 🚀 Tech Stack
-
-### Frontend
-| Tech | Purpose |
+| Area | Tools |
 |---|---|
-| React 18 | UI library |
-| TypeScript | Type safety |
-| Vite | Build tool & dev server |
-| Tailwind CSS | Utility-first styling |
-| CSS Modules | Component-scoped styles |
-| React Router v6 | Client-side routing |
+| Frontend | React 18, TypeScript, Vite, Tailwind CSS, CSS Modules |
+| Backend | Node.js, Express, TypeScript, Prisma, Zod, Nodemailer |
+| Database | PostgreSQL |
+| Tooling | pnpm workspaces, Docker Compose |
 
-### Backend
-| Tech | Purpose |
-|---|---|
-| Node.js | Runtime |
-| Express | HTTP framework |
-| TypeScript | Type safety |
-| Prisma | ORM & database client |
-| PostgreSQL | Primary database |
-| Zod | Runtime validation |
-| Nodemailer | Contact form emails |
-
----
-
-## ⚡ Quick Start
+## Quick Start
 
 ### Prerequisites
-- Node.js >= 18
-- pnpm >= 8 (or npm/yarn)
-- Docker (for local Postgres via docker-compose)
-- PostgreSQL (if running without Docker)
 
-### 1. Clone & install
+- Node.js >= 18
+- pnpm >= 8
+- Docker Desktop for local PostgreSQL
+
+### Bootstrap
+
 ```bash
-git clone https://github.com/abdulwasiu/portfolio.git
-cd abdulwasiu-portfolio
+pnpm setup
 ```
 
-### 2. Environment variables
+Or run the same steps manually:
+
+```bash
+pnpm install
+pnpm db:generate
+```
+
+Create and edit environment files if `setup.sh` did not already create them:
+
 ```bash
 cp .env.example .env
 cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
-# Edit each .env file with your values
 ```
 
-### 3. Start local database
+Start the local database and prepare tables:
+
 ```bash
-docker-compose up -d db
+pnpm docker:up
+pnpm db:migrate
+pnpm db:seed
 ```
 
-### 4. Start frontend
+Start the app:
+
 ```bash
-cd frontend
-pnpm install
 pnpm dev
-# → http://localhost:5173
 ```
 
-### 5. Start backend
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:4000/api/v1 |
+| Prisma Studio | http://localhost:5555 |
+
+Run Prisma Studio with:
+
 ```bash
-cd backend
-pnpm install
-pnpm dev
-# → http://localhost:4000
+pnpm db:studio
 ```
 
----
+## Documentation
 
-## 📁 Detailed Structure
+- [Full setup guide](docs/SETUP.md)
+- [Architecture overview](docs/architecture/overview.md)
+- [API reference](docs/api/endpoints.md)
 
-See [docs/SETUP.md](docs/SETUP.md) for full environment setup.  
-See [docs/architecture/overview.md](docs/architecture/overview.md) for system design.  
-See [docs/api/endpoints.md](docs/api/endpoints.md) for API reference.
-
----
-
-## 🤝 Contributing
-
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
-
----
-
-## 📄 License
+## License
 
 MIT © 2025 Abdulwasiu Abdullahi Olamilekan

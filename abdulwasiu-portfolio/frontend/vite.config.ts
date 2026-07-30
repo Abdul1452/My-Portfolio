@@ -15,7 +15,7 @@ export default defineConfig({
       '@pm': resolve(__dirname, 'src/components/pm'),
       '@hooks': resolve(__dirname, 'src/hooks'),
       '@utils': resolve(__dirname, 'src/utils'),
-      '@types': resolve(__dirname, 'src/types'),
+      '@app-types': resolve(__dirname, 'src/types'),
       '@data': resolve(__dirname, 'src/data'),
       '@styles': resolve(__dirname, 'src/styles'),
       '@context': resolve(__dirname, 'src/context'),

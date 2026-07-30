@@ -16,7 +16,7 @@
  *   creates a pleasing cascade instead of everything popping at once.
  */
 
-import type { ReactNode, ElementType } from 'react'
+import type { ReactNode, ElementType, CSSProperties } from 'react'
 import { useScrollAnimation } from '@hooks/useScrollAnimation'
 import { cn } from '@utils/cn'
 
@@ -24,6 +24,7 @@ interface ScrollRevealProps {
   children: ReactNode
   delay?: 1 | 2 | 3 | 4 | 5   // maps to .delay-N classes in animations.css
   className?: string
+  style?: CSSProperties
   as?: ElementType            // render as div (default), section, li, etc.
 }
 
@@ -31,6 +32,7 @@ export function ScrollReveal({
   children,
   delay,
   className,
+  style,
   as: Tag = 'div',   // rename `as` to Tag; default to 'div'
 }: ScrollRevealProps) {
   const { ref, className: animClass } = useScrollAnimation()
@@ -39,6 +41,7 @@ export function ScrollReveal({
     <Tag
       ref={ref}
       className={cn(animClass, delay && `delay-${delay}`, className)}
+      style={style}
     >
       {children}
     </Tag>

@@ -7,7 +7,7 @@
  */
 
 import { db } from '@config/database'
-import type { PMProjectDTO } from '@types/index'
+import type { PMProjectDTO } from '@app-types'
 
 const PM_PROJECT_SELECT = {
   id: true,

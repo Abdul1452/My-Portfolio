@@ -2,7 +2,7 @@
  * types/index.ts — Barrel Export for all frontend types
  *
  * Lets components import everything from one place:
- *   import type { Project, SkillCategory, ContactFormData } from '@types'
+ *   import type { Project, SkillCategory, ContactFormData } from '@app-types'
  */
 
 export type { Project, PMProject, ProjectFilter } from './project.types'

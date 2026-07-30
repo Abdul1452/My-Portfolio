@@ -33,7 +33,7 @@ import { logger }         from '@config/logger'
 import { requestLogger }  from '@middleware/requestLogger'
 import { globalLimiter }  from '@middleware/rateLimit'
 import { errorHandler }   from '@middleware/errorHandler'
-import { AppError, ErrorCode } from '@types/index'
+import { AppError, ErrorCode } from '@app-types'
 import apiRouter          from '@routes/index'
 
 // ─── Create the Express app ───────────────────────────────────────────────────

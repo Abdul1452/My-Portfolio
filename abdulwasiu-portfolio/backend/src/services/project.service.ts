@@ -22,8 +22,8 @@
  */
 
 import { ProjectModel }            from '@models/Project.model'
-import { AppError, ErrorCode }     from '@types/index'
-import type { ProjectDTO, ProjectQueryParams } from '@types/index'
+import { AppError, ErrorCode }     from '@app-types'
+import type { ProjectDTO, ProjectQueryParams } from '@app-types'
 import type { ProjectQueryInput }  from '@utils/validators'
 
 export const ProjectService = {

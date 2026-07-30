@@ -4,8 +4,8 @@
  */
 
 import { PMProjectModel }         from '@models/PMProject.model'
-import { AppError, ErrorCode }    from '@types/index'
-import type { PMProjectDTO }      from '@types/index'
+import { AppError, ErrorCode }    from '@app-types'
+import type { PMProjectDTO }      from '@app-types'
 
 export const PMProjectService = {
   async getAll(): Promise<PMProjectDTO[]> {

@@ -31,7 +31,6 @@ export function ContactSection() {
   const {
     values,
     errors,
-    status,
     serverMessage,
     handleChange,
     submit,

@@ -13,12 +13,12 @@
  *   immediately — instead of a broken page at runtime.
  *
  * KEEP IN SYNC:
- *   This mirrors backend/database/seeds/projects.seed.ts.
+ *   This mirrors database/seeds/projects.seed.ts.
  *   When you add a real project, update BOTH (or eventually fetch only
  *   from the API and treat this purely as an offline safety net).
  */
 
-import type { Project } from '@types'
+import type { Project } from '@app-types'
 
 // The `: Project[]` annotation makes TypeScript enforce the shape.
 export const projects: Project[] = [

@@ -20,8 +20,8 @@
  */
 
 import type { Response } from 'express'
-import type { ApiResponse, ApiError } from '@types/common.types'
-import { ErrorCode } from '@types/common.types'
+import type { ApiResponse, ApiError } from '@app-types/common.types'
+import { ErrorCode } from '@app-types/common.types'
 
 // ─── Success response ─────────────────────────────────────────────────────────
 

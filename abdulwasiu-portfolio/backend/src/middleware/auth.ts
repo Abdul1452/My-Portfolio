@@ -33,7 +33,7 @@
 import type { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { env } from '@config/env'
-import { AppError, ErrorCode } from '@types/index'
+import { AppError, ErrorCode } from '@app-types'
 
 // ─── JWT Payload shape ────────────────────────────────────────────────────────
 //
@@ -52,13 +52,6 @@ interface JwtPayload {
 // We already extended Request in express.d.ts, but we add `user` here
 // specifically for authenticated routes — controllers can read req.user.
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: JwtPayload
-    }
-  }
-}
 
 // ─── requireAuth middleware ───────────────────────────────────────────────────
 

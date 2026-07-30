@@ -1,24 +1,27 @@
-# Database — PostgreSQL + Prisma
+# Database - PostgreSQL + Prisma
 
 ## Structure
 
-```
+```text
 database/
 ├── schemas/
-│   ├── schema.sql      # Raw SQL schema (reference / Docker init)
-│   └── schema.prisma   # Prisma schema (source of truth for ORM)
+│   └── schema.sql      # Raw SQL schema reference / Docker init
 │
 ├── migrations/
-│   ├── 001_initial_schema.sql    # Base tables
-│   ├── 002_projects_table.sql    # Projects + pm_projects tables
-│   ├── 003_contacts_table.sql    # Contact submissions table
-│   └── 004_skills_table.sql      # Skills + categories tables
+│   ├── 001_initial_schema.sql
+│   ├── 002_projects_table.sql
+│   ├── 003_contacts_table.sql
+│   └── 004_skills_table.sql
 │
 └── seeds/
-    ├── seed.ts           # Main seed runner
-    ├── projects.seed.ts  # Engineering project seed data
-    └── skills.seed.ts    # Skill categories seed data
+    ├── seed.ts
+    ├── projects.seed.ts
+    └── skills.seed.ts
 ```
+
+The Prisma schema lives at `backend/prisma/schema.prisma`. Keeping it inside
+`backend/` lets Prisma and pnpm resolve `@prisma/client` from the backend
+package instead of trying to auto-install it from the repository root.
 
 ## Tables
 
@@ -27,15 +30,15 @@ database/
 | `projects` | Engineering portfolio projects |
 | `pm_projects` | Project management deliverables |
 | `skills` | Individual skills |
-| `skill_categories` | Skill groupings (Frontend, Backend…) |
+| `skill_categories` | Skill groupings |
 | `contacts` | Contact form submissions |
 
 ## Commands
 
 ```bash
-# From /backend directory:
-pnpm db:migrate      # Apply all pending migrations
-pnpm db:generate     # Re-generate Prisma client after schema change
+# From the repository root:
+pnpm db:generate     # Re-generate Prisma client after schema changes
+pnpm db:migrate      # Apply Prisma migrations
 pnpm db:seed         # Populate with initial data
 pnpm db:studio       # Open visual DB browser at localhost:5555
 ```
