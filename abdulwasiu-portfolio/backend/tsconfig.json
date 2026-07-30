@@ -16,6 +16,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
+      "@prisma/client": ["node_modules/@prisma/client"],
       "@controllers/*": ["src/controllers/*"],
       "@routes/*": ["src/routes/*"],
       "@services/*": ["src/services/*"],
