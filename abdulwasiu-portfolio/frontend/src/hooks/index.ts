@@ -6,6 +6,8 @@
  */
 
 export { useTheme } from './useTheme'
+export { useLanguage } from './useLanguage'
+export { useActiveSection } from './useActiveSection'
 export { useApp } from './useApp'
 export { useIntersectionObserver } from './useIntersectionObserver'
 export { useScrollAnimation } from './useScrollAnimation'

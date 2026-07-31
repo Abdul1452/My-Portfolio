@@ -13,6 +13,7 @@ export default defineConfig({
       '@ui': resolve(__dirname, 'src/components/ui'),
       '@layout': resolve(__dirname, 'src/components/layout'),
       '@pm': resolve(__dirname, 'src/components/pm'),
+      '@coastal': resolve(__dirname, 'src/components/coastal'),
       '@hooks': resolve(__dirname, 'src/hooks'),
       '@utils': resolve(__dirname, 'src/utils'),
       '@app-types': resolve(__dirname, 'src/types'),

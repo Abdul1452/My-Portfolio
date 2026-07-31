@@ -1,4 +1,14 @@
 {
+  "ts-node": {
+    // Without this, ts-node lazily compiles only files reachable from the
+    // entry point's import graph — src/types/express.d.ts (a global
+    // ambient augmentation with no importer) never gets loaded, so
+    // req.validatedBody / req.user "don't exist" at runtime under
+    // `npm run dev` even though `tsc --noEmit` (which always honors
+    // "include") sees them fine. `files: true` makes ts-node seed its
+    // program from tsconfig's "include" too, matching tsc's behavior.
+    "files": true
+  },
   "compilerOptions": {
     "target": "ES2022",
     "module": "CommonJS",

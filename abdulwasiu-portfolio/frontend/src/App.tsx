@@ -23,22 +23,44 @@
 import { Routes, Route } from 'react-router-dom'
 import { PageWrapper } from '@layout'
 import {
-  HomePage,
+  CoastalHomePage,
   PMGuidebookPage,
   ProjectDetailPage,
   NotFoundPage,
 } from '@pages'
 
+// CoastalHomePage is a fully self-contained layout (its sidebar rail IS
+// the site nav, with its own footer) — it renders standalone, without
+// PageWrapper's top Navbar/Footer, which are designed for the other pages.
 export function App() {
   return (
-    <PageWrapper>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/pm" element={<PMGuidebookPage />} />
-        <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-        {/* Catch-all — must be last */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </PageWrapper>
+    <Routes>
+      <Route path="/" element={<CoastalHomePage />} />
+      <Route
+        path="/pm"
+        element={
+          <PageWrapper>
+            <PMGuidebookPage />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="/projects/:slug"
+        element={
+          <PageWrapper>
+            <ProjectDetailPage />
+          </PageWrapper>
+        }
+      />
+      {/* Catch-all — must be last */}
+      <Route
+        path="*"
+        element={
+          <PageWrapper>
+            <NotFoundPage />
+          </PageWrapper>
+        }
+      />
+    </Routes>
   )
 }

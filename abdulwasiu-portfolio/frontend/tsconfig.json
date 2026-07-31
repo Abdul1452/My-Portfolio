@@ -28,6 +28,8 @@
       "@layout/*": ["src/components/layout/*"],
       "@pm": ["src/components/pm/index.ts"],
       "@pm/*": ["src/components/pm/*"],
+      "@coastal": ["src/components/coastal/index.ts"],
+      "@coastal/*": ["src/components/coastal/*"],
       "@hooks": ["src/hooks/index.ts"],
       "@hooks/*": ["src/hooks/*"],
       "@utils": ["src/utils/index.ts"],

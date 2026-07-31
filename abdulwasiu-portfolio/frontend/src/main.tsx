@@ -31,6 +31,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@context/ThemeContext'
 import { AppProvider } from '@context/AppContext'
+import { LanguageProvider } from '@context/LanguageContext'
 import { App } from './App'
 import './styles/globals.css'
 
@@ -39,11 +40,13 @@ import './styles/globals.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider>
-      <AppProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AppProvider>
+      <LanguageProvider>
+        <AppProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AppProvider>
+      </LanguageProvider>
     </ThemeProvider>
   </React.StrictMode>
 )
