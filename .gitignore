@@ -1,1 +1,4 @@
 .pnpm-store/
+
+# Claude Code (local-only: settings, skills, agents, commands)
+.claude/
