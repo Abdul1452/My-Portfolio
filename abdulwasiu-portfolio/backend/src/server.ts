@@ -46,7 +46,7 @@ async function startServer(): Promise<void> {
     // and we exit before starting to listen for HTTP requests.
     logger.info('Connecting to database...')
     await db.$connect()
-    logger.info('✅ Database connected')
+    logger.info('Database connected')
 
     // ── Step 2: Verify email connection (non-blocking) ──────────────────────────
     //
