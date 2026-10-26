@@ -32,6 +32,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma client
+        if: matrix.workspace == 'backend'
+        run: pnpm --filter backend db:generate
+
       - name: Lint ${{ matrix.workspace }}
         run: pnpm --filter ${{ matrix.workspace }} lint
 
