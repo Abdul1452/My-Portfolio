@@ -15,7 +15,7 @@
 // Strip all HTML tags from a string.
 // "Hello <script>bad()</script> world" → "Hello  world"
 export function stripHtml(str: string): string {
-  return str.replace(/<[^>]*>/g, '')
+  return str.replace(/<[^>]*>?/g, '').replace(/[<>]/g, '')
   // Regex: < followed by anything that isn't > followed by >
   // Replace all matches with empty string
 }
