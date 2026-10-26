@@ -15,9 +15,26 @@
 // Strip all HTML tags from a string.
 // "Hello <script>bad()</script> world" → "Hello  world"
 export function stripHtml(str: string): string {
-  return str.replace(/<[^>]*>?/g, '').replace(/[<>]/g, '')
-  // Regex: < followed by anything that isn't > followed by >
-  // Replace all matches with empty string
+  let sanitized = ''
+  let insideTag = false
+
+  for (const char of str) {
+    if (char === '<') {
+      insideTag = true
+      continue
+    }
+
+    if (char === '>') {
+      insideTag = false
+      continue
+    }
+
+    if (!insideTag) {
+      sanitized += char
+    }
+  }
+
+  return sanitized
 }
 
 // Trim whitespace and strip HTML from a string
