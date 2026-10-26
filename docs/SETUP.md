@@ -21,8 +21,8 @@ That creates missing `.env` files, installs workspace dependencies, and runs
 ### 1. Clone
 
 ```bash
-git clone https://github.com/abdulwasiu/portfolio.git
-cd abdulwasiu-portfolio
+git clone https://github.com/Abdul1452/My-Portfolio.git
+cd My-Portfolio
 ```
 
 ### 2. Install dependencies
