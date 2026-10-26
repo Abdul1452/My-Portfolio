@@ -1,0 +1,110 @@
+/**
+ * ContactSection.module.css
+ * Dark two-column: info on the left, form on the right.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-20);
+  align-items: start;
+}
+
+/* ── Left info column ──────────────────────────────────────────────────────── */
+.title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  color: var(--color-ink-light);
+  line-height: 1.15;
+  margin: var(--space-3) 0 var(--space-4);
+}
+.subtitle {
+  font-size: var(--text-body-lg);
+  color: rgba(245, 245, 240, 0.5);
+  line-height: 1.7;
+  margin-bottom: var(--space-8);
+  max-width: 460px;
+}
+.email {
+  font-family: var(--font-mono);
+  font-size: var(--text-body-lg);
+  color: var(--color-accent);
+  transition: opacity var(--transition);
+}
+.email:hover {
+  opacity: 0.8;
+}
+
+/* ── Right form column ─────────────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(245, 245, 240, 0.6);
+}
+.input,
+.textarea {
+  width: 100%;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-ink-light);
+  font-size: var(--text-body);
+  transition: border-color var(--transition);
+}
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(245, 245, 240, 0.3);
+}
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: var(--font-display);
+}
+.inputError {
+  border-color: #e5484d;
+}
+.error {
+  font-size: var(--text-2xs);
+  color: #ff6369;
+}
+
+/* ── Server response ───────────────────────────────────────────────────────── */
+.serverMsg {
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+}
+.success {
+  background-color: var(--color-accent-dim);
+  color: var(--color-accent);
+}
+.errorMsg {
+  background-color: rgba(229, 72, 77, 0.12);
+  color: #ff6369;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+}

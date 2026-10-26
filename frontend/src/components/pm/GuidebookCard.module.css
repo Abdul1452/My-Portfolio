@@ -1,0 +1,84 @@
+/**
+ * GuidebookCard.module.css
+ * A two-column feature card: pitch on the left, table of contents on the right.
+ */
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  background-color: var(--color-bg-dark);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12);
+  color: var(--color-ink-light);
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+.icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-4);
+}
+.title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-4);
+}
+.description {
+  font-size: var(--text-body);
+  color: rgba(245, 245, 240, 0.6);
+  line-height: 1.7;
+  margin-bottom: var(--space-8);
+  flex: 1;
+}
+.soon {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.right {
+  border-left: 1px solid var(--color-border-dark);
+  padding-left: var(--space-12);
+}
+.tocLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+}
+.toc {
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+}
+.chapter {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-dark);
+  font-size: var(--text-sm);
+  color: rgba(245, 245, 240, 0.85);
+}
+.chapterNum {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    padding: var(--space-8);
+  }
+  .right {
+    border-left: none;
+    border-top: 1px solid var(--color-border-dark);
+    padding-left: 0;
+    padding-top: var(--space-6);
+  }
+}

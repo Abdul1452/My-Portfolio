@@ -1,0 +1,119 @@
+/**
+ * reset.css — Modern CSS Reset
+ *
+ * WHY A RESET?
+ *   Browsers apply their own default styles ("user-agent styles").
+ *   Chrome, Safari, and Firefox each differ slightly — an <h1> has
+ *   different margins, buttons have different padding, etc.
+ *   A reset removes these defaults so YOU control every pixel and the
+ *   site looks identical across all browsers.
+ *
+ * This is a modern, minimal reset (inspired by Josh Comeau's reset).
+ * We only reset what actually causes problems — not everything.
+ */
+
+/* ── 1. Box sizing ────────────────────────────────────────────────────────────
+ * box-sizing: border-box means width/height INCLUDE padding and border.
+ * Without this, adding padding makes elements wider than you set them.
+ * This one line prevents countless layout headaches.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── 2. Remove default margins ────────────────────────────────────────────────
+ * Browsers add margin to headings, paragraphs, etc.
+ * We zero them all and add spacing intentionally where needed.
+ */
+* {
+  margin: 0;
+}
+
+/* ── 3. Body defaults ─────────────────────────────────────────────────────────
+ * line-height: 1.5 is a comfortable reading default.
+ * -webkit-font-smoothing improves text rendering on macOS.
+ */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── 4. Media elements ────────────────────────────────────────────────────────
+ * Images/videos are inline by default, which adds mysterious bottom spacing.
+ * display: block removes it. max-width: 100% makes them responsive —
+ * they never overflow their container.
+ */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── 5. Form elements ─────────────────────────────────────────────────────────
+ * Inputs and buttons don't inherit the page font by default — this fixes that.
+ */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ── 6. Text wrapping ─────────────────────────────────────────────────────────
+ * overflow-wrap prevents long words/URLs from breaking the layout.
+ */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* ── 7. Remove list styling where we use lists for layout ────────────────────
+ * We opt out of bullets on lists that have a role of "list" removed.
+ */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+/* ── 8. Anchor defaults ───────────────────────────────────────────────────────
+ * Links inherit color instead of the default blue, and we remove underlines
+ * (we add them back intentionally where wanted).
+ */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── 9. Respect reduced-motion preference ─────────────────────────────────────
+ * Some users set "reduce motion" in their OS for accessibility (motion can
+ * cause nausea/dizziness). We honor that by disabling animations for them.
+ * This is an accessibility best practice — always include it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

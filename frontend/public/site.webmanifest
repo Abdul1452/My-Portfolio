@@ -1,0 +1,16 @@
+{
+  "name": "Abdulwasiu Abdullahi Olamilekan — Portfolio",
+  "short_name": "Abdulwasiu",
+  "description": "Software Engineer & Project Management student in Turku, Finland.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141419",
+  "theme_color": "#33B587",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+/**
+ * tokens.css — Design Tokens (CSS Custom Properties)
+ *
+ * WHAT ARE DESIGN TOKENS?
+ *   Named values for every design decision: colors, fonts, spacing, radii.
+ *   Stored as CSS variables (custom properties) on :root so they're
+ *   available everywhere in the app.
+ *
+ * WHY USE THEM?
+ *   1. Single source of truth — change --color-accent once, updates everywhere
+ *   2. Consistency — no more "was it #33B587 or #34B588?" guessing
+ *   3. Theming — swap all values at once for dark/light mode
+ *   4. They mirror your Figma Component Library exactly
+ *
+ * HOW CSS VARIABLES WORK:
+ *   Define:  --color-accent: #33B587;
+ *   Use:     color: var(--color-accent);
+ *   Fallback: color: var(--color-accent, #33B587);  // uses #33B587 if undefined
+ *
+ * These tokens are ALSO defined in tailwind.config.ts so you can use them
+ * as Tailwind classes (bg-accent, text-ink) OR as raw CSS (var(--color-accent)).
+ */
+
+:root {
+  /* ── Colors: Brand ──────────────────────────────────────────────────────────
+   * The Nordic teal accent — your signature color from the Figma design.
+   * We include hover/active shades for interactive states.
+   */
+  --color-accent: #33b587;
+  --color-accent-hover: #2da878;
+  --color-accent-dim: rgba(51, 181, 135, 0.14);  /* 14% opacity for backgrounds */
+  --color-accent-glow: rgba(51, 181, 135, 0.4);
+
+  /* ── Colors: Backgrounds ────────────────────────────────────────────────────
+   * bg-dark for hero/skills/contact sections.
+   * bg-light (warm off-white) for about/projects sections.
+   */
+  --color-bg-dark: #141419;
+  --color-bg-light: #f5f5f0;
+  --color-bg-elevated: #1c1c22;  /* Slightly lighter than bg-dark, for cards */
+
+  /* ── Colors: Text ───────────────────────────────────────────────────────────
+   * ink = dark text on light backgrounds.
+   * ink-light = light text on dark backgrounds.
+   * muted = secondary/supporting text.
+   */
+  --color-ink: #141419;
+  --color-ink-light: #f5f5f0;
+  --color-muted: #707079;
+  --color-muted-light: rgba(245, 245, 240, 0.55);  /* Muted text on dark bg */
+
+  /* ── Colors: Borders & surfaces ─────────────────────────────────────────────*/
+  --color-border: #d9d9d4;
+  --color-border-dark: rgba(255, 255, 255, 0.08);
+  --color-card: #ffffff;
+
+  /* ── Typography: Font families ──────────────────────────────────────────────
+   * Sora for display/body (geometric, modern, Nordic feel).
+   * IBM Plex Mono for labels/code (technical, precise).
+   */
+  --font-display: 'Sora', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* ── Typography: Font sizes (fluid with clamp) ──────────────────────────────
+   * clamp(MIN, PREFERRED, MAX) scales font size with viewport width.
+   * clamp(2rem, 5vw, 4rem) means:
+   *   - never smaller than 2rem
+   *   - scales at 5% of viewport width in between
+   *   - never larger than 4rem
+   * This gives responsive typography WITHOUT media queries.
+   */
+  --text-hero: clamp(2.5rem, 8vw, 6rem);       /* Hero headline */
+  --text-h2: clamp(2rem, 5vw, 3rem);            /* Section titles */
+  --text-h3: clamp(1.25rem, 3vw, 1.5rem);       /* Card titles */
+  --text-body-lg: clamp(1rem, 2vw, 1.125rem);   /* Large body */
+  --text-body: 1rem;                            /* Standard body */
+  --text-sm: 0.875rem;                          /* Small text */
+  --text-xs: 0.75rem;                           /* Labels, captions */
+  --text-2xs: 0.6875rem;                        /* Tiny mono labels */
+
+  /* ── Typography: Weights ────────────────────────────────────────────────────*/
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  /* ── Typography: Letter spacing ─────────────────────────────────────────────*/
+  --tracking-tight: -0.03em;   /* Big headlines look better slightly tighter */
+  --tracking-normal: 0;
+  --tracking-wide: 0.1em;
+  --tracking-widest: 0.2em;    /* Mono section labels: "01 — ABOUT" */
+
+  /* ── Spacing scale ──────────────────────────────────────────────────────────
+   * A consistent spacing scale based on multiples of 4px.
+   * Using named steps keeps spacing consistent across the whole app.
+   */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ── Section padding (responsive) ───────────────────────────────────────────
+   * The horizontal padding used by every section.
+   * Scales from 20px on mobile to 120px on large screens.
+   */
+  --section-padding-x: clamp(1.25rem, 8vw, 7.5rem);
+  --section-padding-y: clamp(4rem, 10vw, 6.25rem);
+
+  /* ── Border radius ──────────────────────────────────────────────────────────*/
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;   /* Fully rounded — for pills and badges */
+
+  /* ── Shadows ────────────────────────────────────────────────────────────────*/
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+  /* ── Transitions ────────────────────────────────────────────────────────────
+   * Named durations keep animations consistent.
+   * The cubic-bezier is a smooth "ease-out" curve.
+   */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ─────────────────────────────────────────────────────────────────*/
+  --max-width: 1440px;      /* Max content width (matches Figma desktop) */
+  --navbar-height: 64px;
+
+  /* ── Z-index scale ──────────────────────────────────────────────────────────
+   * Naming z-index values prevents "z-index: 99999" wars.
+   */
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-navbar: 100;
+  --z-mobile-menu: 99;
+  --z-modal: 1000;
+}

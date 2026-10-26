@@ -1,0 +1,13 @@
+/**
+ * AnimatedDot.module.css
+ * A small pulsing dot indicating "available / online".
+ */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}

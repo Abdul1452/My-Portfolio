@@ -1,0 +1,17 @@
+/**
+ * Divider.module.css
+ */
+.divider {
+  border: none;
+}
+.accent {
+  width: 60px;
+  height: 3px;
+  background-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+}
+.full {
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-border);
+}

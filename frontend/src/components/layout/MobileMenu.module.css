@@ -1,0 +1,85 @@
+/**
+ * MobileMenu.module.css
+ * A right-side slide-in drawer with a dimmed backdrop.
+ */
+
+/* ── Backdrop ──────────────────────────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-mobile-menu);
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  cursor: pointer;
+  /* Hidden by default: transparent + not interactive */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.backdropOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Drawer ────────────────────────────────────────────────────────────────── */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(320px, 85vw);
+  z-index: var(--z-mobile-menu);
+  background-color: var(--color-bg-dark);
+  padding: calc(var(--navbar-height) + var(--space-8)) var(--space-8) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Start off-screen to the right; slide in when open. */
+  transform: translateX(100%);
+  transition: transform var(--transition);
+}
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  font-weight: var(--weight-bold);
+  color: var(--color-ink-light);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-dark);
+  transition: color var(--transition), padding-left var(--transition);
+}
+.link:hover {
+  color: var(--color-accent);
+  padding-left: var(--space-2);
+}
+
+.drawerFooter {
+  padding-top: var(--space-6);
+}
+.email {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+}
+
+/* Only show the drawer machinery on mobile widths. On desktop the inline
+   nav links are used instead, so we hide the drawer entirely. */
+@media (min-width: 601px) {
+  .backdrop,
+  .drawer {
+    display: none;
+  }
+}

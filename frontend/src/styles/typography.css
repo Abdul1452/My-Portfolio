@@ -1,0 +1,76 @@
+/**
+ * typography.css — Base Typographic Rules
+ *
+ * WHAT THIS FILE DOES:
+ *   Imports the web fonts and sets base text styles for headings,
+ *   body text, and mono labels using the tokens from tokens.css.
+ *
+ * FONT LOADING STRATEGY:
+ *   We import from Google Fonts with display=swap.
+ *   display=swap means: show fallback font immediately, swap to the
+ *   real font when it loads. Prevents invisible text during load (FOIT).
+ *
+ * NOTE: In production you'd often self-host fonts for privacy (GDPR!)
+ *   and performance. For Finland/EU, self-hosting avoids sending user
+ *   IP addresses to Google. See public/assets/fonts/ for that setup later.
+ */
+
+/* ── Font imports ──────────────────────────────────────────────────────────────
+ * Sora: 400 (regular), 600 (semibold), 700 (bold), 800 (extrabold)
+ * IBM Plex Mono: 400 (regular), 600 (semibold)
+ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Sora:wght@400;600;700;800&display=swap');
+
+/* ── Base body typography ─────────────────────────────────────────────────────*/
+body {
+  font-family: var(--font-display);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  color: var(--color-ink);
+}
+
+/* ── Headings ─────────────────────────────────────────────────────────────────
+ * All headings use Sora with tight letter-spacing and bold weight.
+ * Specific sizes are applied per-component; these are sensible defaults.
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+}
+
+/* ── Mono utility ─────────────────────────────────────────────────────────────
+ * The .mono class applies IBM Plex Mono — used for section labels,
+ * tech pills, and code-like text.
+ */
+.mono {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ── Section label style ──────────────────────────────────────────────────────
+ * The "01 — ABOUT" overline labels above each section heading.
+ */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ── Selection color ──────────────────────────────────────────────────────────
+ * When users highlight text, use the accent color instead of default blue.
+ * A small touch that makes the site feel polished and branded.
+ */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-bg-dark);
+}

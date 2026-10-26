@@ -1,0 +1,109 @@
+/**
+ * animations.css — Keyframe Animations & Animation Utilities
+ *
+ * WHAT THIS FILE DOES:
+ *   Defines reusable @keyframes and helper classes for the scroll-reveal
+ *   and micro-interactions used throughout the portfolio.
+ *
+ * HOW @keyframes WORK:
+ *   @keyframes name { from {...} to {...} }  defines an animation sequence.
+ *   You apply it with:  animation: name duration timing-function;
+ *   Example: animation: fadeInUp 0.6s ease-out;
+ *
+ * PERFORMANCE NOTE:
+ *   We only animate `transform` and `opacity`. These are GPU-accelerated
+ *   and don't trigger layout recalculation — so animations stay at 60fps.
+ *   Avoid animating width/height/top/left — they cause janky reflows.
+ */
+
+/* ── fadeInUp ──────────────────────────────────────────────────────────────────
+ * The signature scroll-reveal: element starts slightly down and transparent,
+ * then rises into place while fading in. Used by ScrollReveal component.
+ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── fadeIn ────────────────────────────────────────────────────────────────────
+ * Simple opacity fade, no movement.
+ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── pulse ──────────────────────────────────────────────────────────────────────
+ * The "available to hire" green dot pulses to draw attention.
+ */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+/* ── shimmer ────────────────────────────────────────────────────────────────────
+ * A moving highlight used for skeleton loading states (when data is fetching).
+ */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ── slideInRight ──────────────────────────────────────────────────────────────
+ * Mobile menu drawer slides in from the right edge.
+ */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ── Animation utility classes ─────────────────────────────────────────────────
+ * Apply these directly in JSX: className="animate-fade-in-up"
+ */
+.animate-fade-in-up {
+  animation: fadeInUp var(--transition-slow) both;
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-slow) both;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Stagger delays ────────────────────────────────────────────────────────────
+ * Apply with the reveal classes to create a cascading effect where
+ * elements appear one after another instead of all at once.
+ * Example: className="animate-fade-in-up delay-2"
+ */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
