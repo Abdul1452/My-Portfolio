@@ -1,7 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "."
+    // The seeds live in ../database/seeds, outside backend/. rootDir must be
+    // a folder that contains every included file, so widen it to the repo
+    // root. (Only used by ts-node / --noEmit checks — nothing is emitted.)
+    "rootDir": ".."
   },
   "include": ["src/**/*", "../database/**/*"]
 }
