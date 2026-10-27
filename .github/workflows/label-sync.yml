@@ -1,0 +1,31 @@
+name: Sync Labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/labels.yml"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  sync:
+    name: Sync repository labels from .github/labels.yml
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync labels
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: .github/labels.yml
+          # Delete labels that exist in the repo but not in the config
+          skip-delete: false
+          # Dry-run on PRs to non-default branches; apply on main
+          dry-run: false
+          verbose: true

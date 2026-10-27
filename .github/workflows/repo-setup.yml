@@ -1,0 +1,132 @@
+name: Repo Setup — Milestone & Project Board
+
+# Run manually (once) to bootstrap milestone and project board.
+# Safe to re-run: it is idempotent — it will not create duplicates.
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  repository-projects: write
+
+jobs:
+  # ── 1. Milestone ────────────────────────────────────────────────────────────
+  milestone:
+    name: Create v1.0.0 MVP milestone
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create milestone (idempotent)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const title  = 'v1.0.0 — MVP Launch';
+            const dueOn  = '2026-06-30T00:00:00Z';
+            const desc   = [
+              'First public release of the portfolio website.',
+              '',
+              'Scope:',
+              '- Frontend: all pages, responsive design, animations',
+              '- Backend:  REST API, contact form, health endpoint',
+              '- Database: final schema + seed data',
+              '- Deployment: Vercel (frontend) + Railway/Render (backend)',
+              '- CI/CD: full lint → build → test → deploy pipeline',
+            ].join('\n');
+
+            // List existing milestones and skip if already present
+            const { data: existing } = await github.rest.issues.listMilestones({
+              owner, repo, state: 'open',
+            });
+            const found = existing.find(m => m.title === title);
+            if (found) {
+              core.info(`Milestone already exists: #${found.number} — skipping.`);
+              return;
+            }
+
+            const { data: ms } = await github.rest.issues.createMilestone({
+              owner,
+              repo,
+              title,
+              description: desc,
+              due_on: dueOn,
+              state: 'open',
+            });
+            core.info(`Created milestone #${ms.number}: "${ms.title}"`);
+
+  # ── 2. Project Board ────────────────────────────────────────────────────────
+  project-board:
+    name: Create Portfolio Development project board
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create project board via GraphQL (Projects v2)
+        uses: actions/github-script@v7
+        with:
+          # Projects v2 requires a token with the `project` OAuth scope.
+          # If PROJECTS_TOKEN is not set the step is skipped gracefully.
+          github-token: ${{ secrets.PROJECTS_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const projectTitle = 'Portfolio Development';
+
+            // Check for existing project (owner-level)
+            const listQuery = `
+              query($owner: String!, $first: Int!) {
+                user(login: $owner) {
+                  projectsV2(first: $first) {
+                    nodes { id title }
+                  }
+                }
+              }`;
+            const listResult = await github.graphql(listQuery, { owner, first: 20 });
+            const projects   = listResult.user?.projectsV2?.nodes ?? [];
+            const existing   = projects.find(p => p.title === projectTitle);
+            if (existing) {
+              core.info(`Project already exists: "${existing.title}" (${existing.id}) — skipping.`);
+              return;
+            }
+
+            // Create the project
+            const ownerId = await github.graphql(
+              `query($login: String!) { user(login: $login) { id } }`,
+              { login: owner }
+            ).then(r => r.user.id);
+
+            const createMutation = `
+              mutation($ownerId: ID!, $title: String!) {
+                createProjectV2(input: { ownerId: $ownerId, title: $title }) {
+                  projectV2 { id title url }
+                }
+              }`;
+            const created = await github.graphql(createMutation, {
+              ownerId,
+              title: projectTitle,
+            });
+            const project = created.createProjectV2.projectV2;
+            core.info(`Created project: "${project.title}" → ${project.url}`);
+
+            // Add custom single-select "Status" field with standard columns
+            const columns = ['Backlog', 'Todo', 'In Progress', 'In Review', 'Done'];
+            const addFieldMutation = `
+              mutation($projectId: ID!, $name: String!, $options: [ProjectV2SingleSelectFieldOptionInput!]!) {
+                createProjectV2Field(input: {
+                  projectId: $projectId,
+                  dataType: SINGLE_SELECT,
+                  name: $name,
+                  singleSelectOptions: $options
+                }) {
+                  projectV2Field { ... on ProjectV2SingleSelectField { id name } }
+                }
+              }`;
+            await github.graphql(addFieldMutation, {
+              projectId: project.id,
+              name: 'Status',
+              options: columns.map(name => ({
+                name,
+                color: 'GRAY',
+                description: '',
+              })),
+            });
+            core.info(`Added Status field with columns: ${columns.join(', ')}`);

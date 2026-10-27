@@ -1,0 +1,100 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# GitHub Labels — Abdulwasiu Portfolio
+# Managed as code and synced via .github/workflows/label-sync.yml
+# ──────────────────────────────────────────────────────────────────────────────
+
+# ── Type ──────────────────────────────────────────────────────────────────────
+- name: "type: feature"
+  color: "0075ca"
+  description: "New feature or enhancement"
+
+- name: "type: bug"
+  color: "d73a4a"
+  description: "Something is not working correctly"
+
+- name: "type: chore"
+  color: "e4e669"
+  description: "Maintenance, tooling, or non-functional change"
+
+- name: "type: docs"
+  color: "1d76db"
+  description: "Documentation only change"
+
+- name: "type: refactor"
+  color: "e99695"
+  description: "Code restructuring without functional change"
+
+- name: "type: test"
+  color: "f9d0c4"
+  description: "Adding or updating tests"
+
+- name: "type: ci"
+  color: "0e8a16"
+  description: "CI/CD pipeline or workflow change"
+
+# ── Priority ──────────────────────────────────────────────────────────────────
+- name: "priority: critical"
+  color: "b60205"
+  description: "Must be resolved immediately — blocks release"
+
+- name: "priority: high"
+  color: "d93f0b"
+  description: "High importance — target current sprint"
+
+- name: "priority: medium"
+  color: "fbca04"
+  description: "Normal importance — planned work"
+
+- name: "priority: low"
+  color: "c2e0c6"
+  description: "Nice to have — address when available"
+
+# ── Area ──────────────────────────────────────────────────────────────────────
+- name: "area: frontend"
+  color: "bfd4f2"
+  description: "React / TypeScript / Vite / Tailwind"
+
+- name: "area: backend"
+  color: "d4c5f9"
+  description: "Node.js / Express / TypeScript / Prisma"
+
+- name: "area: database"
+  color: "c2e0c6"
+  description: "PostgreSQL schema, migrations, or seeds"
+
+- name: "area: ci-cd"
+  color: "fef2c0"
+  description: "GitHub Actions workflows and deployment"
+
+- name: "area: docs"
+  color: "f9d0c4"
+  description: "Documentation, README, or architecture docs"
+
+- name: "area: docker"
+  color: "e1f0ff"
+  description: "Docker / docker-compose configuration"
+
+# ── Status ────────────────────────────────────────────────────────────────────
+- name: "status: blocked"
+  color: "e11d48"
+  description: "Blocked by another issue or external dependency"
+
+- name: "status: in-progress"
+  color: "f97316"
+  description: "Actively being worked on"
+
+- name: "status: needs-review"
+  color: "8b5cf6"
+  description: "Ready for code or design review"
+
+- name: "status: ready"
+  color: "22c55e"
+  description: "Fully defined and ready to be picked up"
+
+- name: "status: wont-fix"
+  color: "ffffff"
+  description: "Acknowledged but will not be addressed"
+
+- name: "status: duplicate"
+  color: "cfd3d7"
+  description: "Duplicates an existing issue or PR"
