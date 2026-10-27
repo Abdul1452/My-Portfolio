@@ -46,7 +46,7 @@ export async function seedProjects() {
       year: '2026',
       category: 'engineering',
       linkLabel: 'Repository',
-      linkUrl: 'https://github.com/Abdul1452/Petosvahti-',
+      linkUrl: 'https://github.com/Abdul1452/Fraud-Detector-PetosVahti-',
       imageUrl: null,
       featured: true,
       order: 1,
@@ -58,7 +58,7 @@ export async function seedProjects() {
       tag: 'Next.js 14 · TypeScript · Recharts',
       description:
         'Beam and rigid-frame analysis in the browser: fixed-end moments, joint equilibrium with sway, bending-moment and shear-force diagrams, support reactions.',
-      year: '2025',
+      year: '2026',
       category: 'engineering',
       linkLabel: 'Case study',
       linkUrl: 'https://github.com/Abdul1452/Slope-deflection-Calculator',
@@ -113,41 +113,16 @@ export async function seedPMProjects() {
     {
       id: 'cuid_pm_001',
       slug: 'pm-guidebook',
-      title: 'PM Guidebook',
-      tag: 'PM · Documentation · Notion',
+      title: 'Project Management Guidebook',
+      tag: 'PM · Course project · Team of 6',
       description:
-        'Comprehensive project management reference covering Agile, Waterfall, risk registers, stakeholder mapping, and Finnish working culture practices. A practical day-to-day reference for tech project teams.',
+        'A practical guidebook for software project teams, written by a team of six in our project management course at Turku UAS: Waterfall, Scrum and other Agile frameworks, WBS and Gantt charts, scope, risk, change and quality management, PM tools and certifications, with ready-to-use templates.',
       icon: '📖',
-      year: '2024',
-      linkLabel: 'Read Guidebook',
-      linkUrl: null,
+      year: '2026',
+      linkLabel: 'Read the PDF',
+      // Served by the frontend from frontend/public/docs/.
+      linkUrl: '/docs/project-management-guidebook.pdf',
       order: 1,
-    },
-    {
-      id: 'cuid_pm_002',
-      slug: 'project-gantt-tool',
-      title: 'Project Gantt Chart Tool',
-      tag: 'PM · Interactive · TypeScript',
-      description:
-        'Interactive Gantt chart builder for software project teams. Supports milestone tracking, task dependencies, resource allocation, and exportable timelines. Open-sourced for the Finnish PM community.',
-      icon: '📊',
-      year: '2023',
-      linkLabel: 'View Live',
-      linkUrl: null,
-      order: 2,
-    },
-    {
-      id: 'cuid_pm_003',
-      slug: 'agile-sprint-planner',
-      title: 'Agile Sprint Planner',
-      tag: 'PM · Planning · Notion Templates',
-      description:
-        'Notion-based sprint planning template system with backlog management, velocity tracking, burndown charts, and retrospective frameworks. Tailored for Finnish Agile teams and startup environments.',
-      icon: '🗺️',
-      year: '2024',
-      linkLabel: 'Get Templates',
-      linkUrl: null,
-      order: 3,
     },
   ]
 
@@ -158,5 +133,15 @@ export async function seedPMProjects() {
       create: pm,
     })
     console.log(`    ✓ ${pm.title}`)
+  }
+
+  // Same clean-up as the projects above: drop rows from earlier seed runs
+  // (the old placeholder Gantt tool and sprint planner) that aren't real work.
+  const currentSlugs = pmProjects.map(p => p.slug)
+  const { count } = await db.pMProject.deleteMany({
+    where: { slug: { notIn: currentSlugs } },
+  })
+  if (count > 0) {
+    console.log(`    🗑  Removed ${count} stale PM project(s) no longer in the seed`)
   }
 }

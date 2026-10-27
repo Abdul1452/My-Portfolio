@@ -302,21 +302,44 @@ export const certifications: Certification[] = [
   { mark: 'SQL', name: 'Learn SQL', issuer: 'Codecademy', year: '2025' },
 ]
 
-// The card next to the certifications. Source: LinkedIn experience
-// (theFIRMA, summer 2026) and the internship post about WBS vs PBS.
-export const pmHighlight = {
-  eyebrow: 'Internship · Project Gate 2.0',
-  title: 'Product Breakdown Structure',
-  text:
-    'From the team’s Work Breakdown Structure I mapped 16 workstreams into 6 product branches. Putting the two side by side exposed what pure task lists had hidden: audit logging, role-based access and a notification layer.',
-  branches: [
-    'Student dashboard',
-    'Weekly hours management',
-    'Admin review & approval',
-    'System & validation',
-    'Notifications',
-    'Supporting products',
-  ],
+// ─── Project management guidebook ─────────────────────────────────────────────
+// Source: the guidebook PDF itself (frontend/public/docs/). Written by
+// Group 3, a team of six, in the project management course at Turku UAS.
+//
+// `page` is the PDF page each chapter starts on; the preview links straight
+// to it with "#page=N", which browsers' built-in PDF viewers understand.
+// `myChapters` holds the numbers of the chapters I wrote; they get a "Mine"
+// tag in the preview. Leave it empty to show no tags.
+
+export interface GuidebookChapter {
+  title: string
+  summary: string
+  page: number
+}
+
+export const guidebook = {
+  eyebrow: 'Course project · Team of 6',
+  title: 'Project Management Guidebook',
+  year: '2026',
+  credit: 'Written by a team of six · Project management course, Turku UAS, 2026',
+  description:
+    'A practical guide for software project teams: choosing between Waterfall, Agile or a hybrid, then planning, scoping and running the project, with templates you can use straight away.',
+  pdfUrl: '/docs/project-management-guidebook.pdf',
+  pageCount: 54,
+  myChapters: [] as number[],
+  chapters: [
+    { title: 'Introduction', page: 4, summary: 'What the guidebook is for: helping a project team understand frameworks, roles and responsibilities, and choose a management style that fits.' },
+    { title: 'Waterfall project management', page: 4, summary: 'The six sequential stages from requirements to maintenance, their benefits and limits, and the projects where a fixed plan works best.' },
+    { title: 'Agile & Lean project management', page: 6, summary: 'Scrum roles, events and artifacts; user stories, boards and backlogs; XP, SAFe and FDD; and a decision matrix and flowchart for Waterfall, Agile or hybrid.' },
+    { title: 'WBS & Gantt chart', page: 19, summary: 'Breaking a software project into a Work Breakdown Structure, then scheduling it in a Gantt chart with dependencies, critical path and milestones.' },
+    { title: 'Scope management', page: 23, summary: 'Deciding what is in and out of scope, stopping scope creep with a trade-off rule, and writing a scope management plan.' },
+    { title: 'Risk management', page: 27, summary: 'Identifying and scoring risks, a four-step process with a worked example, and a risk register template.' },
+    { title: 'Change management', page: 31, summary: 'A change management plan, an eight-step change request process, and how a change trades off scope, time and quality.' },
+    { title: 'Quality management', page: 35, summary: 'Conformance versus fitness for use, quality planning, assurance and control in Agile and Waterfall, and six practical quality tools.' },
+    { title: 'PM software', page: 42, summary: 'Jira, Trello and Microsoft Planner compared, and how to pick a tool for your team size, methodology and budget.' },
+    { title: 'Professional development', page: 44, summary: 'Project management associations, from PMI and IPMA to Finland’s PRY, and certifications from CSM and PSM to PMP, with a suggested path.' },
+    { title: 'Appendices', page: 51, summary: 'Sources, the team’s ethical AI use statement, and a ready-to-use change request form.' },
+  ] as GuidebookChapter[],
 }
 
 // ─── How I work ───────────────────────────────────────────────────────────────

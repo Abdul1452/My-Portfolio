@@ -1,18 +1,27 @@
 /**
- * SiteChrome.tsx — The frame around the page: announcement bar, header, footer
+ * SiteChrome.tsx — The frame around every page: announcement bar, header, footer
  *
- * These three are grouped because they're the parts that appear on every
- * screen of the design and none of them have state of their own — the
- * theme toggle's state lives in usePortfolioTheme, passed in as props.
+ * Used by PortfolioShell on every route (home, /pm, /projects/:slug, 404),
+ * so the whole site shares one header, one footer and one theme toggle.
+ *
+ * WHY <Link to="/#work"> INSTEAD OF <a href="#work">?
+ *   A bare "#work" only works on the homepage — on /pm there is no #work
+ *   section to scroll to. "/#work" means "the homepage, at the Work section",
+ *   so it works from anywhere. <Link> navigates inside the React app without
+ *   a full page reload; PortfolioV5Page then scrolls to the section named in
+ *   the URL's #hash.
  */
 
+import { Link } from 'react-router-dom'
 import { announcement, profile } from '@data/portfolio.data'
+import { usePortfolioThemeContext } from './usePortfolioTheme'
 
 const NAV_LINKS = [
-  { href: '#work', label: 'Work' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#experience', label: 'Experience' },
-  { href: '#approach', label: 'How I work' },
+  { to: '/#work', label: 'Work' },
+  { to: '/#skills', label: 'Skills' },
+  { to: '/#experience', label: 'Experience' },
+  { to: '/pm', label: 'Guidebook' },
+  { to: '/#approach', label: 'How I work' },
 ]
 
 export function Announcement() {
@@ -28,23 +37,20 @@ export function Announcement() {
   )
 }
 
-interface SiteHeaderProps {
-  isDark: boolean
-  onToggleTheme: () => void
-}
+export function SiteHeader() {
+  const { theme, toggleTheme } = usePortfolioThemeContext()
 
-export function SiteHeader({ isDark, onToggleTheme }: SiteHeaderProps) {
   return (
     <header className="pf5-header">
       <div className="pf5-header__inner">
-        <a href="#main" className="pf5-brand">
+        <Link to="/" className="pf5-brand">
           <span aria-hidden="true" className="pf5-brand__mark">{profile.monogram}</span>
           {profile.name}
-        </a>
+        </Link>
 
         <nav aria-label="Sections" className="pf5-nav">
           {NAV_LINKS.map(link => (
-            <a key={link.href} href={link.href}>{link.label}</a>
+            <Link key={link.to} to={link.to}>{link.label}</Link>
           ))}
         </nav>
 
@@ -52,15 +58,15 @@ export function SiteHeader({ isDark, onToggleTheme }: SiteHeaderProps) {
           <button
             type="button"
             className="pf5-iconbtn"
-            onClick={onToggleTheme}
+            onClick={toggleTheme}
             aria-label="Toggle dark mode"
-            aria-pressed={isDark}
+            aria-pressed={theme === 'dark'}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
               <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
             </svg>
           </button>
-          <a href="#contact" className="pf5-btn pf5-btn--primary">Get in touch</a>
+          <Link to="/#contact" className="pf5-btn pf5-btn--primary">Get in touch</Link>
         </div>
       </div>
     </header>
@@ -73,8 +79,9 @@ export function SiteFooter() {
       <div className="pf5-footer__inner">
         <span>© {new Date().getFullYear()} {profile.name} · Turku</span>
         <nav aria-label="Footer">
-          <a href="#work">Work</a>
-          <a href="#contact">Contact</a>
+          <Link to="/#work">Work</Link>
+          <Link to="/pm">Guidebook</Link>
+          <Link to="/#contact">Contact</Link>
           <a href={profile.links.github} target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </div>

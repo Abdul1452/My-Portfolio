@@ -5,6 +5,7 @@
  * CSS animation (pf5-rise) with a slightly later animation-delay.
  */
 
+import { Fragment } from 'react'
 import { hero, nowCard, profile } from '@data/portfolio.data'
 
 function CheckIcon() {
@@ -29,13 +30,16 @@ export function HeroSection() {
 
         <h1 className="pf5-h1">
           {lines.map((line, i) => (
-            <span
-              key={line}
-              className={i === lines.length - 1 ? 'pf5-h1__muted' : undefined}
-              style={{ animationDelay: `${i * 0.08}s` }}
-            >
-              {line}{' '}
-            </span>
+            // The space goes between the spans, not inside them: browsers
+            // drop trailing spaces inside inline-block elements.
+            <Fragment key={line}>
+              <span
+                className={i === lines.length - 1 ? 'pf5-h1__muted' : undefined}
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                {line}
+              </span>{' '}
+            </Fragment>
           ))}
         </h1>
 

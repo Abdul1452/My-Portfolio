@@ -1,5 +1,5 @@
-export { HomePage } from './HomePage'
 export { CoastalHomePage } from './CoastalHomePage'
+export { PortfolioV5Page } from './PortfolioV5Page'
 export { ProjectDetailPage } from './ProjectDetailPage'
 export { PMGuidebookPage } from './PMGuidebookPage'
 export { NotFoundPage } from './NotFoundPage'

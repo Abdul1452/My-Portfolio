@@ -17,11 +17,15 @@
  *   The theme should still work then — it just won't be remembered.
  */
 
-import { useCallback, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 export type PortfolioTheme = 'light' | 'dark'
 
 const STORAGE_KEY = 'pf5-theme'
+
+// First-time visitors see the dark theme. Once someone uses the toggle,
+// their choice is saved and wins from then on.
+const DEFAULT_THEME: PortfolioTheme = 'dark'
 
 function readSavedTheme(): PortfolioTheme {
   try {
@@ -30,7 +34,7 @@ function readSavedTheme(): PortfolioTheme {
   } catch {
     // Storage unavailable — fall through to the default.
   }
-  return 'light' // the design's default
+  return DEFAULT_THEME
 }
 
 function prefersReducedMotion(): boolean {
@@ -63,4 +67,21 @@ export function usePortfolioTheme() {
   }, [])
 
   return { theme, toggleTheme, reduceMotion }
+}
+
+// ─── Sharing it with the page ─────────────────────────────────────────────────
+//
+// PortfolioShell calls usePortfolioTheme() once and puts the result in this
+// context, so any component inside the page (the "How this site is built"
+// toggle, the Quote API tile's animation) can read it without props being
+// passed down through every level.
+
+export type PortfolioThemeValue = ReturnType<typeof usePortfolioTheme>
+
+export const PortfolioThemeContext = createContext<PortfolioThemeValue | null>(null)
+
+export function usePortfolioThemeContext(): PortfolioThemeValue {
+  const value = useContext(PortfolioThemeContext)
+  if (!value) throw new Error('usePortfolioThemeContext must be used inside <PortfolioShell>')
+  return value
 }
