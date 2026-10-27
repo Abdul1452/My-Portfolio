@@ -2,6 +2,27 @@
 
 **Base URL:** `http://localhost:4000/api/v1`
 
+All paths below are relative to the v1 base URL. Every response carries an
+`API-Version: v1` header. See [versioning.md](versioning.md) for how versions
+work and when a v2 is needed.
+
+---
+
+## Version discovery
+
+### GET /api
+Lists the supported API versions. (This one is **not** under `/v1`.)
+
+**Response 200:**
+```json
+{
+  "data": {
+    "latest": "v1",
+    "versions": [{ "version": "v1", "path": "/api/v1" }]
+  }
+}
+```
+
 ---
 
 ## Health

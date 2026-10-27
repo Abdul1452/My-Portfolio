@@ -80,6 +80,12 @@ export const corsOptions: CorsOptions = {
   // Which headers the client is allowed to send
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
 
+  // Which RESPONSE headers browser JavaScript may read. Browsers hide
+  // non-standard response headers from cross-origin fetch() unless they're
+  // listed here — without this, the frontend couldn't see which API version
+  // answered or that it's deprecated (see middleware/apiVersion.ts).
+  exposedHeaders: ['API-Version', 'Deprecation', 'Sunset', 'Link'],
+
   // Allow the browser to send cookies / auth headers with requests
   credentials: true,
 

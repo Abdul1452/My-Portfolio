@@ -44,12 +44,14 @@ backend/src/
 │   └── health.controller.ts
 │
 ├── routes/               # Express routers
-│   ├── index.ts          # Root router — mounts all sub-routers
-│   ├── project.routes.ts # GET /projects, GET /projects/:slug
-│   ├── contact.routes.ts # POST /contact
-│   ├── skill.routes.ts   # GET /skills
-│   ├── pm.routes.ts      # GET /pm-projects
-│   └── health.routes.ts  # GET /health
+│   ├── index.ts          # Version registry — GET /api, mounts /v1, rejects unknown versions
+│   └── v1/               # Everything served under /api/v1
+│       ├── index.ts      # Mounts the v1 resource routers
+│       ├── project.routes.ts # GET /projects, GET /projects/:slug
+│       ├── contact.routes.ts # POST /contact
+│       ├── skill.routes.ts   # GET /skills
+│       ├── pm.routes.ts      # GET /pm-projects
+│       └── health.routes.ts  # GET /health
 │
 ├── services/             # Business logic layer
 │   ├── index.ts
@@ -79,6 +81,7 @@ backend/src/
 
 | Method | Path | Description |
 |---|---|---|
+| GET | `/api` | Lists supported API versions |
 | GET | `/api/v1/health` | Health check |
 | GET | `/api/v1/projects` | List all projects |
 | GET | `/api/v1/projects/:slug` | Single project detail |
@@ -86,7 +89,8 @@ backend/src/
 | GET | `/api/v1/pm-projects` | List PM projects |
 | POST | `/api/v1/contact` | Submit contact form |
 
-See [../docs/api/endpoints.md](../docs/api/endpoints.md) for full API docs.
+See [../docs/api/endpoints.md](../docs/api/endpoints.md) for full API docs, and
+[../docs/api/versioning.md](../docs/api/versioning.md) for how API versions work.
 
 ## 🛠 Available Scripts
 

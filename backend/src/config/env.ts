@@ -27,8 +27,9 @@ const envSchema = z.object({
   // process.env.PORT is always a string like "4000".
   // coerce converts "4000" → 4000 (a real number).
 
-  API_VERSION: z.string().default('v1'),
-  API_PREFIX: z.string().default('/api/v1'),
+  // API version and base path are NOT configured here — they live in
+  // config/api.ts, because which URLs exist is decided by the code.
+  // (Old API_VERSION / API_PREFIX lines in a .env file are simply ignored.)
 
   // ── Database ────────────────────────────────────────────────────────────────
   DATABASE_URL: z
