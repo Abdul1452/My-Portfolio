@@ -27,3 +27,6 @@ export { db } from './database'
 export { logger, morganStream } from './logger'
 
 export { corsOptions } from './cors'
+
+export { API_BASE_PATH, API_VERSIONS, LATEST_API_VERSION, isApiVersion } from './api'
+export type { ApiVersion } from './api'

@@ -14,23 +14,40 @@ jobs:
     name: Lint & Type Check
     runs-on: ubuntu-latest
     strategy:
+      # Let frontend and backend both finish even if one fails, so a single
+      # run shows every problem. (The default cancels the other job, which
+      # makes a passing workspace look failed.)
+      fail-fast: false
       matrix:
         workspace: [frontend, backend]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      # No `version:` input on purpose: the action reads "packageManager"
+      # from the root package.json, so CI runs the same pnpm as local
+      # development and can read the lockfile it wrote.
+      - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
 
+      # --frozen-lockfile: install exactly what pnpm-lock.yaml records, and
+      # fail if package.json and the lockfile disagree, instead of quietly
+      # resolving different versions than you have locally.
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      # @prisma/client is an empty placeholder until `prisma generate` builds
+      # it from backend/prisma/schema.prisma. Without this step tsc fails with
+      # "Module '@prisma/client' has no exported member 'PrismaClient'".
+      # (Install doesn't do it for us: Prisma's postinstall looks for the
+      # schema at the repo root, but ours lives in backend/prisma/.)
+      - name: Generate Prisma client
+        if: matrix.workspace == 'backend'
+        run: pnpm db:generate
 
       - name: Generate Prisma client
         if: matrix.workspace == 'backend'
@@ -48,13 +65,14 @@ jobs:
     needs: lint-and-typecheck
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
         with:
-          version: 8
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+          node-version: '22'
           cache: 'pnpm'
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
+      # Backend build (tsc) needs the generated client too — see above.
+      - name: Generate Prisma client
+        run: pnpm db:generate
       - run: pnpm build
