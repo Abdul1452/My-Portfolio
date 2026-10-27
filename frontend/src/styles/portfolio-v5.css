@@ -1,0 +1,350 @@
+/**
+ * portfolio-v5.css — Styles for the Portfolio v5 homepage
+ *
+ * Ported from the "Portfolio v5" Claude Design file. The design wrote its
+ * styles inline on every element; here they're named classes so each
+ * pattern (card, chip, section heading…) is defined once.
+ *
+ * SCOPING:
+ *   Everything lives under the .pf5 wrapper class that PortfolioV5Page
+ *   renders, so none of this leaks into the other routes (/pm, /projects).
+ *   The theme is switched by setting data-theme="dark" on that wrapper.
+ *
+ * TOKENS:
+ *   Colours are CSS variables ("semantic tokens"): components say
+ *   var(--surface) or var(--ink-2), never a hex value. Dark mode only
+ *   redefines the variables, so no component needs a dark variant.
+ */
+
+/* ─── Tokens ─────────────────────────────────────────────────────────────── */
+
+.pf5 {
+  --bg: #f5f3ee; --surface: #ffffff; --surface-2: #eeebe4; --line: #e0dbd1; --line-strong: #cbc4b6;
+  --ink: #1c1b18; --ink-2: #48443d; --ink-3: #6b665c;
+  --accent: #2f5bd3; --on-accent: #ffffff;
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, var(--surface));
+  --ok: #2c7a4b; --ok-soft: color-mix(in oklab, #2c7a4b 12%, var(--surface));
+  --warn: #9a6a12; --warn-soft: color-mix(in oklab, #9a6a12 13%, var(--surface));
+  --danger: #b3321f; --danger-soft: color-mix(in oklab, #b3321f 11%, var(--surface));
+  --clay-1: #e8c9b5; --clay-2: #c98e6c; --lake-1: #c9d6df; --lake-2: #8aa4b8;
+  --birch-1: #dfe2d2; --birch-2: #a9b392; --dusk-1: #ddd3e2; --dusk-2: #a996b6;
+  --shadow: 0 1px 2px rgba(28, 27, 24, .05), 0 12px 32px -14px rgba(28, 27, 24, .22);
+  --sans: 'Onest', ui-sans-serif, system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+
+.pf5[data-theme='dark'] {
+  --bg: #11110f; --surface: #1a1917; --surface-2: #23221f; --line: #2d2b27; --line-strong: #3f3c36;
+  --ink: #f2efe8; --ink-2: #c6c1b6; --ink-3: #9d978b;
+  --ok: #5cbf83; --warn: #e0b45a; --danger: #ec7a64;
+  --clay-1: #4a3428; --clay-2: #2c1f18; --lake-1: #2d3b46; --lake-2: #1a242c;
+  --birch-1: #343829; --birch-2: #1f2219; --dusk-1: #3a3140; --dusk-2: #221d27;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 14px 36px -14px rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+.pf5 {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .3s, color .3s;
+}
+.pf5 *, .pf5 *::before, .pf5 *::after { box-sizing: border-box; }
+.pf5 h1, .pf5 h2, .pf5 h3, .pf5 h4, .pf5 p, .pf5 dl, .pf5 dd, .pf5 ol, .pf5 ul { margin: 0; }
+.pf5 ol, .pf5 ul { padding: 0; }
+.pf5 a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.pf5 a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.pf5 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pf5 button { font-family: inherit; }
+.pf5 .mono { font-family: var(--mono); }
+
+@keyframes pf5-rise { from { opacity: 0; filter: blur(8px); transform: translateY(10px); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes pf5-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ok) 45%, transparent); } 50% { box-shadow: 0 0 0 5px transparent; } }
+
+/* Reduced motion: the hook sets data-motion="reduce" when the OS asks for it. */
+.pf5[data-motion='reduce'] *, .pf5[data-motion='reduce'] *::before { animation: none !important; transition: none !important; }
+
+/* ─── Layout helpers ─────────────────────────────────────────────────────── */
+
+.pf5-section { max-width: 1200px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 32px); scroll-margin-top: 70px; }
+.pf5-section--tight-top { padding-top: 0; }
+.pf5-split { display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 56px); }
+.pf5-split__intro { flex: 1 1 300px; max-width: 400px; }
+.pf5-split__body { flex: 2 1 520px; min-width: 0; }
+.pf5-h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; margin-bottom: 12px; }
+.pf5-h3 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.pf5-lead { font-size: 17px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.pf5-muted { color: var(--ink-3); }
+.pf5-box { border: 1px solid var(--line); border-radius: 24px; background: var(--surface); padding: clamp(20px, 4vw, 36px); }
+.pf5-card { background: var(--surface); border-radius: 16px; box-shadow: var(--shadow); padding: 16px; }
+.pf5-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Soft gradient "stages" behind the hero card, tiles and contact card. */
+.pf5-stage { border-radius: 24px; padding: clamp(18px, 3vw, 28px); }
+.pf5-stage--lake { background: radial-gradient(120% 90% at 20% 10%, var(--lake-1), var(--lake-2)); }
+.pf5-stage--clay { background: radial-gradient(130% 100% at 15% 0%, var(--clay-1), var(--clay-2)); }
+.pf5-stage--birch { background: radial-gradient(130% 100% at 85% 0%, var(--birch-1), var(--birch-2)); }
+.pf5-stage--dusk { background: radial-gradient(130% 100% at 20% 100%, var(--dusk-1), var(--dusk-2)); }
+
+/* ─── Buttons, badges, chips ─────────────────────────────────────────────── */
+
+.pf5 .pf5-btn {
+  min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 0 16px; border-radius: 10px; border: 1px solid transparent; cursor: pointer;
+  font-weight: 600; font-size: 14.5px; white-space: nowrap; text-decoration: none;
+  transition: transform .15s, filter .15s, border-color .15s;
+}
+.pf5 .pf5-btn:active { transform: scale(.97); }
+.pf5 .pf5-btn--primary { background: var(--accent); color: var(--on-accent); }
+.pf5 .pf5-btn--primary:hover { color: var(--on-accent); filter: brightness(1.08); }
+.pf5 .pf5-btn--ghost { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
+.pf5 .pf5-btn--ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+.pf5 .pf5-btn--lg { min-height: 48px; padding: 0 20px; border-radius: 12px; font-size: 15.5px; }
+.pf5 .pf5-btn:disabled { opacity: .6; cursor: progress; }
+
+.pf5-badge { padding: 4px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; background: var(--accent-soft); color: var(--accent); }
+.pf5-badge--outline { background: none; border: 1px solid var(--line); color: var(--ink-2); font-weight: 400; }
+.pf5-badge--warn { background: var(--warn-soft); color: var(--warn); }
+
+/* Small toggle buttons used inside the demo tiles. */
+.pf5-chip {
+  min-height: 36px; padding: 4px 10px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--ink-2); font-size: 12.5px; font-weight: 500; cursor: pointer;
+  transition: background-color .2s, border-color .2s, color .2s;
+}
+.pf5-chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+.pf5-chiprow { display: flex; flex-wrap: wrap; gap: 4px; }
+.pf5-field { display: grid; gap: 6px; }
+.pf5-field__label { font-size: 12px; color: var(--ink-3); }
+
+/* ─── Announcement bar + header ──────────────────────────────────────────── */
+
+.pf5-skip { position: absolute; left: -9999px; top: 8px; z-index: 99; padding: 10px 16px; border-radius: 8px; background: var(--ink); color: var(--bg) !important; font-size: 14px; }
+.pf5-skip:focus { left: 12px; }
+
+.pf5-announce { background: var(--ink); color: var(--bg); }
+.pf5-announce__inner { max-width: 1200px; margin: 0 auto; padding: 9px clamp(16px, 4vw, 32px); display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; justify-content: center; font-size: 13.5px; text-align: center; }
+.pf5 .pf5-announce a { color: var(--bg); font-weight: 600; text-decoration-color: color-mix(in oklab, var(--bg) 45%, transparent); }
+
+.pf5-header { position: sticky; top: 0; z-index: 40; background: color-mix(in oklab, var(--bg) 86%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.pf5-header__inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px); min-height: 60px; display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center; }
+.pf5 .pf5-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+.pf5-brand__mark { width: 26px; height: 26px; border-radius: 8px; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: 13px; }
+.pf5-nav { display: flex; flex-wrap: wrap; gap: 0 4px; margin-left: auto; align-items: center; font-size: 14.5px; }
+.pf5 .pf5-nav a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--ink-2); }
+.pf5 .pf5-nav a:hover { color: var(--ink); background: var(--surface-2); }
+.pf5-header__actions { display: flex; gap: 8px; align-items: center; }
+.pf5-iconbtn { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; display: grid; place-items: center; }
+.pf5-iconbtn:hover { border-color: var(--line-strong); }
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+
+.pf5-hero { max-width: 1200px; margin: 0 auto; padding: clamp(48px, 8vw, 96px) clamp(16px, 4vw, 32px) clamp(40px, 6vw, 72px); display: flex; flex-wrap: wrap; gap: clamp(32px, 5vw, 64px); align-items: center; }
+.pf5-hero__text { flex: 1 1 420px; min-width: 0; }
+.pf5-status { margin-bottom: 20px; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; color: var(--ink-2); }
+.pf5-status__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); animation: pf5-pulse 2.4s ease-in-out infinite; }
+.pf5-h1 { margin-bottom: 22px; font-size: clamp(38px, 6.2vw, 68px); font-weight: 600; line-height: 1.02; letter-spacing: -.045em; max-width: 14ch; text-wrap: balance; }
+.pf5-h1 span { display: inline-block; animation: pf5-rise .8s var(--ease) both; }
+.pf5-h1 .pf5-h1__muted { color: var(--ink-3); }
+.pf5-hero__intro { margin-bottom: 32px; font-size: clamp(16.5px, 1.8vw, 19px); line-height: 1.55; color: var(--ink-2); max-width: 50ch; text-wrap: pretty; }
+.pf5-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.pf5-hero__stage { flex: 1 1 380px; min-width: 0; border-radius: 28px; padding: clamp(22px, 4vw, 40px); display: grid; gap: 16px; min-height: 440px; align-content: center; }
+.pf5-profile { max-width: 380px; width: 100%; padding: 20px; border-radius: 18px; }
+.pf5-profile__head { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+.pf5-avatar { width: 52px; height: 52px; flex: 0 0 auto; border-radius: 50%; object-fit: cover; background: var(--surface-2); }
+.pf5-facts { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; font-size: 14px; }
+.pf5-facts dt { color: var(--ink-3); }
+.pf5-now { max-width: 340px; width: 100%; justify-self: end; padding: 18px 20px; border-radius: 18px; }
+.pf5-now ol { list-style: none; display: grid; gap: 10px; font-size: 14px; margin-bottom: 14px; }
+.pf5-now li { display: flex; gap: 10px; align-items: center; }
+.pf5-now li[data-done='false'] { color: var(--ink-2); }
+.pf5-tick { width: 20px; height: 20px; flex: 0 0 auto; border-radius: 50%; background: var(--ok); color: #fff; display: grid; place-items: center; }
+.pf5-tick--open { background: none; border: 1.5px dashed var(--line-strong); }
+.pf5-progress { height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.pf5-progress > div { height: 100%; border-radius: 99px; background: var(--ok); }
+
+/* ─── Work tiles ─────────────────────────────────────────────────────────── */
+
+.pf5-sectionhead { display: flex; flex-wrap: wrap; gap: 12px 32px; align-items: end; justify-content: space-between; margin-bottom: clamp(24px, 4vw, 40px); }
+.pf5-sectionhead > div { max-width: 640px; }
+.pf5-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: clamp(16px, 2.4vw, 24px); }
+.pf5-tile { display: grid; gap: 14px; align-content: start; }
+.pf5-tile__stage { min-height: 460px; display: grid; align-items: center; }
+.pf5-tile__title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.pf5-tile__caption { font-size: 15px; color: var(--ink-2); }
+.pf5-tile__head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.pf5-tile__name { font-weight: 600; font-size: 14.5px; }
+.pf5-tile__note { font-size: 12px; color: var(--ink-3); }
+.pf5-message { padding: 10px 12px; border-radius: 10px; font-size: 13px; line-height: 1.4; }
+.pf5-message--ok { background: var(--ok-soft); color: var(--ok); }
+.pf5-message--warn { background: var(--warn-soft); color: var(--warn); }
+.pf5-message--danger { background: var(--danger-soft); color: var(--danger); }
+
+/* MuutoKaveri plan cards */
+.pf5-plan { list-style: none; display: grid; gap: 6px; margin-top: 12px; }
+.pf5-plan li { display: grid; grid-template-columns: 74px 1fr; gap: 8px; align-items: start; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); font-size: 12.5px; line-height: 1.4; animation: pf5-rise .35s var(--ease) both; }
+.pf5-plan__phase { font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding-top: 1px; }
+.pf5-plan li[data-risk='true'] { border-color: color-mix(in oklab, var(--warn) 45%, var(--line)); background: var(--warn-soft); }
+
+/* Quote API */
+.pf5-request { display: flex; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); font-family: var(--mono); font-size: 12px; margin-bottom: 12px; overflow-x: auto; }
+.pf5-request__method { padding: 2px 6px; border-radius: 5px; background: var(--ink); color: var(--bg); font-weight: 500; }
+.pf5-request__path { white-space: nowrap; color: var(--ink-2); }
+.pf5-nodes { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; margin: 12px 0 14px; }
+.pf5-node { padding: 6px 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3); font-size: 12px; font-weight: 500; white-space: nowrap; transition: all .25s; }
+.pf5-node[data-state='on'] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.pf5-node[data-state='end'] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
+.pf5-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.pf5-stat { padding: 12px; border-radius: 12px; border: 1px solid var(--line); }
+.pf5-stat__label { font-size: 12px; color: var(--ink-3); margin-bottom: 4px; }
+.pf5-stat__value { font-size: 26px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.pf5-stat__unit { font-size: 14px; font-weight: 400; color: var(--ink-3); }
+.pf5-quote { min-height: 58px; margin-bottom: 12px; font-size: 13.5px; line-height: 1.45; }
+.pf5-quote cite { display: block; margin-top: 4px; font-style: normal; font-size: 12px; color: var(--ink-3); }
+
+/* PetosVahti score */
+.pf5-txn { display: grid; gap: 10px; margin-bottom: 14px; }
+.pf5-toggle { display: flex; align-items: center; gap: 8px; min-height: 36px; font-size: 13px; cursor: pointer; }
+.pf5-toggle input { width: 16px; height: 16px; accent-color: var(--accent); }
+.pf5-meter { position: relative; height: 10px; border-radius: 99px; background: var(--surface-2); margin: 18px 0 8px; }
+.pf5-meter__fill { position: absolute; inset: 0 auto 0 0; border-radius: 99px; transition: width .45s var(--ease), background-color .3s; }
+.pf5-meter__mark { position: absolute; top: -4px; bottom: -4px; width: 2px; border-radius: 2px; background: var(--ink); }
+.pf5-meter__labels { position: relative; height: 16px; font-size: 11px; color: var(--ink-3); font-family: var(--mono); }
+.pf5-meter__labels span { position: absolute; transform: translateX(-50%); }
+.pf5-decision { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; margin-top: 8px; font-size: 13px; }
+.pf5-decision__pill { padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.pf5-reasons { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; min-height: 22px; }
+.pf5-reasons span { font-family: var(--mono); font-size: 11px; padding: 2px 6px; border-radius: 5px; background: var(--surface-2); color: var(--ink-2); }
+
+/* ─── Case studies ───────────────────────────────────────────────────────── */
+
+.pf5-cases { max-width: 1200px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 32px) clamp(40px, 6vw, 72px); display: grid; gap: clamp(20px, 3vw, 28px); }
+.pf5-case { scroll-margin-top: 80px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface); padding: clamp(20px, 4vw, 44px); display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 48px); }
+.pf5-case__text { flex: 1 1 400px; min-width: 0; }
+.pf5-case__side { flex: 1 1 340px; min-width: 0; display: grid; gap: 16px; align-content: start; }
+.pf5-case__badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.pf5-case__title { margin-bottom: 20px; font-size: clamp(24px, 3vw, 32px); font-weight: 600; letter-spacing: -.03em; line-height: 1.12; }
+.pf5-case__dl { display: grid; gap: 16px; margin-bottom: 24px; }
+.pf5-case__dl dt { font-size: 13px; font-weight: 600; color: var(--ink-3); margin-bottom: 4px; }
+.pf5-case__dl dd { font-size: 16px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+.pf5-shot { aspect-ratio: 1200 / 600; border-radius: 16px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); }
+.pf5-shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pf5-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.pf5-table tr { border-top: 1px solid var(--line); }
+.pf5-table tr:last-child { border-bottom: 1px solid var(--line); }
+.pf5-table th { text-align: left; font-weight: 500; color: var(--ink-3); padding: 10px 16px 10px 0; width: 90px; vertical-align: top; }
+.pf5-table td { padding: 10px 0; }
+
+/* ─── Skills ─────────────────────────────────────────────────────────────── */
+
+.pf5-legend { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; margin-top: 20px; }
+.pf5-skillgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px; }
+.pf5-skillcard { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: 20px; }
+.pf5-skillcard__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.pf5-skillcard__head h3 { font-size: 16px; font-weight: 600; }
+.pf5-skills { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13.5px; }
+.pf5-skill { padding: 5px 10px; border-radius: 8px; background: var(--ok-soft); color: var(--ink); }
+.pf5-skill--learning { background: none; border: 1px dashed var(--line-strong); color: var(--ink-3); }
+.pf5-legend .pf5-skill { border-radius: 999px; font-weight: 600; color: var(--ok); }
+.pf5-legend .pf5-skill--learning { color: var(--ink-3); font-weight: 500; }
+
+/* ─── GitHub activity ────────────────────────────────────────────────────── */
+
+.pf5-gh { display: grid; gap: 20px; }
+.pf5-gh__scroll { overflow-x: auto; padding-bottom: 4px; }
+.pf5-gh__grid { display: grid; grid-template-columns: 28px auto; gap: 6px; width: max-content; font-size: 11.5px; color: var(--ink-3); }
+.pf5-gh__months { display: grid; grid-template-columns: repeat(53, 12px); gap: 3px; height: 14px; }
+.pf5-gh__months span { grid-row: 1; white-space: nowrap; }
+.pf5-gh__days { display: grid; grid-template-rows: repeat(7, 12px); gap: 3px; line-height: 12px; }
+.pf5-gh__cells { display: grid; grid-template-rows: repeat(7, 12px); grid-auto-flow: column; grid-auto-columns: 12px; gap: 3px; }
+.pf5-gh__cell { width: 12px; height: 12px; border-radius: 3px; outline-offset: 1px; }
+.pf5-gh__foot { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-3); }
+.pf5-gh__legend { display: flex; align-items: center; gap: 4px; }
+
+/* ─── Lists of rows (certifications, exploring) ──────────────────────────── */
+
+.pf5-rows { display: grid; }
+.pf5 .pf5-row { min-height: 44px; display: flex; gap: 14px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+.pf5 a.pf5-row:hover { color: var(--accent); }
+.pf5-row__mark { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 11.5px; font-weight: 700; letter-spacing: .02em; }
+.pf5-row__text { flex: 1 1 auto; min-width: 0; display: grid; gap: 2px; }
+.pf5-row__title { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.pf5-row__sub { font-size: 13.5px; color: var(--ink-3); }
+.pf5-row__aside { flex: 0 0 auto; font-size: 13px; color: var(--ink-3); }
+
+.pf5-credentials { display: flex; flex-wrap: wrap; gap: 16px; }
+.pf5-credentials > * { flex: 1 1 340px; min-width: 0; display: grid; gap: 18px; align-content: start; }
+.pf5-eyebrow { font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.pf5-branches { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 8px; }
+.pf5-branches li { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font-size: 14px; }
+.pf5-branches .mono { font-size: 12px; color: var(--ink-3); }
+
+/* ─── Experience timeline ────────────────────────────────────────────────── */
+
+.pf5-timeline { list-style: none; position: relative; }
+.pf5-timeline > li { position: relative; padding: 0 0 28px 32px; margin-left: 6px; border-left: 1px solid var(--line-strong); }
+.pf5-timeline > li:last-child { border-left-color: transparent; padding-bottom: 0; }
+.pf5-timeline__dot { position: absolute; left: -7px; top: 4px; width: 13px; height: 13px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line-strong); box-shadow: 0 0 0 4px var(--bg); }
+.pf5-timeline > li:first-child .pf5-timeline__dot { background: var(--accent); border-color: var(--accent); }
+.pf5-timeline__dot--study { border-radius: 4px; background: var(--ink) !important; border-color: var(--ink) !important; }
+.pf5-timeline__period { font-size: 13.5px; color: var(--ink-3); margin-bottom: 4px; }
+.pf5-timeline h3 { font-size: 17px; font-weight: 600; margin-bottom: 2px; }
+.pf5-timeline__org { font-size: 14.5px; color: var(--ink-3); margin-bottom: 8px; }
+.pf5-timeline__text { font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
+.pf5-timeline__highlights { list-style: none; display: grid; gap: 6px; font-size: 14.5px; color: var(--ink-2); margin-top: 12px; }
+
+/* ─── How I work ─────────────────────────────────────────────────────────── */
+
+.pf5-fit { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px; margin-bottom: 12px; }
+.pf5-fit__card { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: clamp(20px, 3vw, 28px); }
+.pf5-fit__card h3 { margin-bottom: 14px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.pf5-fit__icon { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--ok-soft); color: var(--ok); }
+.pf5-fit__icon--no { background: var(--surface-2); color: var(--ink-3); }
+.pf5-fit__card ul { padding-left: 18px; display: grid; gap: 10px; font-size: 15.5px; line-height: 1.55; color: var(--ink-2); }
+.pf5-steps { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.pf5-steps li { border-radius: 18px; background: var(--surface-2); padding: 20px; }
+.pf5-steps .mono { font-size: 12.5px; color: var(--ink-3); margin-bottom: 10px; }
+.pf5-steps h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.pf5-steps p:last-child { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+
+/* ─── FAQ accordion ──────────────────────────────────────────────────────── */
+
+.pf5-faq { border-top: 1px solid var(--line); }
+.pf5-faq__item { border-bottom: 1px solid var(--line); }
+.pf5-faq__q { width: 100%; min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border: 0; background: transparent; color: var(--ink); font-size: 16.5px; font-weight: 500; text-align: left; cursor: pointer; }
+.pf5-faq__icon { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: transform .25s var(--ease); }
+.pf5-faq__q[aria-expanded='true'] .pf5-faq__icon { transform: rotate(45deg); }
+.pf5-faq__a { padding: 0 44px 20px 0; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); max-width: 64ch; }
+
+/* ─── System ─────────────────────────────────────────────────────────────── */
+
+.pf5-system { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 28px; }
+.pf5-system h3 { margin-bottom: 12px; font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.pf5-tokens { list-style: none; display: grid; gap: 8px; font-family: var(--mono); font-size: 12.5px; }
+.pf5-tokens li { display: flex; align-items: center; gap: 10px; }
+.pf5-swatch { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--line-strong); }
+.pf5-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; font-size: 13px; }
+.pf5-pills span { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); }
+.pf5-rules { padding-left: 18px; display: grid; gap: 6px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+
+/* ─── Contact + footer ───────────────────────────────────────────────────── */
+
+.pf5-contact { border-radius: 28px; padding: clamp(24px, 6vw, 72px) clamp(16px, 4vw, 48px); display: grid; place-items: center; }
+.pf5-contact__card { max-width: 620px; width: 100%; padding: clamp(24px, 4vw, 44px); border-radius: 22px; }
+.pf5-contact__card h2 { margin-bottom: 12px; font-size: clamp(28px, 4vw, 40px); font-weight: 600; letter-spacing: -.035em; line-height: 1.08; text-wrap: balance; }
+.pf5-copy { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 8px 8px 16px; border-radius: 14px; border: 1px solid var(--line-strong); margin: 26px 0 18px; }
+.pf5 .pf5-copy a { flex: 1 1 180px; font-family: var(--mono); font-size: 14.5px; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; overflow-wrap: anywhere; }
+.pf5-links { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 15px; margin-bottom: 20px; }
+.pf5-links a { min-height: 44px; display: inline-flex; align-items: center; }
+
+.pf5-footer { border-top: 1px solid var(--line); }
+.pf5-footer__inner { max-width: 1200px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 32px); display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--ink-3); }
+.pf5-footer nav { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.pf5 .pf5-footer a { min-height: 44px; display: inline-flex; align-items: center; color: var(--ink-3); }
