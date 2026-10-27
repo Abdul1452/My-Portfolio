@@ -12,13 +12,5 @@ export { projects } from './projects.data'
 export { pmProjects } from './pm-projects.data'
 export { skillCategories } from './skills.data'
 
-export { experience } from './experience.data'
-export type { ExperienceItem } from './experience.data'
-
-export {
-  siteMeta,
-  heroStats,
-  heroTechStack,
-  aboutFacts,
-} from './meta.data'
-export type { SiteMeta, HeroStat, AboutFact } from './meta.data'
+export { siteMeta } from './meta.data'
+export type { SiteMeta } from './meta.data'

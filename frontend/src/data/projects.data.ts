@@ -32,7 +32,7 @@ export const projects: Project[] = [
     year: '2026',
     category: 'engineering',
     linkLabel: 'Repository',
-    linkUrl: 'https://github.com/Abdul1452/Petosvahti-',
+    linkUrl: 'https://github.com/Abdul1452/Fraud-Detector-PetosVahti-',
     imageUrl: null,
     featured: true,
     order: 1,
@@ -44,7 +44,7 @@ export const projects: Project[] = [
     tag: 'Next.js 14 · TypeScript · Recharts',
     description:
       'Beam and rigid-frame analysis in the browser: fixed-end moments, joint equilibrium with sway, bending-moment and shear-force diagrams, support reactions.',
-    year: '2025',
+    year: '2026',
     category: 'engineering',
     linkLabel: 'Case study',
     linkUrl: 'https://github.com/Abdul1452/Slope-deflection-Calculator',

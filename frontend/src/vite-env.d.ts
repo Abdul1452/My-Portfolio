@@ -26,15 +26,6 @@ interface ImportMetaEnv {
 
   /** Public site URL, used for OG meta tags */
   readonly VITE_SITE_URL: string
-
-  /** Contact email shown in the UI */
-  readonly VITE_CONTACT_EMAIL: string
-
-  /** LinkedIn profile URL */
-  readonly VITE_LINKEDIN_URL: string
-
-  /** GitHub profile URL */
-  readonly VITE_GITHUB_URL: string
 }
 
 interface ImportMeta {

@@ -1,101 +1,68 @@
 /**
- * PMGuidebookPage.tsx — Dedicated PM Deep-Dive (/pm)
+ * PMGuidebookPage.tsx — The Project Management Guidebook (/pm)
  *
  * A SECONDARY PAGE:
- *   While the home page shows a PM *summary* (PMSection), this dedicated page
- *   gives the full treatment — reusing the same PM building blocks (Guidebook,
- *   Gantt, Sprints) with room to breathe. Linked from the nav or PM cards.
+ *   The homepage shows the guidebook as a card with a chapter preview. This
+ *   page gives it a permanent address (/pm): every chapter with its summary
+ *   and a link that opens the PDF at that chapter, plus the full PDF.
  *
- * REUSE OVER REBUILD:
- *   We import the same GuidebookCard, GanttPreview, and SprintCard components
- *   from @pm. Building them as standalone pieces in Phase 9 pays off now —
- *   we assemble a whole new page from existing parts, no duplication.
+ * ONE SOURCE OF TRUTH:
+ *   Chapters, summaries and the PDF path come from the `guidebook` object in
+ *   portfolio.data.ts, the same data the homepage preview uses.
  */
 
-import { useNavigate } from 'react-router-dom'
-import { Section } from '@layout'
-import { SectionLabel, Button, ScrollReveal } from '@ui'
-import { GuidebookCard, GanttPreview, SprintCard, type Sprint } from '@pm'
+import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { guidebook, profile } from '@data/portfolio.data'
+import { GuidebookCover, PortfolioShell } from '@components/v5'
 
-const chapters = [
-  'Agile & Scrum Foundations',
-  'Waterfall & Hybrid Models',
-  'Risk Registers & Mitigation',
-  'Stakeholder Mapping & Communication',
-  'Finnish Working Culture & Practices',
-  'Estimation, Velocity & Roadmapping',
-  'Retrospectives & Continuous Improvement',
-  'Tools: Jira, Notion, Linear',
-]
-
-const sprints: Sprint[] = [
-  { id: 's1', number: 1, goal: 'Discovery, requirements & project charter', startDate: 'Wk 1', endDate: 'Wk 2', status: 'completed', storyPoints: 18 },
-  { id: 's2', number: 2, goal: 'Architecture, design system & scaffolding', startDate: 'Wk 3', endDate: 'Wk 4', status: 'completed', storyPoints: 26 },
-  { id: 's3', number: 3, goal: 'Core feature build & integration', startDate: 'Wk 5', endDate: 'Wk 6', status: 'active', storyPoints: 31 },
-  { id: 's4', number: 4, goal: 'Hardening, QA & launch', startDate: 'Wk 7', endDate: 'Wk 8', status: 'planned', storyPoints: 20 },
-]
+const pad = (n: number) => String(n).padStart(2, '0')
 
 export function PMGuidebookPage() {
-  const navigate = useNavigate()
+  useEffect(() => {
+    document.title = `${guidebook.title} — ${profile.name}`
+  }, [])
 
   return (
-    <Section id="pm-guidebook" background="light">
-      <ScrollReveal>
-        <SectionLabel number="PM" label="Project Management Deep-Dive" />
-        <h1 style={{ fontSize: 'var(--text-h2)', fontWeight: 700, margin: '1rem 0 0.5rem' }}>
-          How I Run Projects
-        </h1>
-        <p
-          style={{
-            fontSize: 'var(--text-body-lg)',
-            color: 'var(--color-muted)',
-            lineHeight: 1.7,
-            maxWidth: '640px',
-            marginBottom: '3rem',
-          }}
-        >
-          A closer look at my project management approach, tools, and the
-          artifacts I create to keep software delivery on track.
-        </p>
-      </ScrollReveal>
-
-      <ScrollReveal style={{ marginBottom: '4rem' }}>
-        <GuidebookCard
-          title="The PM Guidebook"
-          description="My complete reference for running software projects end-to-end — the methodologies, ceremonies, and templates I rely on."
-          chapters={chapters}
-          linkLabel="Download PDF"
-          linkUrl={null}
-        />
-      </ScrollReveal>
-
-      <ScrollReveal style={{ marginBottom: '4rem' }}>
-        <h2 style={{ fontSize: 'var(--text-h3)', fontWeight: 700, marginBottom: '1.5rem' }}>
-          Delivery Timeline
-        </h2>
-        <GanttPreview />
-      </ScrollReveal>
-
-      <ScrollReveal style={{ marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: 'var(--text-h3)', fontWeight: 700, marginBottom: '1.5rem' }}>
-          Sprint Board
-        </h2>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '1rem',
-          }}
-        >
-          {sprints.map(s => (
-            <SprintCard key={s.id} sprint={s} />
-          ))}
+    <PortfolioShell>
+      <section data-screen-label="Guidebook" className="pf5-section pf5-split">
+        <div className="pf5-split__intro" style={{ display: 'grid', gap: 14, alignContent: 'start' }}>
+          <Link to="/#credentials" className="pf5-backlink">← Back to the portfolio</Link>
+          <span className="pf5-eyebrow">{guidebook.eyebrow}</span>
+          <h1 className="pf5-h2" style={{ marginBottom: 0 }}>{guidebook.title}</h1>
+          <p className="pf5-lead">{guidebook.description}</p>
+          <p className="pf5-muted" style={{ fontSize: 14 }}>{guidebook.credit}</p>
+          <div className="pf5-gbpage__cover">
+            <GuidebookCover />
+          </div>
+          <div className="pf5-actions">
+            <a href={guidebook.pdfUrl} target="_blank" rel="noopener noreferrer" className="pf5-btn pf5-btn--primary pf5-btn--lg">
+              Read the full guidebook (PDF)
+            </a>
+          </div>
+          <p className="pf5-muted" style={{ fontSize: 13.5 }}>
+            {guidebook.chapters.length} chapters · {guidebook.pageCount} pages · opens in a new tab
+          </p>
         </div>
-      </ScrollReveal>
 
-      <Button variant="primary" onClick={() => navigate('/')}>
-        ← Back to home
-      </Button>
-    </Section>
+        <ol className="pf5-split__body pf5-chapters" aria-label="Chapters">
+          {guidebook.chapters.map((chapter, i) => (
+            <li key={chapter.title}>
+              <span className="pf5-chapters__num">{pad(i + 1)}</span>
+              <div style={{ display: 'grid', gap: 6, minWidth: 0 }}>
+                <h2>
+                  {chapter.title}
+                  {guidebook.myChapters.includes(i + 1) && <span className="pf5-mine" style={{ marginLeft: 8 }}>Mine</span>}
+                </h2>
+                <p>{chapter.summary}</p>
+                <a href={`${guidebook.pdfUrl}#page=${chapter.page}`} target="_blank" rel="noopener noreferrer">
+                  Open at page {chapter.page} ↗
+                </a>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </PortfolioShell>
   )
 }
