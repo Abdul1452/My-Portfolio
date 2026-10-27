@@ -27,6 +27,7 @@ import express, { type Request, type Response, type NextFunction } from 'express
 import helmet     from 'helmet'
 import cors       from 'cors'
 
+import { API_BASE_PATH }  from '@config/api'
 import { corsOptions }    from '@config/cors'
 import { env }            from '@config/env'
 import { logger }         from '@config/logger'
@@ -98,13 +99,14 @@ app.use(globalLimiter)
 
 // ─── 6. API Routes ────────────────────────────────────────────────────────────
 //
-// Mount the entire API router under /api/v1.
-// All routes defined in routes/index.ts are prefixed with /api/v1.
+// Mount the API under /api. The router in routes/index.ts then splits by
+// version (/v1, later /v2, …), and each version router splits by resource.
 //
-// Example: healthRoutes is mounted at /health inside routes/index.ts
+// Example: healthRoutes is mounted at /health inside routes/v1/index.ts,
+//          v1 is mounted at /v1 inside routes/index.ts
 //          → final URL: GET /api/v1/health
 
-app.use(env.API_PREFIX, apiRouter)
+app.use(API_BASE_PATH, apiRouter)
 
 // ─── 7. 404 handler ───────────────────────────────────────────────────────────
 //

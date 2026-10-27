@@ -22,6 +22,7 @@
  *   This prevents data corruption and dropped requests during deployments.
  */
 
+import { API_BASE_PATH, LATEST_API_VERSION } from '@config/api'
 import { db }           from '@config/database'
 import { env }          from '@config/env'
 import { logger }       from '@config/logger'
@@ -69,7 +70,7 @@ async function startServer(): Promise<void> {
     const server = app.listen(env.PORT, () => {
       logger.info(`🚀 Server running in ${env.NODE_ENV} mode`)
       logger.info(`📡 Listening on http://localhost:${env.PORT}`)
-      logger.info(`🔗 API available at http://localhost:${env.PORT}${env.API_PREFIX}`)
+      logger.info(`🔗 API available at http://localhost:${env.PORT}${API_BASE_PATH}/${LATEST_API_VERSION}`)
     })
 
     // ── Step 4: Graceful shutdown handlers ─────────────────────────────────────

@@ -13,6 +13,7 @@ All errors follow this shape:
 |---|---|---|
 | 400 | BAD_REQUEST | Malformed request |
 | 404 | NOT_FOUND | Resource not found |
+| 404 | UNSUPPORTED_API_VERSION | URL names an API version that doesn't exist (e.g. `/api/v9/...`) — see [versioning.md](versioning.md) |
 | 422 | VALIDATION_ERROR | Zod validation failed |
 | 429 | RATE_LIMITED | Too many requests |
 | 500 | INTERNAL_ERROR | Unexpected server error |
