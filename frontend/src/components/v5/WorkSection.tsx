@@ -13,7 +13,7 @@ import type { ReactNode } from 'react'
 import { ArrowUpRight, Cloud, FileText, Github, Hammer, House, ShieldCheck, Target, TrendingUp, type LucideIcon } from 'lucide-react'
 import { featuredProjects, type FeaturedProject, type TileKind } from '@data/portfolio.data'
 import { FraudScoreTile, MovePlanTile, QuoteApiTile } from './DemoTiles'
-import { IconTile, SectionEyebrow, StackPills, type Tone } from './ui'
+import { IconTile, parseGitHubUrl, SectionEyebrow, StackPills, type Tone } from './ui'
 import { usePortfolioThemeContext } from './usePortfolioTheme'
 
 // Each tile sits on a different gradient, in the design's order.
@@ -35,7 +35,7 @@ const CASE_PARTS: { key: 'problem' | 'whatIDid' | 'result'; label: string; icon:
 function LinkLabel({ label, url }: { label: string; url: string }) {
   if (label === 'Repository') return <><Github size={16} aria-hidden="true" /> {label}</>
   if (/docs/i.test(label)) return <><FileText size={16} aria-hidden="true" /> {label}</>
-  if (url.includes('github.com')) return <><Github size={16} aria-hidden="true" /> {label}</>
+  if (parseGitHubUrl(url)) return <><Github size={16} aria-hidden="true" /> {label}</>
   return <>{label} <ArrowUpRight size={16} aria-hidden="true" /></>
 }
 

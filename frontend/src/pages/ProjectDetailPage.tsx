@@ -21,12 +21,15 @@ import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowUpRight, Github, SearchX } from 'lucide-react'
 import { useApp } from '@hooks/useApp'
-import { Banner, PortfolioShell, Skeleton, StackPills } from '@components/v5'
+import { Banner, parseGitHubUrl, PortfolioShell, Skeleton, StackPills } from '@components/v5'
 
 /** GitHub's generated preview card for a repository URL, if it is one. */
 function repoPreview(url: string | null | undefined): string | null {
-  const match = url?.match(/github\.com\/([^/]+)\/([^/#?]+)/)
-  return match ? `https://opengraph.githubassets.com/portfolio/${match[1]}/${match[2]}` : null
+  const parsed = parseGitHubUrl(url)
+  if (!parsed) return null
+  const [owner, repo] = parsed.pathname.split('/').filter(Boolean)
+  if (!owner || !repo) return null
+  return `https://opengraph.githubassets.com/portfolio/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`
 }
 
 export function ProjectDetailPage() {
@@ -86,7 +89,7 @@ export function ProjectDetailPage() {
               {project.linkUrl && (
                 <div className="pf5-actions" style={{ marginTop: 28 }}>
                   <a href={project.linkUrl} target="_blank" rel="noopener noreferrer" className="pf5-btn pf5-btn--primary pf5-btn--lg">
-                    {project.linkUrl.includes('github.com') && <Github size={18} aria-hidden="true" />}
+                    {parseGitHubUrl(project.linkUrl) && <Github size={18} aria-hidden="true" />}
                     {project.linkLabel} <ArrowUpRight size={16} aria-hidden="true" />
                   </a>
                 </div>

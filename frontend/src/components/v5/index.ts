@@ -9,4 +9,4 @@ export { SkillsSection, GitHubSection, CredentialsSection, ExperienceSection } f
 export { ApproachSection, QuestionsSection, SystemSection, ContactSection } from './AboutSections'
 export { GuidebookCard, GuidebookCover } from './Guidebook'
 export { Banner, SectionBoundary, Skeleton, useToast } from './Feedback'
-export { IconTile, SectionEyebrow, StackPills } from './ui'
+export { IconTile, parseGitHubUrl, SectionEyebrow, StackPills } from './ui'

@@ -70,6 +70,27 @@ export function SectionEyebrow({ section }: { section: SectionKey }) {
   )
 }
 
+const GITHUB_HOSTS = ['github.com', 'www.github.com']
+
+/**
+ * The parsed URL if it points at GitHub, otherwise null.
+ *
+ * WHY PARSE INSTEAD OF url.includes('github.com')?
+ *   A substring check also matches "https://evil.net/github.com/..." or
+ *   "https://github.com.evil.net". Parsing first and comparing the exact
+ *   hostname against an allow-list can't be fooled that way.
+ */
+export function parseGitHubUrl(url: string | null | undefined): URL | null {
+  if (!url) return null
+  try {
+    const parsed = new URL(url)
+    const webProtocol = parsed.protocol === 'https:' || parsed.protocol === 'http:'
+    return webProtocol && GITHUB_HOSTS.includes(parsed.hostname) ? parsed : null
+  } catch {
+    return null // not a valid absolute URL
+  }
+}
+
 /** "Python · FastAPI · Kafka" → a row of pills. */
 export function StackPills({ stack, label = 'Stack' }: { stack: string; label?: string }) {
   return (
