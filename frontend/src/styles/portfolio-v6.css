@@ -1,0 +1,202 @@
+/**
+ * portfolio-v6.css — The v6 layer on top of portfolio-v5.css
+ *
+ * Designed in Figma first ("v6 · Audit & rationale" board), then built here.
+ * It only ADDS to v5: new tokens, icons, states and wayfinding. Every v5
+ * class still works, and new patterns use the pf6- prefix so it's clear
+ * which layer a rule belongs to.
+ *
+ * ACCESSIBILITY FIXES IN THIS FILE:
+ *   --accent-text     accent used as TEXT. In dark mode the brand blue was
+ *                     ≈3:1 on cards (fails WCAG 1.4.3); #7b9cff is ≈6.6:1.
+ *   --focus           a brighter ring with a 2px gap (WCAG 2.4.7 / 2.4.13).
+ *   --control-border  borders that identify a control, ≥3:1 (WCAG 1.4.11).
+ */
+
+/* ─── Tokens ─────────────────────────────────────────────────────────────── */
+
+.pf5 {
+  --accent-text: #2f5bd3;
+  --focus: #2f5bd3;
+  --control-border: #7a7466;
+  --glass: color-mix(in oklab, var(--surface) 82%, transparent);
+  --scene-stack: #2f5bd3;
+  --scene-project: #9a6a12;
+  --scene-pm: #2c7a4b;
+  --scene-core: #1c1b18;
+}
+
+.pf5[data-theme='dark'] {
+  --accent-text: #7b9cff;
+  --focus: #7b9cff;
+  --control-border: #8a8478;
+  --glass: color-mix(in oklab, var(--surface) 72%, transparent);
+  --scene-stack: #7b9cff;
+  --scene-project: #e0b45a;
+  --scene-pm: #5cbf83;
+  --scene-core: #f2efe8;
+}
+
+.pf5 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Accent as text: swap the v5 rules over to the readable token. */
+.pf5-badge:not(.pf5-badge--outline):not(.pf5-badge--warn),
+.pf5-node[data-state='on'],
+.pf5-toc button[aria-current='true'],
+.pf5-mine, .pf5-eyebrow, .pf5-gbcard__cta, .pf5-row__mark { color: var(--accent-text); }
+.pf5 a:hover, .pf5 a.pf5-row:hover, .pf5 .pf5-backlink:hover { color: var(--accent-text); text-decoration-color: var(--accent-text); }
+.pf5-toggle input { accent-color: var(--accent); }
+
+/* Lucide icons inherit the text colour; never let them shrink in a row. */
+.pf5 svg.lucide { flex: 0 0 auto; }
+
+@keyframes pf6-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pf6-slide { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pf6-rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pf6-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes pf6-spin { to { transform: rotate(360deg); } }
+
+/* ─── Small building blocks ──────────────────────────────────────────────── */
+
+.pf6-tile { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 8px; display: inline-grid; place-items: center; background: var(--accent-soft); color: var(--accent-text); }
+.pf6-tile--md { width: 40px; height: 40px; border-radius: 10px; }
+.pf6-tile--ok { background: var(--ok-soft); color: var(--ok); }
+.pf6-tile--warn { background: var(--warn-soft); color: var(--warn); }
+.pf6-tile--neutral { background: var(--surface-2); color: var(--ink-2); }
+
+.pf6-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.pf6-eyebrow__num { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); }
+.pf6-eyebrow__rule { width: 16px; height: 1px; background: var(--line-strong); }
+.pf6-eyebrow__label { font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-text); }
+
+.pf6-pills { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; }
+.pf6-pill { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; color: var(--ink); }
+
+.pf6-kbd { font-family: var(--mono); font-size: 11px; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--line-strong); color: var(--ink-3); }
+
+.pf6-c-accent { color: var(--accent-text); }
+.pf6-c-ok { color: var(--ok); }
+.pf6-c-warn { color: var(--warn); }
+.pf6-c-danger { color: var(--danger); }
+.pf6-c-muted { color: var(--ink-3); }
+
+.pf6-iconrow { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ─── Header: icon nav, current section, mobile menu ─────────────────────── */
+
+/* The header was already sticky in v5; this keeps it explicit and on top of
+   the 3D canvas and glass cards. */
+.pf5-header { position: sticky; top: 0; z-index: 40; }
+.pf5 .pf5-nav a { gap: 8px; }
+.pf5-nav a svg { color: var(--ink-3); transition: color .15s; }
+.pf5 .pf5-nav a:hover svg { color: var(--ink); }
+.pf5 .pf5-nav a[aria-current='location'] { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.pf5-nav a[aria-current='location'] svg { color: var(--accent-text); }
+
+.pf6-menubtn { display: none; }
+@media (max-width: 860px) {
+  .pf6-menubtn { display: grid; }
+  .pf6-header-cta { display: none !important; }
+}
+
+.pf6-sheet { position: fixed; inset: 0; z-index: 90; display: flex; justify-content: flex-end; background: rgba(10, 12, 16, .55); animation: pf6-fade .2s ease both; }
+.pf6-sheet__panel { width: min(100%, 380px); height: 100%; display: flex; flex-direction: column; overflow-y: auto; background: var(--bg); border-left: 1px solid var(--line); animation: pf6-slide .25s var(--ease) both; }
+.pf6-sheet__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 60px; padding: 8px 16px; border-bottom: 1px solid var(--line); }
+.pf6-sheet__nav { display: grid; gap: 4px; padding: 16px; }
+.pf5 .pf6-sheet__nav a { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 12px; border-radius: 12px; text-decoration: none; color: var(--ink); font-size: 16.5px; font-weight: 500; }
+.pf5 .pf6-sheet__nav a:hover, .pf5 .pf6-sheet__nav a[aria-current='location'] { background: var(--surface); color: var(--ink); }
+.pf6-sheet__foot { margin-top: auto; display: grid; gap: 12px; padding: 16px 16px 24px; border-top: 1px solid var(--line); }
+.pf6-sheet__theme { display: flex; justify-content: space-between; align-items: center; font-size: 14.5px; color: var(--ink-2); }
+
+.pf6-segmented { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--surface-2); }
+.pf6-segmented button { min-height: 38px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: var(--ink-3); font-size: 13.5px; cursor: pointer; }
+.pf6-segmented button[aria-pressed='true'] { background: var(--surface); color: var(--ink); font-weight: 500; }
+
+/* ─── Hero: 3D stage, glass cards, KPI strip ─────────────────────────────── */
+
+.pf6-stage { position: relative; overflow: hidden; isolation: isolate; }
+.pf6-stage > .pf5-card { position: relative; z-index: 1; background: var(--glass); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: var(--shadow), inset 0 0 0 1px color-mix(in oklab, var(--line-strong) 60%, transparent); }
+@media (max-width: 600px) { .pf6-stage { padding-top: 56px; } }
+
+.pf6-scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.pf6-scene__poster, .pf6-scene__canvas { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity .6s ease; }
+.pf6-scene__canvas { opacity: 0; }
+.pf6-scene[data-ready='true'] .pf6-scene__canvas { opacity: 1; }
+.pf6-scene[data-ready='true'] .pf6-scene__poster { opacity: 0; }
+.pf6-scene__labels { position: absolute; inset: 0; }
+.pf6-scene__label { position: absolute; left: 0; top: 0; font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); white-space: nowrap; will-change: transform, opacity; }
+.pf6-scene__legend { position: absolute; z-index: 2; top: 16px; right: 16px; display: flex; align-items: center; gap: 8px; padding: 5px 12px 5px 10px; border-radius: 999px; background: color-mix(in oklab, var(--bg) 60%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 11.5px; color: var(--ink-2); }
+.pf6-scene__legend i { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+.pf6-kpis { max-width: 1200px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 32px) clamp(8px, 2vw, 24px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px 16px; list-style: none; }
+@media (min-width: 900px) { .pf6-kpis { grid-template-columns: repeat(4, 1fr); } }
+.pf6-stat { display: grid; gap: 10px; align-content: start; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.pf6-stat__value { font-size: 28px; font-weight: 600; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.pf6-stat__label { font-size: 13.5px; line-height: 1.4; color: var(--ink-3); }
+
+/* ─── Work, case studies ─────────────────────────────────────────────────── */
+
+.pf6-caption { display: flex; gap: 12px; align-items: flex-start; }
+.pf5-decision__pill { display: inline-flex; align-items: center; gap: 6px; }
+.pf5-case__dl dt { display: flex; align-items: center; gap: 8px; }
+
+/* ─── Skills, GitHub, experience ─────────────────────────────────────────── */
+
+.pf5-skillcard__head { align-items: center; gap: 12px; }
+.pf6-skillcard__title { display: flex; align-items: center; gap: 10px; }
+.pf6-confidence { display: flex; gap: 3px; margin: -4px 0 14px; }
+.pf6-confidence span { flex: 1; height: 4px; border-radius: 2px; background: var(--ok); }
+.pf6-confidence span[data-level='learning'] { background: none; border: 1px dashed var(--control-border); }
+.pf6-legend { display: grid; gap: 8px; margin-top: 20px; list-style: none; font-size: 13.5px; color: var(--ink-2); }
+.pf6-legend li { display: flex; align-items: center; gap: 8px; }
+
+.pf6-inlinestats { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; color: var(--ink-2); }
+
+.pf5-timeline > li { margin-left: 14px; padding-left: 30px; }
+.pf6-timeline__icon { position: absolute; left: -14.5px; top: 0; box-shadow: 0 0 0 4px var(--bg); }
+
+.pf6-step__icon { margin-bottom: 12px; }
+
+/* ─── Feedback: banners, toasts, skeletons, empty states ─────────────────── */
+
+.pf6-statusbar { max-width: 1200px; margin: 0 auto; padding: 12px clamp(16px, 4vw, 32px) 0; display: grid; gap: 8px; }
+.pf6-banner { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 12px; background: var(--accent-soft); color: var(--accent-text); animation: pf6-rise .25s var(--ease) both; }
+.pf6-banner--warn { background: var(--warn-soft); color: var(--warn); }
+.pf6-banner--offline { background: var(--surface-2); color: var(--ink-2); }
+.pf6-banner__text { flex: 1 1 auto; min-width: 0; display: grid; gap: 2px; }
+.pf6-banner__title { font-size: 14.5px; font-weight: 600; color: var(--ink); }
+.pf6-banner__body { font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
+.pf6-banner__close { flex: 0 0 auto; width: 32px; height: 32px; margin: -6px -6px -6px 0; display: grid; place-items: center; border: 0; border-radius: 8px; background: transparent; color: var(--ink-3); cursor: pointer; }
+.pf6-banner__close:hover { background: color-mix(in oklab, var(--ink) 8%, transparent); color: var(--ink); }
+
+.pf6-toasts { position: fixed; z-index: 95; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(calc(100% - 32px), 440px); display: grid; gap: 8px; pointer-events: none; }
+.pf6-toast { pointer-events: auto; display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong); background: var(--surface-2); box-shadow: var(--shadow); font-size: 13.5px; font-weight: 500; color: var(--ink); animation: pf6-rise .25s var(--ease) both; }
+
+.pf6-skel { display: block; border-radius: 8px; background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in oklab, var(--surface-2) 75%, var(--ink-3)) 50%, var(--surface-2) 75%); background-size: 200% 100%; animation: pf6-shimmer 1.4s linear infinite; }
+
+.pf6-empty { max-width: 440px; margin: 0 auto; display: grid; justify-items: center; gap: 12px; padding: 40px 32px; text-align: center; border: 1px dashed var(--line-strong); border-radius: 24px; background: var(--surface); }
+.pf6-empty__ring { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line-strong); color: var(--ink-2); }
+.pf6-empty__title { font-size: 17px; font-weight: 600; }
+.pf6-empty__body { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+
+.pf6-spin { animation: pf6-spin 1s linear infinite; }
+
+/* ─── Guidebook modal + /pm page ─────────────────────────────────────────── */
+
+.pf6-modal__title { display: flex; gap: 12px; align-items: center; min-width: 0; }
+.pf6-modal__close { display: flex; gap: 10px; align-items: center; }
+
+.pf6-chapnum { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+.pf6-chaptitle { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 12px; }
+.pf6-pagebadge { padding: 2px 8px; border-radius: 999px; background: var(--surface-2); font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.pf6-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13.5px; color: var(--ink-3); }
+
+/* ─── Project detail + 404 ───────────────────────────────────────────────── */
+
+.pf6-detail { display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 56px); align-items: flex-start; }
+.pf6-detail__main { flex: 2 1 460px; min-width: 0; }
+.pf6-detail__visual { flex: 1 1 320px; min-width: 0; display: grid; gap: 10px; }
+.pf6-detail__shot { aspect-ratio: 2 / 1; border-radius: 16px; overflow: hidden; background: var(--surface-2); }
+.pf6-detail__shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.pf6-lost { width: 220px; height: 160px; margin: 0 auto 24px; display: block; }

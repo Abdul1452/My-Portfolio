@@ -22,10 +22,27 @@ import {
   HeroSection,
   PortfolioShell,
   QuestionsSection,
+  SectionBoundary,
   SkillsSection,
   SystemSection,
   WorkSection,
 } from '@components/v5'
+
+// [name for the error message, section]. Each one gets its own error
+// boundary, so a crash in one section leaves the rest of the page working.
+const SECTIONS = [
+  ['hero', HeroSection],
+  ['work', WorkSection],
+  ['case studies', CaseStudies],
+  ['skills', SkillsSection],
+  ['GitHub', GitHubSection],
+  ['credentials', CredentialsSection],
+  ['experience', ExperienceSection],
+  ['how I work', ApproachSection],
+  ['questions', QuestionsSection],
+  ['system', SystemSection],
+  ['contact', ContactSection],
+] as const
 
 export function PortfolioV5Page() {
   useEffect(() => {
@@ -34,17 +51,11 @@ export function PortfolioV5Page() {
 
   return (
     <PortfolioShell announcement>
-      <HeroSection />
-      <WorkSection />
-      <CaseStudies />
-      <SkillsSection />
-      <GitHubSection />
-      <CredentialsSection />
-      <ExperienceSection />
-      <ApproachSection />
-      <QuestionsSection />
-      <SystemSection />
-      <ContactSection />
+      {SECTIONS.map(([name, Section]) => (
+        <SectionBoundary key={name} name={name}>
+          <Section />
+        </SectionBoundary>
+      ))}
     </PortfolioShell>
   )
 }

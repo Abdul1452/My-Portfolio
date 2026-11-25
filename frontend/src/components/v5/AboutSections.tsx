@@ -6,8 +6,14 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
+import { Check, Copy, GitBranch, Github, Layers, Lightbulb, Linkedin, Mail, Map as MapIcon, Moon, Plus, Sun, X } from 'lucide-react'
 import { contact, faqs, fit, profile, workingSteps } from '@data/portfolio.data'
+import { useToast } from './Feedback'
+import { IconTile, SectionEyebrow } from './ui'
 import { usePortfolioThemeContext } from './usePortfolioTheme'
+
+// One icon per working principle, in the order of workingSteps.
+const STEP_ICONS = [Lightbulb, MapIcon, Layers, GitBranch]
 
 // ─── How I work ───────────────────────────────────────────────────────────────
 
@@ -17,6 +23,7 @@ export function ApproachSection() {
   return (
     <section id="approach" data-screen-label="How I work" className="pf5-section">
       <div style={{ maxWidth: 640, marginBottom: 'clamp(24px, 4vw, 36px)' }}>
+        <SectionEyebrow section="approach" />
         <h2 className="pf5-h2">How I work</h2>
         <p className="pf5-lead">Here is where I’d be useful and where I wouldn’t, so neither of us wastes an interview.</p>
       </div>
@@ -26,7 +33,7 @@ export function ApproachSection() {
           <div className="pf5-fit__card">
             <h3>
               <span aria-hidden="true" className="pf5-fit__icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+                <Check size={12} strokeWidth={3} />
               </span>
               A good fit if
             </h3>
@@ -35,7 +42,7 @@ export function ApproachSection() {
           <div className="pf5-fit__card">
             <h3>
               <span aria-hidden="true" className="pf5-fit__icon pf5-fit__icon--no">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                <X size={11} strokeWidth={3} />
               </span>
               Probably not a fit if
             </h3>
@@ -47,6 +54,7 @@ export function ApproachSection() {
       <ol className="pf5-steps">
         {workingSteps.map((step, i) => (
           <li key={step.title}>
+            {STEP_ICONS[i] && <span className="pf6-step__icon" style={{ display: 'inline-flex' }}><IconTile icon={STEP_ICONS[i]} size="md" /></span>}
             <p className="mono">{String(i + 1).padStart(2, '0')}</p>
             <h3>{step.title}</h3>
             <p>{step.text}</p>
@@ -67,6 +75,7 @@ export function QuestionsSection() {
   return (
     <section data-screen-label="Questions" className="pf5-section pf5-split">
       <div className="pf5-split__intro">
+        <SectionEyebrow section="questions" />
         <h2 className="pf5-h2">Questions recruiters ask</h2>
         <p className="pf5-lead">If yours isn’t here, email me.</p>
       </div>
@@ -85,7 +94,7 @@ export function QuestionsSection() {
                 >
                   <span>{faq.q}</span>
                   <span aria-hidden="true" className="pf5-faq__icon">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"><path d="M12 5v14M5 12h14" /></svg>
+                    <Plus size={12} strokeWidth={2.4} />
                   </span>
                 </button>
               </h3>
@@ -112,6 +121,7 @@ export function SystemSection() {
       <div className="pf5-box" style={{ padding: 'clamp(20px, 4vw, 44px)' }}>
         <div className="pf5-sectionhead" style={{ marginBottom: 28 }}>
           <div style={{ maxWidth: 560 }}>
+            <SectionEyebrow section="system" />
             <h2 className="pf5-h3" style={{ fontSize: 'clamp(24px, 3vw, 32px)', letterSpacing: '-.03em', marginBottom: 10 }}>
               How this site is built
             </h2>
@@ -122,6 +132,7 @@ export function SystemSection() {
             </p>
           </div>
           <button type="button" className="pf5-btn pf5-btn--ghost" aria-pressed={isDark} onClick={onToggleTheme} style={{ alignSelf: 'start' }}>
+            {isDark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
             {isDark ? 'Switch to light' : 'Switch to dark'}
           </button>
         </div>
@@ -171,6 +182,7 @@ export function SystemSection() {
 export function ContactSection() {
   const [copied, setCopied] = useState(false)
   const resetTimer = useRef<number>()
+  const toast = useToast()
 
   useEffect(() => () => window.clearTimeout(resetTimer.current), [])
 
@@ -179,8 +191,10 @@ export function ContactSection() {
       await navigator.clipboard.writeText(profile.email)
     } catch {
       // Clipboard blocked (e.g. insecure context): the address is still visible to copy by hand.
+      toast('error', 'Clipboard blocked: select the address to copy it')
       return
     }
+    toast('success', 'Email copied to clipboard')
     setCopied(true)
     window.clearTimeout(resetTimer.current)
     resetTimer.current = window.setTimeout(() => setCopied(false), 1600)
@@ -190,19 +204,26 @@ export function ContactSection() {
     <section id="contact" data-screen-label="Contact" className="pf5-section" style={{ paddingBottom: 'clamp(56px, 8vw, 96px)' }}>
       <div className="pf5-contact pf5-stage--clay">
         <div className="pf5-card pf5-contact__card">
+          <SectionEyebrow section="contact" />
           <h2>{contact.heading}</h2>
           <p style={{ fontSize: 16.5, lineHeight: 1.6, color: 'var(--ink-2)' }}>{contact.text}</p>
 
           <div className="pf5-copy">
+            <Mail size={18} className="pf6-c-muted" aria-hidden="true" />
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
             <button type="button" className="pf5-btn pf5-btn--primary" style={{ minWidth: 96 }} onClick={copyEmail} aria-live="polite">
+              {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
               {copied ? 'Copied' : 'Copy'}
             </button>
           </div>
 
           <div className="pf5-links">
-            <a href={profile.links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href={profile.links.github} target="_blank" rel="noreferrer">GitHub</a>
+            <a href={profile.links.linkedin} target="_blank" rel="noreferrer" style={{ gap: 8 }}>
+              <Linkedin size={18} aria-hidden="true" /> LinkedIn
+            </a>
+            <a href={profile.links.github} target="_blank" rel="noreferrer" style={{ gap: 8 }}>
+              <Github size={18} aria-hidden="true" /> GitHub
+            </a>
           </div>
           <p style={{ paddingTop: 16, borderTop: '1px solid var(--line)', fontSize: 14, color: 'var(--ink-3)' }}>
             {contact.footnote}

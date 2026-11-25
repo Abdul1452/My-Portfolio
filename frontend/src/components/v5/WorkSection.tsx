@@ -3,15 +3,41 @@
  *
  * Both read the same featuredProjects list: the tiles show what each
  * project does, the case studies explain why and how.
+ *
+ * v6: each tile gets an icon for its domain (home, cloud, shield), the
+ * case studies get icons on Problem / What I did / Result so the repeated
+ * structure scans at a glance, and the stack string becomes pills.
  */
 
 import type { ReactNode } from 'react'
-import { featuredProjects, type FeaturedProject } from '@data/portfolio.data'
+import { ArrowUpRight, Cloud, FileText, Github, Hammer, House, ShieldCheck, Target, TrendingUp, type LucideIcon } from 'lucide-react'
+import { featuredProjects, type FeaturedProject, type TileKind } from '@data/portfolio.data'
 import { FraudScoreTile, MovePlanTile, QuoteApiTile } from './DemoTiles'
+import { IconTile, parseGitHubUrl, SectionEyebrow, StackPills, type Tone } from './ui'
 import { usePortfolioThemeContext } from './usePortfolioTheme'
 
 // Each tile sits on a different gradient, in the design's order.
 const STAGES = ['pf5-stage--clay', 'pf5-stage--birch', 'pf5-stage--dusk']
+
+const TILE_ICON: Record<TileKind, { icon: LucideIcon; tone: Tone }> = {
+  'move-plan': { icon: House, tone: 'warn' },
+  'quote-api': { icon: Cloud, tone: 'accent' },
+  'fraud-score': { icon: ShieldCheck, tone: 'ok' },
+}
+
+const CASE_PARTS: { key: 'problem' | 'whatIDid' | 'result'; label: string; icon: LucideIcon; color: string }[] = [
+  { key: 'problem', label: 'Problem', icon: Target, color: 'pf6-c-warn' },
+  { key: 'whatIDid', label: 'What I did', icon: Hammer, color: 'pf6-c-accent' },
+  { key: 'result', label: 'Result', icon: TrendingUp, color: 'pf6-c-ok' },
+]
+
+/** Repository links get the GitHub mark, docs a page, anything else an arrow out. */
+function LinkLabel({ label, url }: { label: string; url: string }) {
+  if (label === 'Repository') return <><Github size={16} aria-hidden="true" /> {label}</>
+  if (/docs/i.test(label)) return <><FileText size={16} aria-hidden="true" /> {label}</>
+  if (parseGitHubUrl(url)) return <><Github size={16} aria-hidden="true" /> {label}</>
+  return <>{label} <ArrowUpRight size={16} aria-hidden="true" /></>
+}
 
 function renderTile(project: FeaturedProject, reduceMotion: boolean): ReactNode {
   switch (project.tile) {
@@ -28,6 +54,7 @@ export function WorkSection() {
     <section id="work" data-screen-label="Work" className="pf5-section">
       <div className="pf5-sectionhead">
         <div>
+          <SectionEyebrow section="work" />
           <h2 className="pf5-h2">Three projects you can try</h2>
           <p className="pf5-lead">Each tile is a small working model of the idea behind the project, not a recording.</p>
         </div>
@@ -42,9 +69,12 @@ export function WorkSection() {
             <div className={`pf5-stage pf5-tile__stage ${STAGES[i % STAGES.length]}`}>
               {renderTile(project, reduceMotion)}
             </div>
-            <div>
-              <h3 className="pf5-tile__title">{project.title}</h3>
-              <p className="pf5-tile__caption">{project.tileCaption}</p>
+            <div className="pf6-caption">
+              <IconTile icon={TILE_ICON[project.tile].icon} tone={TILE_ICON[project.tile].tone} size="md" />
+              <div>
+                <h3 className="pf5-tile__title">{project.title}</h3>
+                <p className="pf5-tile__caption">{project.tileCaption}</p>
+              </div>
             </div>
           </article>
         ))}
@@ -65,14 +95,17 @@ export function CaseStudies() {
             </div>
             <h3 className="pf5-case__title">{project.title}</h3>
             <dl className="pf5-case__dl">
-              <div><dt>Problem</dt><dd>{project.problem}</dd></div>
-              <div><dt>What I did</dt><dd>{project.whatIDid}</dd></div>
-              <div><dt>Result</dt><dd>{project.result}</dd></div>
+              {CASE_PARTS.map(part => (
+                <div key={part.key}>
+                  <dt><part.icon size={16} className={part.color} aria-hidden="true" />{part.label}</dt>
+                  <dd>{project[part.key]}</dd>
+                </div>
+              ))}
             </dl>
             <div className="pf5-actions" style={{ gap: 8 }}>
               {project.links.map(link => (
                 <a key={link.url} href={link.url} target="_blank" rel="noreferrer" className="pf5-btn pf5-btn--ghost">
-                  {link.label}
+                  <LinkLabel label={link.label} url={link.url} />
                 </a>
               ))}
             </div>
@@ -86,7 +119,7 @@ export function CaseStudies() {
               <tbody>
                 <tr><th scope="row">Role</th><td>{project.role}</td></tr>
                 <tr><th scope="row">Team</th><td>{project.team}</td></tr>
-                <tr><th scope="row">Stack</th><td className="mono" style={{ fontSize: 13 }}>{project.stack}</td></tr>
+                <tr><th scope="row">Stack</th><td><StackPills stack={project.stack} /></td></tr>
               </tbody>
             </table>
           </div>

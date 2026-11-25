@@ -18,7 +18,9 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { ArrowRight, BookOpen, ExternalLink, FileText, X } from 'lucide-react'
 import { guidebook } from '@data/portfolio.data'
+import { IconTile } from './ui'
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -90,13 +92,20 @@ function GuidebookPreview({ onClose }: { onClose: () => void }) {
         onKeyDown={trapFocus}
       >
         <div className="pf5-modal__head">
-          <div style={{ display: 'grid', gap: 2, minWidth: 0 }}>
-            <span id="pf5-guidebook-title" style={{ fontSize: 18, fontWeight: 600 }}>{guidebook.title}</span>
-            <span className="pf5-muted" style={{ fontSize: 13.5 }}>{guidebook.credit}</span>
+          <div className="pf6-modal__title">
+            <IconTile icon={BookOpen} size="md" />
+            <div style={{ display: 'grid', gap: 2, minWidth: 0 }}>
+              <span id="pf5-guidebook-title" style={{ fontSize: 18, fontWeight: 600 }}>{guidebook.title}</span>
+              <span className="pf5-muted" style={{ fontSize: 13.5 }}>{guidebook.credit}</span>
+            </div>
           </div>
-          <button ref={closeRef} type="button" className="pf5-iconbtn" aria-label="Close preview" onClick={onClose} style={{ fontSize: 20, flex: '0 0 auto' }}>
-            ×
-          </button>
+          <div className="pf6-modal__close">
+            {/* Tells keyboard users the shortcut that already works. */}
+            <kbd className="pf6-kbd" aria-hidden="true">Esc</kbd>
+            <button ref={closeRef} type="button" className="pf5-iconbtn" aria-label="Close preview" onClick={onClose} style={{ flex: '0 0 auto' }}>
+              <X size={18} aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
         <div className="pf5-modal__body">
@@ -112,7 +121,9 @@ function GuidebookPreview({ onClose }: { onClose: () => void }) {
           </nav>
 
           <div className="pf5-chapter" aria-live="polite">
-            <span className="mono pf5-muted" style={{ fontSize: 13 }}>Chapter {pad(active + 1)} · page {chapter.page}</span>
+            <span className="mono pf5-muted pf6-iconrow" style={{ fontSize: 13 }}>
+              <FileText size={14} aria-hidden="true" />Chapter {pad(active + 1)} · page {chapter.page}
+            </span>
             <h4>{chapter.title}</h4>
             <p className="pf5-chapter__text">{chapter.summary}</p>
             {showAuthorship && (
@@ -122,10 +133,10 @@ function GuidebookPreview({ onClose }: { onClose: () => void }) {
             )}
             <div className="pf5-actions" style={{ marginTop: 8 }}>
               <a href={guidebook.pdfUrl} target="_blank" rel="noopener noreferrer" className="pf5-btn pf5-btn--primary pf5-btn--lg">
-                Read the full guidebook (PDF)
+                <FileText size={18} aria-hidden="true" /> Read the full guidebook (PDF)
               </a>
               <a href={`${guidebook.pdfUrl}#page=${chapter.page}`} target="_blank" rel="noopener noreferrer" className="pf5-btn pf5-btn--ghost pf5-btn--lg">
-                Open at this chapter ↗
+                Open at this chapter <ExternalLink size={16} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -161,7 +172,7 @@ export function GuidebookCard() {
             <span>{guidebook.pageCount} pages</span>
             {mine.length > 0 && <span>My part: chapter{mine.length > 1 ? 's' : ''} {formatList(mine)}</span>}
           </span>
-          <span className="pf5-gbcard__cta">Open preview →</span>
+          <span className="pf5-gbcard__cta pf6-iconrow">Open preview <ArrowRight size={16} aria-hidden="true" /></span>
         </span>
       </button>
       {open && <GuidebookPreview onClose={close} />}
