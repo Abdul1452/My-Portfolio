@@ -18,9 +18,11 @@
 
 import { useEffect, type ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
+import { OfflineBanner, ToastProvider } from './Feedback'
 import { Announcement, SiteFooter, SiteHeader } from './SiteChrome'
 import { PortfolioThemeContext, usePortfolioTheme } from './usePortfolioTheme'
 import '@styles/portfolio-v5.css'
+import '@styles/portfolio-v6.css'
 
 // Same values as --bg in portfolio-v5.css. Painting <html> too means the
 // area revealed by over-scrolling (rubber-banding) matches the page.
@@ -58,11 +60,15 @@ export function PortfolioShell({ children, announcement = false }: PortfolioShel
   return (
     <PortfolioThemeContext.Provider value={themeState}>
       <div className="pf5" data-theme={theme} data-motion={reduceMotion ? 'reduce' : 'full'}>
-        <a href="#main" className="pf5-skip">Skip to content</a>
-        {announcement && <Announcement />}
-        <SiteHeader />
-        <main id="main">{children}</main>
-        <SiteFooter />
+        {/* Inside .pf5 so toasts pick up the theme's colour tokens. */}
+        <ToastProvider>
+          <a href="#main" className="pf5-skip">Skip to content</a>
+          {announcement && <Announcement />}
+          <SiteHeader />
+          <OfflineBanner />
+          <main id="main">{children}</main>
+          <SiteFooter />
+        </ToastProvider>
       </div>
     </PortfolioThemeContext.Provider>
   )

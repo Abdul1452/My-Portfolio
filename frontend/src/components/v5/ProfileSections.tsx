@@ -14,7 +14,31 @@ import {
   timeline,
 } from '@data/portfolio.data'
 import activity from '@data/github-activity.json'
+import {
+  Activity,
+  Briefcase,
+  CircleCheck,
+  CodeXml,
+  Database,
+  Flame,
+  Github,
+  GraduationCap,
+  Layers,
+  Server,
+  Sprout,
+  Star,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react'
 import { GuidebookCard } from './Guidebook'
+import { IconTile, SectionEyebrow } from './ui'
+
+const SKILL_GROUP_ICON: Record<string, LucideIcon> = {
+  'Backend': Server,
+  'Data & delivery': Database,
+  'Frontend': CodeXml,
+  'Project management': Layers,
+}
 
 // ─── Skills ───────────────────────────────────────────────────────────────────
 
@@ -24,23 +48,37 @@ export function SkillsSection() {
   return (
     <section id="skills" data-screen-label="Skills" className="pf5-section pf5-split">
       <div className="pf5-split__intro">
+        <SectionEyebrow section="skills" />
         <h2 className="pf5-h2">Skills, then the projects that use them</h2>
         <p className="pf5-lead">
           I’ve marked depth plainly. “Shipped” means I’ve used it in a finished project or an internship.
           “Learning” means it’s only in a project that’s still in progress.
         </p>
-        <div className="pf5-legend">
-          <span className="pf5-skill">Shipped</span>
-          <span className="pf5-skill pf5-skill--learning">Learning</span>
-        </div>
+        {/* Icon + words, so the legend doesn't rely on colour alone (WCAG 1.4.1). */}
+        <ul className="pf6-legend">
+          <li><CircleCheck size={16} className="pf6-c-ok" aria-hidden="true" /><span className="pf5-skill">Shipped</span></li>
+          <li><Sprout size={16} className="pf6-c-muted" aria-hidden="true" /><span className="pf5-skill pf5-skill--learning">Learning</span></li>
+        </ul>
       </div>
 
       <div className="pf5-split__body pf5-skillgrid">
-        {skillGroups.map(group => (
+        {skillGroups.map(group => {
+          const shipped = group.skills.filter(s => s.level === 'shipped').length
+          const learning = group.skills.length - shipped
+          return (
           <div key={group.title} className="pf5-skillcard">
             <div className="pf5-skillcard__head">
-              <h3>{group.title}</h3>
-              <span className="pf5-muted" style={{ fontSize: 12.5 }}>{group.skills.length}</span>
+              <h3 className="pf6-skillcard__title">
+                <IconTile icon={SKILL_GROUP_ICON[group.title] ?? Wrench} />
+                {group.title}
+              </h3>
+              <span className="pf5-muted" style={{ fontSize: 12.5 }}>
+                {shipped} shipped{learning > 0 && ` · ${learning} learning`}
+              </span>
+            </div>
+            {/* Confidence bar: one segment per skill, solid = shipped, dashed = learning. */}
+            <div className="pf6-confidence" aria-hidden="true">
+              {group.skills.map(skill => <span key={skill.name} data-level={skill.level} />)}
             </div>
             <div className="pf5-skills">
               {group.skills.map(skill => (
@@ -50,7 +88,8 @@ export function SkillsSection() {
               ))}
             </div>
           </div>
-        ))}
+          )
+        })}
       </div>
     </section>
   )
@@ -123,12 +162,13 @@ export function GitHubActivity() {
       <div className="pf5-sectionhead" style={{ marginBottom: 0 }}>
         <div style={{ display: 'grid', gap: 6 }}>
           <h3 className="pf5-h3">GitHub activity</h3>
-          <p style={{ fontSize: 15, color: 'var(--ink-2)' }}>
-            {activity.total} contributions in the last year · longest streak {activity.longestStreak} days
+          <p className="pf6-inlinestats">
+            <span className="pf6-iconrow"><Activity size={16} className="pf6-c-accent" aria-hidden="true" />{activity.total} contributions in the last year</span>
+            <span className="pf6-iconrow"><Flame size={16} className="pf6-c-warn" aria-hidden="true" />longest streak {activity.longestStreak} days</span>
           </p>
         </div>
         <a href={profile.links.github} target="_blank" rel="noreferrer" className="pf5-btn pf5-btn--ghost" style={{ fontWeight: 500 }}>
-          @{profile.links.githubLogin} ↗
+          <Github size={16} aria-hidden="true" /> @{profile.links.githubLogin} ↗
         </a>
       </div>
 
@@ -194,7 +234,7 @@ export function ExploringList() {
       <div className="pf5-rows">
         {exploring.map(repo => (
           <a key={repo.name} href={repo.url} target="_blank" rel="noreferrer" className="pf5-row">
-            <span aria-hidden="true" className="pf5-row__mark">★</span>
+            <span aria-hidden="true" className="pf5-row__mark"><Star size={16} /></span>
             <span className="pf5-row__text">
               <span className="pf5-row__title mono" style={{ fontSize: 14 }}>{repo.name}</span>
               <span className="pf5-row__sub">{repo.note}</span>
@@ -210,6 +250,7 @@ export function ExploringList() {
 export function GitHubSection() {
   return (
     <section id="github" data-screen-label="GitHub" className="pf5-section pf5-section--tight-top" style={{ display: 'grid', gap: 16 }}>
+      <SectionEyebrow section="github" />
       <GitHubActivity />
       <ExploringList />
     </section>
@@ -225,6 +266,7 @@ export function CredentialsSection() {
     <section id="credentials" data-screen-label="Certifications" className="pf5-section pf5-section--tight-top pf5-credentials">
       <div className="pf5-box">
         <div style={{ display: 'grid', gap: 6 }}>
+          <SectionEyebrow section="credentials" />
           <h3 className="pf5-h3">Certifications</h3>
           <p style={{ fontSize: 15, color: 'var(--ink-2)' }}>The ones with a public credential page link to it.</p>
         </div>
@@ -264,13 +306,20 @@ export function ExperienceSection() {
   return (
     <section id="experience" data-screen-label="Experience" className="pf5-section pf5-split">
       <div className="pf5-split__intro">
+        <SectionEyebrow section="experience" />
         <h2 className="pf5-h2">Experience and studies</h2>
         <p className="pf5-lead">Most recent first.</p>
       </div>
       <ol className="pf5-split__body pf5-timeline">
-        {timeline.map(item => (
+        {timeline.map((item, i) => (
           <li key={`${item.period}-${item.title}`}>
-            <span aria-hidden="true" className={item.kind === 'study' ? 'pf5-timeline__dot pf5-timeline__dot--study' : 'pf5-timeline__dot'} />
+            {/* Briefcase = work, cap = study; the most recent entry in accent. */}
+            <span className="pf6-timeline__icon">
+              <IconTile
+                icon={item.kind === 'study' ? GraduationCap : Briefcase}
+                tone={i === 0 ? 'accent' : item.kind === 'study' ? 'ok' : 'neutral'}
+              />
+            </span>
             <p className="pf5-timeline__period">{item.period}</p>
             <h3>{item.title}</h3>
             <p className="pf5-timeline__org">{item.org}</p>

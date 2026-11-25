@@ -14,6 +14,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
+import { LoaderCircle, ShieldAlert, ShieldCheck, ShieldX, Zap } from 'lucide-react'
 
 // ─── Shared bits ──────────────────────────────────────────────────────────────
 
@@ -309,7 +310,9 @@ export function QuoteApiTile({ reduceMotion }: { reduceMotion: boolean }) {
 
       <div style={{ display: 'flex', gap: 8 }}>
         <button type="button" className="pf5-btn pf5-btn--primary" style={{ flex: 1 }} onClick={sendRequest} disabled={busy} aria-busy={busy}>
-          {busy ? 'Sending…' : 'Send request'}
+          {busy
+            ? <><LoaderCircle size={16} className="pf6-spin" aria-hidden="true" /> Sending…</>
+            : <><Zap size={16} aria-hidden="true" /> Send request</>}
         </button>
         <button type="button" className="pf5-btn pf5-btn--ghost" onClick={letItIdle} disabled={busy}>
           Let it idle
@@ -349,10 +352,11 @@ function scoreTransaction(t: Transaction) {
   return { score: Math.min(score, 0.99), reasons }
 }
 
+// Colour AND icon per decision, so the outcome isn't told by colour alone.
 const DECISION_STYLE = {
-  approve: { bg: 'var(--ok-soft)', fg: 'var(--ok)' },
-  review: { bg: 'var(--warn-soft)', fg: 'var(--warn)' },
-  block: { bg: 'var(--danger-soft)', fg: 'var(--danger)' },
+  approve: { bg: 'var(--ok-soft)', fg: 'var(--ok)', icon: ShieldCheck },
+  review: { bg: 'var(--warn-soft)', fg: 'var(--warn)', icon: ShieldAlert },
+  block: { bg: 'var(--danger-soft)', fg: 'var(--danger)', icon: ShieldX },
 }
 
 export function FraudScoreTile() {
@@ -413,7 +417,10 @@ export function FraudScoreTile() {
 
       <div aria-live="polite" className="pf5-decision">
         <span>Risk score <span className="mono">{score.toFixed(2)}</span></span>
-        <span className="pf5-decision__pill" style={{ background: style.bg, color: style.fg }}>{decision}</span>
+        <span className="pf5-decision__pill" style={{ background: style.bg, color: style.fg }}>
+          <style.icon size={14} aria-hidden="true" />
+          {decision}
+        </span>
       </div>
       <div className="pf5-reasons" aria-label="Reason codes">
         {reasons.length ? reasons.map(reason => <span key={reason}>{reason}</span>) : <span>NO_FLAGS</span>}
