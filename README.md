@@ -3,7 +3,7 @@
 Full-stack portfolio website built with React, TypeScript, Express, Prisma, and PostgreSQL.
 
 **Live:** https://abdulwasiu.dev  
-**Figma Design:** https://www.figma.com/design/yvwX9f1hdoEpidLPBewcV6  
+**Figma Design:** https://www.figma.com/design/fCKOa5EBD4T73fJpmkI8pV  
 **Author:** Abdulwasiu Abdullahi Olamilekan
 
 ## Project Structure
