@@ -120,8 +120,8 @@ export async function seedPMProjects() {
       icon: '📖',
       year: '2026',
       linkLabel: 'Read the PDF',
-      // Served by the frontend from frontend/public/docs/.
-      linkUrl: '/docs/project-management-guidebook.pdf',
+      // Served by the Cloudflare Worker from the R2 bucket (frontend/files/ locally).
+      linkUrl: '/files/docs/project-management-guidebook.pdf',
       order: 1,
     },
   ]

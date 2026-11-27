@@ -28,7 +28,8 @@ export const profile = {
   role: 'Software engineering & project management',
   location: 'Turku, Finland',
   email: 'abdulwasiuabdullah@gmail.com',
-  avatarUrl: 'https://avatars.githubusercontent.com/u/194928869?v=4',
+  // Stored in R2 (frontend/files/images/profile.jpg), served by the Worker.
+  avatarUrl: '/files/images/profile.jpg',
   links: {
     github: 'https://github.com/Abdul1452',
     githubLogin: 'Abdul1452',
@@ -67,6 +68,7 @@ export const nowCard = {
   items: [
     { label: 'Working Hours module shipped at theFIRMA', done: true },
     { label: 'MuutoKaveri built at JunctionX Turku', done: true },
+    { label: 'PETs Transformer: best solution, TrustED challenge at Since AI', done: true },
     { label: 'Phishing & scam detection tool (course project)', done: false },
   ],
 }
@@ -209,11 +211,27 @@ export interface TimelineItem {
   title: string
   org: string
   text: string
-  kind: 'work' | 'study'
+  kind: 'work' | 'study' | 'hackathon'
   highlights?: string[]
 }
 
 export const timeline: TimelineItem[] = [
+  {
+    // Source: the PETs Transformer portfolio brief. Team project: keep the
+    // wording to what the team built until Abdullahi's own parts are confirmed.
+    period: 'Nov 2026',
+    title: 'PETs Transformer, Since AI Hackathon 2026',
+    org: 'TrustED PETs Transformer challenge · Turku · team of five',
+    kind: 'hackathon',
+    text:
+      'Recognised as the best solution for the TrustED PETs Transformer challenge. A privacy release gate: tell it who receives a dataset, and it protects the data, checks that the recipient’s questions can still be answered, then attacks its own output so nobody can be singled out. If any of its 18 gate checks fails, nothing is released.',
+    highlights: [
+      'Hospital scenario: privacy 1.00, usefulness 0.99, all 176,739 rows kept',
+      'Usefulness 0.97–0.99 on the row-level scenarios, against the challenge baseline of 0.75–0.81',
+      'Built in 48 hours: 137 automated tests, 27 challenge scenarios, 9 data domains',
+      'Synthetic challenge data; not produced or endorsed by the TrustED consortium or the EU',
+    ],
+  },
   {
     period: 'May – Aug 2026',
     title: 'Backend developer (internship)',
@@ -261,15 +279,40 @@ export interface Certification {
   name: string
   issuer: string
   year: string
+  /** Public page where the credential can be verified. */
   url?: string
+  /** The certificate itself, stored in R2 (a /files/... path). */
+  file?: string
+  /** Hackathon participation is listed here but not counted as a certification. */
+  kind?: 'certification' | 'hackathon'
 }
 
+// `file` paths are certificates stored in R2 (frontend/files/certificates/
+// locally, uploaded with `pnpm files:upload`). `url` is a public page where a
+// recruiter can verify the credential with the issuer.
 export const certifications: Certification[] = [
   {
     mark: 'IPMA',
     name: 'PRY Foundation Certificate in Project Management (IPMA ICB)',
-    issuer: 'Projektiyhdistys ry',
+    issuer: 'Projektiammattilaiset PRY · granted 12 May',
     year: '2026',
+    file: '/files/certificates/pry-foundation-certificate-2026.pdf',
+  },
+  {
+    mark: 'AI',
+    name: 'Since AI Hackathon 2026: certificate of participation',
+    issuer: 'Since AI · 48-hour hackathon, Turku, 6–8 Nov',
+    year: '2026',
+    file: '/files/certificates/since-ai-hackathon-2026.pdf',
+    kind: 'hackathon',
+  },
+  {
+    mark: 'JX',
+    name: 'JunctionX Turku 2026: certificate of participation',
+    issuer: 'JunctionX Turku · Turku, 16–18 Oct',
+    year: '2026',
+    file: '/files/certificates/junctionx-turku-2026.webp',
+    kind: 'hackathon',
   },
   {
     mark: 'TS',
@@ -277,6 +320,7 @@ export const certifications: Certification[] = [
     issuer: 'LinkedIn Learning',
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/9787f16d386eaf652e6533e2422f61c1ada823d850586903979614aa7df2b903/',
+    file: '/files/certificates/linkedin-scalable-microservices-typescript-nodejs.pdf',
   },
   {
     mark: 'TS',
@@ -284,6 +328,23 @@ export const certifications: Certification[] = [
     issuer: 'LinkedIn Learning',
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/c617789ec8b508b8757f11fea009e47be47bb946059414b943f4e9c578b684a1/',
+    file: '/files/certificates/linkedin-typescript-for-nodejs-developers.pdf',
+  },
+  {
+    mark: 'TS',
+    name: 'Learning TypeScript',
+    issuer: 'LinkedIn Learning · completed 10 Sep',
+    year: '2026',
+    url: 'https://www.linkedin.com/learning/certificates/fcd7b11fa308a24a9e78b126bc0e89aaa2c5ab417635f5ad3b6819fca2f26170/',
+    file: '/files/certificates/linkedin-learning-typescript.pdf',
+  },
+  {
+    mark: 'JS',
+    name: 'Learning the JavaScript Language',
+    issuer: 'LinkedIn Learning · completed 9 Sep',
+    year: '2026',
+    url: 'https://www.linkedin.com/learning/certificates/541e8422b91e551ac25ee583ccee4fae5450e388650992d6c34c1f5087aad662/',
+    file: '/files/certificates/linkedin-learning-javascript.pdf',
   },
   {
     mark: 'DKR',
@@ -291,6 +352,7 @@ export const certifications: Certification[] = [
     issuer: 'LinkedIn Learning',
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/2cfbd2eb3a5af206d43f3f379341d74707c00ab0b22554c1892291973920fd6b/',
+    file: '/files/certificates/linkedin-learning-docker.pdf',
   },
   {
     mark: 'CIP',
@@ -299,7 +361,20 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://learn.opswatacademy.com/certificate/y8AjX0NlUw',
   },
-  { mark: 'SQL', name: 'Learn SQL', issuer: 'Codecademy', year: '2025' },
+  {
+    mark: 'SQL',
+    name: 'Learn SQL',
+    issuer: 'Codecademy · completed 15 Oct',
+    year: '2025',
+    url: 'https://www.codecademy.com/profiles/script1624568002/certificates/042a4e5884e3eb6ea1f2a12be6abb851',
+  },
+  {
+    mark: 'FI',
+    name: 'Start to Finnish: Finnish working life',
+    issuer: 'Akava · issued 26 Nov',
+    year: '2024',
+    file: '/files/certificates/start-to-finnish-akava-2024.pdf',
+  },
 ]
 
 // ─── Project management guidebook ─────────────────────────────────────────────
@@ -324,7 +399,8 @@ export const guidebook = {
   credit: 'Written by a team of six · Project management course, Turku UAS, 2026',
   description:
     'A practical guide for software project teams: choosing between Waterfall, Agile or a hybrid, then planning, scoping and running the project, with templates you can use straight away.',
-  pdfUrl: '/docs/project-management-guidebook.pdf',
+  // Served by the Worker from the R2 bucket (frontend/files/ locally).
+  pdfUrl: '/files/docs/project-management-guidebook.pdf',
   pageCount: 54,
   myChapters: [] as number[],
   chapters: [

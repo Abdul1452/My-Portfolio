@@ -1,0 +1,19 @@
+{
+  // The Worker runs on Cloudflare's runtime, not in a browser: no DOM types,
+  // and globals (Request, R2Bucket, caches.default…) come from the file that
+  // `pnpm cf:types` generates from wrangler.jsonc.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "types": [],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["**/*.ts"]
+}

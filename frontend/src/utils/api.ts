@@ -26,7 +26,17 @@ import type { ApiResponse, ApiErrorResponse } from '@app-types/api.types'
 // Read the base URL from Vite env vars (defined in .env.local).
 // import.meta.env is how Vite exposes environment variables to the browser.
 // Only vars prefixed with VITE_ are exposed (security: keeps secrets server-side).
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000/api/v1'
+//
+// The API lives on the same origin as the site (the Cloudflare Worker), so
+// the base is a path, not a host. In development Vite proxies /api to the
+// local Worker (`pnpm dev:api`); production builds get it from
+// .env.production. Without it the site uses its built-in data and makes no
+// API calls at all.
+const API_BASE_URL: string | null =
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '/api/v1' : null)
+
+/** False when this build has no API to talk to. */
+export const API_ENABLED = API_BASE_URL !== null
 
 /**
  * fetchApi — the core typed fetch function
@@ -41,6 +51,10 @@ export async function fetchApi<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
+  if (API_BASE_URL === null) {
+    throw new ApiError('No API is configured for this build.', 0, 'NETWORK_ERROR')
+  }
+
   // Build the full URL
   const url = `${API_BASE_URL}${endpoint}`
 

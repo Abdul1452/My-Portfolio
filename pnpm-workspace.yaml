@@ -8,3 +8,6 @@ allowBuilds:
   '@prisma/engines': true
   esbuild: true
   sharp: true
+  # Cloudflare's Workers runtime; its install script fetches the binary
+  # `wrangler dev` and `wrangler types` run on.
+  workerd: true

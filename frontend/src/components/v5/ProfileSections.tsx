@@ -27,11 +27,18 @@ import {
   Server,
   Sprout,
   Star,
+  Trophy,
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
 import { GuidebookCard } from './Guidebook'
 import { IconTile, SectionEyebrow } from './ui'
+
+const TIMELINE_ICON: Record<'work' | 'study' | 'hackathon', LucideIcon> = {
+  work: Briefcase,
+  study: GraduationCap,
+  hackathon: Trophy,
+}
 
 const SKILL_GROUP_ICON: Record<string, LucideIcon> = {
   'Backend': Server,
@@ -268,7 +275,7 @@ export function CredentialsSection() {
         <div style={{ display: 'grid', gap: 6 }}>
           <SectionEyebrow section="credentials" />
           <h3 className="pf5-h3">Certifications</h3>
-          <p style={{ fontSize: 15, color: 'var(--ink-2)' }}>The ones with a public credential page link to it.</p>
+          <p style={{ fontSize: 15, color: 'var(--ink-2)' }}>Each one links to its public credential page or to the certificate itself.</p>
         </div>
         <div className="pf5-rows">
           {certifications.map(cert => {
@@ -281,10 +288,25 @@ export function CredentialsSection() {
                 </span>
               </>
             )
-            return cert.url ? (
-              <a key={cert.name} href={cert.url} target="_blank" rel="noreferrer" className="pf5-row">
+            // With only one destination the whole row is the link. With both
+            // the certificate (R2) and a verification page, the row shows two
+            // separate links: "View" opens the certificate, "Verify" the issuer.
+            if (cert.file && cert.url) {
+              return (
+                <div key={cert.name} className="pf5-row">
+                  {body}
+                  <span className="pf6-rowlinks">
+                    <a href={cert.file} target="_blank" rel="noreferrer" aria-label={`View certificate: ${cert.name}`}>View</a>
+                    <a href={cert.url} target="_blank" rel="noreferrer" aria-label={`Verify on ${cert.issuer.split(' · ')[0]}: ${cert.name}`}>Verify ↗</a>
+                  </span>
+                </div>
+              )
+            }
+            const href = cert.url ?? cert.file
+            return href ? (
+              <a key={cert.name} href={href} target="_blank" rel="noreferrer" className="pf5-row">
                 {body}
-                <span className="pf5-row__aside">Verify ↗</span>
+                <span className="pf5-row__aside">{cert.url ? 'Verify ↗' : 'View ↗'}</span>
               </a>
             ) : (
               <div key={cert.name} className="pf5-row">{body}</div>
@@ -313,11 +335,11 @@ export function ExperienceSection() {
       <ol className="pf5-split__body pf5-timeline">
         {timeline.map((item, i) => (
           <li key={`${item.period}-${item.title}`}>
-            {/* Briefcase = work, cap = study; the most recent entry in accent. */}
+            {/* Briefcase = work, cap = study, trophy = hackathon; the most recent entry in accent. */}
             <span className="pf6-timeline__icon">
               <IconTile
-                icon={item.kind === 'study' ? GraduationCap : Briefcase}
-                tone={i === 0 ? 'accent' : item.kind === 'study' ? 'ok' : 'neutral'}
+                icon={TIMELINE_ICON[item.kind]}
+                tone={i === 0 ? 'accent' : item.kind === 'study' ? 'ok' : item.kind === 'hackathon' ? 'warn' : 'neutral'}
               />
             </span>
             <p className="pf5-timeline__period">{item.period}</p>

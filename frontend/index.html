@@ -15,12 +15,13 @@
       content="Software Engineering & Project Management student in Turku, Finland. Backend and full-stack development with Node.js, TypeScript, PostgreSQL and Docker. PRY Foundation (IPMA) certified."
     />
     <meta name="author" content="Abdullahi Olamilekan Abdulwasiu" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
 
     <!-- ── Open Graph / Facebook / LinkedIn ───────────────────────────────────
          These tags control how the link looks when shared on social media
          (the preview card with image, title, and description). -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://abdulwasiu.dev" />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
     <meta
       property="og:title"
       content="Abdullahi Abdulwasiu — Software Engineering & Project Management"
@@ -29,7 +30,8 @@
       property="og:description"
       content="Software Engineer and Project Management student in Turku, Finland."
     />
-    <meta property="og:image" content="/og-image.png" />
+    <!-- Absolute URL: LinkedIn and other crawlers don't resolve relative ones. -->
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.png" />
 
     <!-- ── Twitter/X Card ─────────────────────────────────────────────────── -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -41,7 +43,7 @@
       name="twitter:description"
       content="Software Engineer and Project Management student in Turku, Finland."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.png" />
 
     <!-- ── Favicon & PWA manifest ─────────────────────────────────────────── -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />

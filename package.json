@@ -7,7 +7,8 @@
   "license": "MIT",
 
   "scripts": {
-    "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter backend dev\"",
+    "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter frontend dev:api\"",
+    "dev:express": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter backend dev\"",
     "build": "pnpm --filter frontend build && pnpm --filter backend build",
     "lint": "pnpm --filter frontend lint && pnpm --filter backend lint",
     "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",

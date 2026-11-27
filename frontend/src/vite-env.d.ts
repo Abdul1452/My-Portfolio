@@ -21,8 +21,12 @@
  */
 
 interface ImportMetaEnv {
-  /** Base URL of the backend API, e.g. http://localhost:4000/api/v1 */
-  readonly VITE_API_BASE_URL: string
+  /**
+   * Base URL of the backend API, e.g. http://localhost:4000/api/v1.
+   * Optional: in a production build without it, the site uses its built-in
+   * data and calls no API (see utils/api.ts).
+   */
+  readonly VITE_API_BASE_URL?: string
 
   /** Public site URL, used for OG meta tags */
   readonly VITE_SITE_URL: string

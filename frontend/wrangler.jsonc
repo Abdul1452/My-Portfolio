@@ -1,0 +1,58 @@
+/**
+ * wrangler.jsonc — How the site runs on Cloudflare
+ *
+ * ONE WORKER, THREE JOBS:
+ *   1. Static assets: the Vite build in ./dist, served from Cloudflare's
+ *      edge without running any code (free, fastest path).
+ *   2. /files/*: certificates, the guidebook PDF and images, streamed from a
+ *      PRIVATE R2 bucket by worker/index.ts. Nothing in the bucket is public;
+ *      the Worker decides what may be read.
+ *   3. /api/*: the portfolio API (Hono + Drizzle) on the D1 database.
+ *
+ * Only paths listed in run_worker_first wake the Worker; everything else is
+ * served straight from the asset store.
+ */
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "olamilekan-portfolio",
+  "main": "worker/index.ts",
+  // Pins the Workers runtime behaviour; bump it deliberately, not by accident.
+  "compatibility_date": "2026-11-01",
+
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // React Router owns the URLs: /pm or /projects/x on a hard refresh
+    // must get index.html, not a 404.
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/files/*", "/api/*"]
+  },
+
+  "r2_buckets": [
+    { "binding": "FILES", "bucket_name": "olamilekan-portfolio-files" }
+  ],
+
+  // The API's database (SQLite at the edge). Tables are defined in
+  // worker/api/db/schema.ts; `pnpm db:generate` writes the SQL migrations.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "olamilekan-portfolio-db",
+      "database_id": "bdf41133-8031-4eac-853b-1cee17e11ebf",
+      "migrations_dir": "worker/api/db/migrations"
+    }
+  ],
+
+  // Contact form: at most 5 messages per minute from one visitor.
+  "ratelimits": [
+    { "name": "CONTACT_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  ],
+
+  // Served at https://olamilekan-portfolio.<account>.workers.dev for now.
+  // With your own domain later, add:
+  //   "routes": [{ "pattern": "your-domain.dev", "custom_domain": true }]
+  "workers_dev": true,
+
+  // Request logs and errors in the Cloudflare dashboard.
+  "observability": { "enabled": true }
+}
