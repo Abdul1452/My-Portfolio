@@ -68,6 +68,7 @@ export const nowCard = {
   items: [
     { label: 'Working Hours module shipped at theFIRMA', done: true },
     { label: 'MuutoKaveri built at JunctionX Turku', done: true },
+    { label: 'PETs Transformer: best solution, TrustED challenge at Since AI', done: true },
     { label: 'Phishing & scam detection tool (course project)', done: false },
   ],
 }
@@ -210,11 +211,27 @@ export interface TimelineItem {
   title: string
   org: string
   text: string
-  kind: 'work' | 'study'
+  kind: 'work' | 'study' | 'hackathon'
   highlights?: string[]
 }
 
 export const timeline: TimelineItem[] = [
+  {
+    // Source: the PETs Transformer portfolio brief. Team project: keep the
+    // wording to what the team built until Abdullahi's own parts are confirmed.
+    period: 'Nov 2026',
+    title: 'PETs Transformer, Since AI Hackathon 2026',
+    org: 'TrustED PETs Transformer challenge · Turku · team of five',
+    kind: 'hackathon',
+    text:
+      'Recognised as the best solution for the TrustED PETs Transformer challenge. A privacy release gate: tell it who receives a dataset, and it protects the data, checks that the recipient’s questions can still be answered, then attacks its own output so nobody can be singled out. If any of its 18 gate checks fails, nothing is released.',
+    highlights: [
+      'Hospital scenario: privacy 1.00, usefulness 0.99, all 176,739 rows kept',
+      'Usefulness 0.97–0.99 on the row-level scenarios, against the challenge baseline of 0.75–0.81',
+      'Built in 48 hours: 137 automated tests, 27 challenge scenarios, 9 data domains',
+      'Synthetic challenge data; not produced or endorsed by the TrustED consortium or the EU',
+    ],
+  },
   {
     period: 'May – Aug 2026',
     title: 'Backend developer (internship)',
@@ -344,7 +361,13 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://learn.opswatacademy.com/certificate/y8AjX0NlUw',
   },
-  { mark: 'SQL', name: 'Learn SQL', issuer: 'Codecademy', year: '2025' },
+  {
+    mark: 'SQL',
+    name: 'Learn SQL',
+    issuer: 'Codecademy · completed 15 Oct',
+    year: '2025',
+    url: 'https://www.codecademy.com/profiles/script1624568002/certificates/042a4e5884e3eb6ea1f2a12be6abb851',
+  },
   {
     mark: 'FI',
     name: 'Start to Finnish: Finnish working life',

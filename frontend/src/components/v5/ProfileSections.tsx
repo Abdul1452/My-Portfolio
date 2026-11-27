@@ -27,11 +27,18 @@ import {
   Server,
   Sprout,
   Star,
+  Trophy,
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
 import { GuidebookCard } from './Guidebook'
 import { IconTile, SectionEyebrow } from './ui'
+
+const TIMELINE_ICON: Record<'work' | 'study' | 'hackathon', LucideIcon> = {
+  work: Briefcase,
+  study: GraduationCap,
+  hackathon: Trophy,
+}
 
 const SKILL_GROUP_ICON: Record<string, LucideIcon> = {
   'Backend': Server,
@@ -328,11 +335,11 @@ export function ExperienceSection() {
       <ol className="pf5-split__body pf5-timeline">
         {timeline.map((item, i) => (
           <li key={`${item.period}-${item.title}`}>
-            {/* Briefcase = work, cap = study; the most recent entry in accent. */}
+            {/* Briefcase = work, cap = study, trophy = hackathon; the most recent entry in accent. */}
             <span className="pf6-timeline__icon">
               <IconTile
-                icon={item.kind === 'study' ? GraduationCap : Briefcase}
-                tone={i === 0 ? 'accent' : item.kind === 'study' ? 'ok' : 'neutral'}
+                icon={TIMELINE_ICON[item.kind]}
+                tone={i === 0 ? 'accent' : item.kind === 'study' ? 'ok' : item.kind === 'hackathon' ? 'warn' : 'neutral'}
               />
             </span>
             <p className="pf5-timeline__period">{item.period}</p>

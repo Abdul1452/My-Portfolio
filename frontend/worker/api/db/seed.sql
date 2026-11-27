@@ -10,6 +10,9 @@
 -- ─── Engineering projects ──────────────────────────────────────────────────────
 
 INSERT INTO projects (id, slug, title, tag, description, year, category, link_label, link_url, image_url, featured, "order") VALUES
+  ('cuid_project_pets_transformer', 'pets-transformer', 'PETs Transformer', 'Python · pandas · scikit-learn · FastAPI · React · TypeScript · Docker',
+   'Recognised as the best solution for the TrustED PETs Transformer challenge at Since AI Hackathon 2026 (team of five). A privacy release gate: it protects a dataset for a named recipient, checks that the recipient’s questions can still be answered, then attacks its own output; if any of 18 gate checks fails, nothing is released. Hospital scenario: privacy 1.00, usefulness 0.99, all 176,739 rows kept. Synthetic challenge data; not produced or endorsed by the TrustED consortium or the EU.',
+   '2026', 'engineering', 'Repository', 'https://github.com/oluwatobimaxwell/pets-transformer', NULL, 1, 0),
   ('cuid_project_petosvahti', 'petosvahti', 'Petosvahti', 'Python · FastAPI · Kafka · scikit-learn · Docker',
    'Real-time fraud detection for Finnish payments. Kafka streams transactions, an Isolation Forest scores them, FastAPI returns approve / review / block with reason codes. Written against PSD3 and SEPA Instant, with charter, risk register, ADRs and an EU compliance folder.',
    '2026', 'engineering', 'Repository', 'https://github.com/Abdul1452/Fraud-Detector-PetosVahti-', NULL, 1, 1),
@@ -25,7 +28,7 @@ ON CONFLICT(slug) DO UPDATE SET
   image_url = excluded.image_url, featured = excluded.featured, "order" = excluded."order",
   updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now');
 
-DELETE FROM projects WHERE slug NOT IN ('petosvahti', 'slope-deflection-calculator', 'serverless-quote-api');
+DELETE FROM projects WHERE slug NOT IN ('pets-transformer', 'petosvahti', 'slope-deflection-calculator', 'serverless-quote-api');
 
 -- ─── PM projects ───────────────────────────────────────────────────────────────
 

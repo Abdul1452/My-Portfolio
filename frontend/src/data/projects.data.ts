@@ -23,6 +23,23 @@ import type { Project } from '@app-types'
 // The `: Project[]` annotation makes TypeScript enforce the shape.
 export const projects: Project[] = [
   {
+    // Team project (five people) from Since AI Hackathon 2026; source: the
+    // PETs Transformer portfolio brief. Repo is public under a teammate.
+    id: 'cuid_project_pets_transformer',
+    slug: 'pets-transformer',
+    title: 'PETs Transformer',
+    tag: 'Python · pandas · scikit-learn · FastAPI · React · TypeScript · Docker',
+    description:
+      'Recognised as the best solution for the TrustED PETs Transformer challenge at Since AI Hackathon 2026 (team of five). A privacy release gate: it protects a dataset for a named recipient, checks that the recipient’s questions can still be answered, then attacks its own output; if any of 18 gate checks fails, nothing is released. Hospital scenario: privacy 1.00, usefulness 0.99, all 176,739 rows kept. Synthetic challenge data; not produced or endorsed by the TrustED consortium or the EU.',
+    year: '2026',
+    category: 'engineering',
+    linkLabel: 'Repository',
+    linkUrl: 'https://github.com/oluwatobimaxwell/pets-transformer',
+    imageUrl: null,
+    featured: true,
+    order: 0,
+  },
+  {
     id: 'cuid_project_petosvahti',
     slug: 'petosvahti',
     title: 'Petosvahti',

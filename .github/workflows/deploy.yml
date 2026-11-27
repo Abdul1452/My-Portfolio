@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://olamilekan.dev
+      url: https://olamilekan-portfolio.abdullahi-abdulwasiu.workers.dev
     steps:
       - uses: actions/checkout@v5
         with:
