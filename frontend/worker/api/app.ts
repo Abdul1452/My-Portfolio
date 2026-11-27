@@ -49,9 +49,29 @@ function validationError(c: Context<App>, err: ZodError) {
   return apiError(c, 422, 'Validation failed', 'VALIDATION_ERROR', issues)
 }
 
-/** "Hello <b>x</b>" → "Hello x". Zod checks the shape; this cleans the content. */
+/**
+ * "Hello <b>x</b>" → "Hello x". Zod checks the shape; this cleans the content.
+ *
+ * A character scan, the same as backend/src/utils/sanitize.ts, not a regex
+ * replace: a single regex pass can leave pieces that join back into a tag
+ * ("<scr<script>ipt>"). Here everything from "<" to the next ">" is dropped
+ * and the brackets themselves never reach the output, so no tag can survive.
+ */
 function stripHtml(value: string): string {
-  return value.replace(/<[^>]*>?/g, '').trim()
+  let clean = ''
+  let insideTag = false
+  for (const char of value) {
+    if (char === '<') {
+      insideTag = true
+      continue
+    }
+    if (char === '>') {
+      insideTag = false
+      continue
+    }
+    if (!insideTag) clean += char
+  }
+  return clean.trim()
 }
 
 // Only the public fields: never created_at/updated_at or future internal columns.
