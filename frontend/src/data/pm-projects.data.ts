@@ -23,7 +23,7 @@ export const pmProjects: PMProject[] = [
     year: '2026',
     linkLabel: 'Read the PDF',
     // Served from frontend/public/docs/.
-    linkUrl: '/docs/project-management-guidebook.pdf',
+    linkUrl: '/files/docs/project-management-guidebook.pdf',
     order: 1,
   },
 ]

@@ -7,19 +7,32 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint src --ext ts,tsx --fix",
-    "type-check": "tsc --noEmit",
-    "github:snapshot": "node scripts/fetch-github-activity.mjs"
+    "lint": "eslint src worker --ext ts,tsx --ignore-pattern worker/worker-configuration.d.ts --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint src worker --ext ts,tsx --ignore-pattern worker/worker-configuration.d.ts --fix",
+    "type-check": "tsc --noEmit && tsc --noEmit -p worker",
+    "github:snapshot": "node scripts/fetch-github-activity.mjs",
+    "cf:types": "wrangler types worker/worker-configuration.d.ts --env-file worker/.env.types",
+    "cf:preview": "pnpm run build && wrangler dev",
+    "deploy": "pnpm run build && wrangler deploy",
+    "files:upload": "node scripts/upload-files.mjs",
+    "dev:api": "node -e \"require('fs').mkdirSync('dist',{recursive:true})\" && wrangler dev --port 8787",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "db:seed:local": "wrangler d1 execute DB --local --file worker/api/db/seed.sql",
+    "db:seed:remote": "wrangler d1 execute DB --remote --file worker/api/db/seed.sql"
   },
   "dependencies": {
     "clsx": "^2.1.0",
+    "drizzle-orm": "^0.45.4",
+    "hono": "^4.13.22",
     "lucide-react": "0.460.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "tailwind-merge": "^2.2.2",
-    "three": "0.170.0"
+    "three": "0.170.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
@@ -29,12 +42,14 @@
     "@typescript-eslint/parser": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2",
-    "vite": "^5.1.6"
+    "vite": "^5.1.6",
+    "wrangler": "^4.168.0"
   }
 }

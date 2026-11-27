@@ -19,12 +19,15 @@ import { IconTile, type Tone } from './ui'
 import { usePortfolioThemeContext } from './usePortfolioTheme'
 
 const internships = timeline.filter(item => item.kind === 'work' && /internship/i.test(item.title)).length
+// Hackathon participation certificates are listed with the certifications
+// but aren't certifications, so they don't count here.
+const certificationCount = certifications.filter(cert => cert.kind !== 'hackathon').length
 
 const HIGHLIGHTS: { value: number; label: string; icon: LucideIcon; tone: Tone }[] = [
   { value: internships, label: 'internships at theFIRMA, Turku UAS', icon: Briefcase, tone: 'accent' },
   { value: featuredProjects.length, label: 'projects you can try on this page', icon: FolderGit2, tone: 'warn' },
   { value: activity.total, label: 'GitHub contributions in the last year', icon: Activity, tone: 'accent' },
-  { value: certifications.length, label: 'certifications, incl. PRY (IPMA ICB)', icon: Award, tone: 'ok' },
+  { value: certificationCount, label: 'certifications, incl. PRY (IPMA ICB)', icon: Award, tone: 'ok' },
 ]
 
 export function HeroSection() {

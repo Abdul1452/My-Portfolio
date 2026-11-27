@@ -24,7 +24,7 @@
 
 import { createContext, useEffect, useState, type ReactNode } from 'react'
 import type { Project, PMProject, SkillCategory } from '@app-types'
-import { api } from '@utils/api'
+import { api, API_ENABLED } from '@utils/api'
 // Static fallback data (Phase 4 — created next session).
 // These imports work once we write the data files; for now they're referenced.
 import { projects as staticProjects } from '@data/projects.data'
@@ -65,6 +65,17 @@ export function AppProvider({ children }: AppProviderProps) {
     // callbacks themselves cannot be async (they must return void or a
     // cleanup function, not a Promise).
     async function loadData() {
+      // No API in this build (e.g. the live site before the backend moves to
+      // Cloudflare): the bundled data IS the source, so this isn't a fallback
+      // and no "live data unavailable" banner should appear.
+      if (!API_ENABLED) {
+        setProjects(staticProjects)
+        setPMProjects(staticPMProjects)
+        setSkills(staticSkills)
+        setStatus('ready')
+        return
+      }
+
       try {
         // Promise.all runs all three requests IN PARALLEL, not one-by-one.
         // This is faster than awaiting each sequentially.

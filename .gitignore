@@ -45,6 +45,13 @@ coverage/
 # Local pnpm store
 .pnpm-store/
 
+# Cloudflare: wrangler's local state, and the local mirror of the R2 bucket
+# (files live in R2, not in git; see frontend/files/README.md)
+.wrangler/
+.dev.vars*
+frontend/files/*
+!frontend/files/README.md
+
 # Claude Code (local-only: settings, skills, agents, commands)
 .claude/
 .agents/

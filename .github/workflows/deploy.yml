@@ -1,18 +1,38 @@
 name: Deploy
 
+# Deploys the site to Cloudflare (the Worker + static assets defined in
+# frontend/wrangler.jsonc) — but only after the CI workflow has passed on
+# main, so a commit that fails lint, type-check or build never goes live.
+# "Run workflow" in the Actions tab deploys main by hand.
 on:
-  push:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+# One deploy at a time; a newer push waits instead of racing the older one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
-  deploy-frontend:
-    name: Deploy Frontend (Vercel/Netlify)
+  deploy:
+    name: Deploy to Cloudflare
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://olamilekan.dev
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Deploy exactly the commit CI tested, not whatever main is now.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
       # pnpm version comes from "packageManager" in the root package.json.
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
@@ -20,13 +40,29 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter frontend build
-      # TODO: Add Vercel / Netlify deploy action here
 
-  deploy-backend:
-    name: Deploy Backend (Railway/Render)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      # TODO: Add Railway / Render deploy action here
-      # (it will need `pnpm db:generate` before building, like ci.yml)
+      # The token needs Workers Scripts, D1 and R2 edit permissions; both
+      # values are repository secrets (Settings → Secrets and variables → Actions).
+
+      # 1. Database first: new migrations are additive, so the running site
+      #    keeps working while the new Worker is on its way.
+      - name: Apply D1 migrations
+        run: pnpm --filter frontend run db:migrate:remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # 2. Content as code: seed.sql is an idempotent upsert, so editing it
+      #    and merging is how the API's projects/skills change.
+      - name: Sync content (seed.sql)
+        run: pnpm --filter frontend run db:seed:remote
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # 3. Build the site (tsc + vite) and upload it with the Worker.
+      - name: Build and deploy
+        run: pnpm --filter frontend run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

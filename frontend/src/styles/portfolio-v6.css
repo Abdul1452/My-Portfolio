@@ -150,6 +150,11 @@
 .pf6-legend { display: grid; gap: 8px; margin-top: 20px; list-style: none; font-size: 13.5px; color: var(--ink-2); }
 .pf6-legend li { display: flex; align-items: center; gap: 8px; }
 
+/* Certificate rows with two links: "View" (the file) and "Verify" (issuer). */
+.pf6-rowlinks { flex: 0 0 auto; display: flex; gap: 4px 14px; flex-wrap: wrap; justify-content: flex-end; font-size: 13px; }
+.pf5 .pf6-rowlinks a { min-height: 44px; display: inline-flex; align-items: center; color: var(--ink-3); }
+.pf5 .pf6-rowlinks a:hover { color: var(--accent-text); }
+
 .pf6-inlinestats { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; color: var(--ink-2); }
 
 .pf5-timeline > li { margin-left: 14px; padding-left: 30px; }

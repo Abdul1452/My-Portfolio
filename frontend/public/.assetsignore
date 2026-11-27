@@ -1,0 +1,3 @@
+# Files in the build output that are NOT uploaded to Cloudflare.
+# Source maps stay local: publishing them would hand out the original source.
+*.map
