@@ -48,9 +48,19 @@
     { "name": "CONTACT_LIMITER", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
   ],
 
-  // Served at https://olamilekan-portfolio.<account>.workers.dev for now.
-  // With your own domain later, add:
-  //   "routes": [{ "pattern": "your-domain.dev", "custom_domain": true }]
+  // The site's own domain. "custom_domain" makes Cloudflare create the DNS
+  // record and the HTTPS certificate itself; the zone (abdulwasiu.dev) must
+  // be on this Cloudflare account. www is served too, so typing it works;
+  // the canonical link in index.html points search engines at the bare domain.
+  // Deploying routes needs the API token's "Zone → Workers Routes → Edit"
+  // permission for abdulwasiu.dev.
+  "routes": [
+    { "pattern": "abdulwasiu.dev", "custom_domain": true },
+    { "pattern": "www.abdulwasiu.dev", "custom_domain": true }
+  ],
+
+  // The old address (olamilekan-portfolio.<account>.workers.dev) keeps
+  // working, so links already shared don't break.
   "workers_dev": true,
 
   // Request logs and errors in the Cloudflare dashboard.
