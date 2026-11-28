@@ -6,7 +6,7 @@ export { usePortfolioTheme, usePortfolioThemeContext } from './usePortfolioTheme
 export { HeroSection } from './HeroSection'
 export { WorkSection, CaseStudies } from './WorkSection'
 export { SkillsSection, GitHubSection, ExperienceSection } from './ProfileSections'
-export { CredentialsSection } from './CertificateWall'
+export { CredentialsSection } from './CertificateDeck'
 export { LinkedInSection, BusinessCard } from './LinkedInSection'
 export { ReadingSection } from './BookShelf'
 export { ApproachSection, QuestionsSection, SystemSection, ContactSection } from './AboutSections'

@@ -110,7 +110,7 @@ export function QuestionsSection() {
 // ─── How this site is built ───────────────────────────────────────────────────
 
 const TOKENS = ['--bg', '--surface', '--ink', '--accent', '--ok', '--danger']
-const COMPONENTS = ['Story globe (Three.js)', '3D book (Three.js)', 'Certificate wall', 'Business card', 'Button', 'Card', 'Timeline', 'Accordion', 'Theme switch']
+const COMPONENTS = ['Story globe (Three.js)', '3D book (Three.js)', 'Certificate deck', 'Business card', 'Button', 'Card', 'Timeline', 'Accordion', 'Theme switch']
 
 export function SystemSection() {
   const { theme, toggleTheme: onToggleTheme } = usePortfolioThemeContext()
@@ -153,7 +153,7 @@ export function SystemSection() {
           <div>
             <h3>Type scale</h3>
             <div style={{ display: 'grid', gap: 6 }}>
-              <p style={{ fontSize: 40, fontFamily: 'var(--serif)', lineHeight: 1.05 }}>Display, <em>Instrument Serif</em></p>
+              <p style={{ fontSize: 36, fontWeight: 600, letterSpacing: '-.04em', lineHeight: 1.1 }}>Display</p>
               <p style={{ fontSize: 24, fontWeight: 600, letterSpacing: '-.03em' }}>Heading</p>
               <p style={{ fontSize: 17, fontWeight: 600 }}>Title</p>
               <p style={{ fontSize: 15.5, color: 'var(--ink-2)' }}>Body text, Onest</p>

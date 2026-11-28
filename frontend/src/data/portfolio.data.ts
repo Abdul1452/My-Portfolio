@@ -63,7 +63,7 @@ export const hero = {
   // Small line above the headline: where the story starts and where it is now.
   kicker: 'Lagos, 2021 → Turku, today',
   // The headline is split into lines so each one can animate in turn.
-  // The muted line is set in the serif italic: it's the "after" of the story.
+  // The muted line is the "after" of the story, coloured like the globe's arc.
   headline: ['I started out tracking', 'cargo in Lagos.'],
   headlineMuted: 'Now I build the systems that keep things moving.',
   intro:
@@ -411,6 +411,9 @@ export const certifications: Certification[] = [
     issuer: 'OPSWAT Academy',
     year: '2026',
     url: 'https://learn.opswatacademy.com/certificate/y8AjX0NlUw',
+    // Captured from the public certificate page (no PDF is issued).
+    preview: `${PREVIEWS}/opswat-intro-to-cip-2026.jpg`,
+    previewSize: [1200, 949],
   },
   {
     mark: 'SQL',
@@ -418,6 +421,9 @@ export const certifications: Certification[] = [
     issuer: 'Codecademy · completed 15 Oct',
     year: '2025',
     url: 'https://www.codecademy.com/profiles/script1624568002/certificates/042a4e5884e3eb6ea1f2a12be6abb851',
+    // Captured from the public certificate page (no PDF is issued).
+    preview: `${PREVIEWS}/codecademy-learn-sql-2025.jpg`,
+    previewSize: [1200, 927],
   },
   {
     mark: 'FI',
@@ -474,8 +480,10 @@ export const linkedin = {
 }
 
 // ─── Books on my desk ─────────────────────────────────────────────────────────
-// Shown in 3D in the "Reading" section. The cover is drawn by the page from
-// these fields (title, author, colours), so no cover images are needed.
+// Shown in 3D in the "Reading" section. The front of the 3D book is the
+// real cover (`coverImage`, stored in R2 under files/images/books/). The
+// spine and back are drawn from `cover`'s colours, picked from that image.
+// Covers: Open Library (covers.openlibrary.org/b/isbn/<ISBN>-L.jpg).
 //
 // `note` is YOUR voice: why the book matters to you. The one below is a
 // draft; rewrite it in your own words before publishing.
@@ -491,7 +499,10 @@ export interface Book {
   note: string
   topics: string[]
   url?: string
-  /** Cover colours: background, title ink, accent stripe. */
+  /** Photo of the real front cover, and its pixel size [width, height]. */
+  coverImage?: string
+  coverSize?: [number, number]
+  /** Colours for the spine, back and edges: background, ink, accent band. */
   cover: { bg: string; ink: string; accent: string }
 }
 
@@ -508,7 +519,10 @@ export const books: Book[] = [
       'The book I reach for when a backend question gets hard: what really happens to data once it outgrows one machine. Replication, partitioning, transactions, and why a log of events is such a powerful idea, which is exactly the shape of PetosVahti.',
     topics: ['Replication', 'Partitioning', 'Transactions', 'Consistency & consensus', 'Stream processing'],
     url: 'https://dataintensive.net/',
-    cover: { bg: '#141a2e', ink: '#f4efe6', accent: '#e0b45a' },
+    coverImage: '/files/images/books/designing-data-intensive-applications.jpg',
+    coverSize: [381, 500],
+    // White O'Reilly cover with the red title band.
+    cover: { bg: '#fefefe', ink: '#231f20', accent: '#c60d2d' },
   },
   // Add more books here; the shelf grows with them. For example:
   // {

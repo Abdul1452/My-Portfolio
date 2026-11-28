@@ -1,6 +1,6 @@
 /**
  * ProfileSections.tsx — Skills, GitHub activity, exploring, experience
- * (Certificates live in CertificateWall.tsx.)
+ * (Certificates live in CertificateDeck.tsx.)
  *
  * The "evidence" half of the page. Every section returns null when its
  * data is empty, so a section can be hidden from portfolio.data.ts alone.
@@ -263,7 +263,7 @@ export function GitHubSection() {
   )
 }
 
-// Certifications + the PM guidebook card moved to CertificateWall.tsx.
+// Certifications + the PM guidebook card moved to CertificateDeck.tsx.
 
 // ─── Experience & studies ─────────────────────────────────────────────────────
 

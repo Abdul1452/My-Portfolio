@@ -11,16 +11,19 @@ Format: [Semantic Versioning](https://semver.org/)
   - Story headline ("I started out tracking cargo in Lagos. Now I build the
     systems that keep things moving.") with a journey route, 2021 → 2027.
   - Three.js story globe in the hero: an arc from Lagos to Turku.
-  - Certificate wall: every certificate shown as a framed picture with a
-    larger view, Verify and Original links, and an All / Certifications /
-    Hackathons filter. Previews come from
-    `frontend/scripts/render-certificate-previews.py`.
+  - Certificate deck: every certificate as a picture in a stacked pile you
+    swipe/drag through (or ← →, dots, "Up next"), with a full-size view,
+    Verify and Original links, and an All / Certifications / Hackathons
+    filter. PDF previews come from
+    `frontend/scripts/render-certificate-previews.py`; OPSWAT and
+    Codecademy previews are captures of their public certificate pages.
   - LinkedIn section: a flip-able 3D business card with "Save contact"
     (.vcf), and a feed for posts that feature me (`linkedin.posts`, with
     click-to-load LinkedIn embeds).
   - "On my desk": the books I'm reading as a 3D book you can turn
-    (Three.js), starting with Designing Data-Intensive Applications.
-  - Instrument Serif for headings; CSP allows LinkedIn embed frames.
+    (Three.js) with the real front cover, starting with Designing
+    Data-Intensive Applications.
+  - CSP allows LinkedIn embed frames. Fonts stay Onest + JetBrains Mono.
 - API versioning: routes now live in `backend/src/routes/v1/`, mounted by a
   version registry in `routes/index.ts`. New `GET /api` lists supported
   versions; every versioned response carries an `API-Version` header, with
