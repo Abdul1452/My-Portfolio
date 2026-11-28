@@ -1,17 +1,21 @@
 /**
- * HeroSection.tsx — First screen: headline, intro, two summary cards, KPI strip
+ * HeroSection.tsx — First screen: the story headline, the route, two cards, KPI strip
  *
  * The headline lines rise in one after another: each <span> gets the same
  * CSS animation (pf5-rise) with a slightly later animation-delay.
  *
- * v6: the cards float as glass over the Three.js "stack constellation"
- * (HeroScene), and a strip of four numbers under the hero gives the proof
- * at a glance. Every number is counted from the existing data, so it can't
- * drift from what the page says further down.
+ * v7 (storytelling): the headline is a "before → after" story instead of a
+ * job title, a small route under it (hero.journey) lists the chapters, and
+ * the Three.js globe behind the cards (HeroScene) draws the same journey,
+ * Lagos → Turku. All the words live in portfolio.data.ts → hero.
+ *
+ * A strip of four numbers under the hero gives the proof at a glance. Every
+ * number is counted from the existing data, so it can't drift from what
+ * the page says further down.
  */
 
 import { Fragment } from 'react'
-import { Activity, ArrowRight, Award, Briefcase, Check, FolderGit2, Github, type LucideIcon } from 'lucide-react'
+import { Activity, ArrowRight, Award, Briefcase, Check, FolderGit2, Github, Linkedin, type LucideIcon } from 'lucide-react'
 import { certifications, featuredProjects, hero, nowCard, profile, timeline } from '@data/portfolio.data'
 import activity from '@data/github-activity.json'
 import { HeroScene } from './HeroScene'
@@ -31,7 +35,7 @@ const HIGHLIGHTS: { value: number; label: string; icon: LucideIcon; tone: Tone }
 ]
 
 export function HeroSection() {
-  const { theme, reduceMotion } = usePortfolioThemeContext()
+  const { reduceMotion } = usePortfolioThemeContext()
   const doneCount = nowCard.items.filter(item => item.done).length
   const lines = [...hero.headline, hero.headlineMuted]
 
@@ -39,19 +43,22 @@ export function HeroSection() {
     <>
       <section data-screen-label="Hero" className="pf5-hero">
         <div className="pf5-hero__text">
-          <p className="pf5-status">
-            <span aria-hidden="true" className="pf5-status__dot" />
-            {hero.status}
-          </p>
+          <div className="pf7-hero__top">
+            <p className="pf5-status">
+              <span aria-hidden="true" className="pf5-status__dot" />
+              {hero.status}
+            </p>
+            <p className="pf7-kicker">{hero.kicker}</p>
+          </div>
 
-          <h1 className="pf5-h1">
+          <h1 className="pf5-h1 pf7-h1">
             {lines.map((line, i) => (
               // The space goes between the spans, not inside them: browsers
               // drop trailing spaces inside inline-block elements.
               <Fragment key={line}>
                 <span
-                  className={i === lines.length - 1 ? 'pf5-h1__muted' : undefined}
-                  style={{ animationDelay: `${i * 0.08}s` }}
+                  className={i === lines.length - 1 ? 'pf5-h1__muted pf7-h1__after' : undefined}
+                  style={{ animationDelay: `${i * 0.12}s` }}
                 >
                   {line}
                 </span>{' '}
@@ -61,38 +68,47 @@ export function HeroSection() {
 
           <p className="pf5-hero__intro">{hero.intro}</p>
 
+          {/* The story as a route: one stop per chapter, the last one open. */}
+          <ol className="pf7-journey" aria-label="The story so far">
+            {hero.journey.map((stop, i) => (
+              <li key={stop.year} data-last={i === hero.journey.length - 1} style={{ animationDelay: `${0.35 + i * 0.08}s` }}>
+                <span className="pf7-journey__year">{stop.year}</span>
+                <span className="pf7-journey__place">{stop.place}</span>
+                <span className="pf7-journey__text">{stop.text}</span>
+              </li>
+            ))}
+          </ol>
+
           <div className="pf5-actions">
             <a href="#work" className="pf5-btn pf5-btn--primary pf5-btn--lg">
-              Try the projects <ArrowRight size={18} aria-hidden="true" />
+              See what I’ve built <ArrowRight size={18} aria-hidden="true" />
+            </a>
+            <a href={profile.links.linkedin} target="_blank" rel="noreferrer" className="pf5-btn pf5-btn--ghost pf5-btn--lg">
+              <Linkedin size={18} aria-hidden="true" /> LinkedIn
             </a>
             <a href={profile.links.github} target="_blank" rel="noreferrer" className="pf5-btn pf5-btn--ghost pf5-btn--lg">
-              <Github size={18} aria-hidden="true" /> GitHub profile
+              <Github size={18} aria-hidden="true" /> GitHub
             </a>
           </div>
         </div>
 
-        <div role="group" aria-label="Profile summary" className="pf5-hero__stage pf5-stage--lake pf6-stage">
-          <HeroScene theme={theme} reduceMotion={reduceMotion} />
+        {/* Right column: the globe gets the stage to itself (only a small
+            name chip on it), so the Lagos → Turku route stays visible.
+            The "now" card sits under it. */}
+        <div className="pf7-hero__side">
+        <div role="group" aria-label="Profile summary" className="pf5-hero__stage pf6-stage pf7-stage">
+          <HeroScene reduceMotion={reduceMotion} />
 
-          <div className="pf5-card pf5-profile">
-            <div className="pf5-profile__head">
-              <img className="pf5-avatar" src={profile.avatarUrl} alt={`Photo of ${profile.name}`} width={52} height={52} />
-              <div style={{ minWidth: 0 }}>
-                <p style={{ fontWeight: 600, fontSize: 16 }}>{profile.name}</p>
-                <p className="pf5-muted" style={{ marginTop: 2, fontSize: 13.5 }}>{profile.role}</p>
-              </div>
+          <div className="pf5-card pf7-idchip">
+            <img className="pf5-avatar" src={profile.avatarUrl} alt={`Photo of ${profile.name}`} width={44} height={44} />
+            <div style={{ minWidth: 0 }}>
+              <p style={{ fontWeight: 600, fontSize: 15 }}>{profile.name}</p>
+              <p className="pf5-muted" style={{ marginTop: 1, fontSize: 12.5 }}>{hero.facts.map(f => f.value).slice(0, 2).join(' · ')}</p>
             </div>
-            <dl className="pf5-facts">
-              {hero.facts.map(fact => (
-                <div key={fact.label} style={{ display: 'contents' }}>
-                  <dt>{fact.label}</dt>
-                  <dd>{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
+        </div>
 
-          <div className="pf5-card pf5-now">
+          <div className="pf5-card pf5-now pf7-now">
             <p style={{ marginBottom: 12, fontWeight: 600, fontSize: 15 }}>{nowCard.title}</p>
             <ol>
               {nowCard.items.map(item => (

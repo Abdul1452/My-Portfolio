@@ -8,10 +8,12 @@
 # injected script tag or a stray third-party embed simply doesn't run.
 #   style-src 'unsafe-inline'  React's style={{ }} attributes need it
 #   img-src                    GitHub avatar + repository preview cards
-#   fonts                      Google Fonts (Onest, JetBrains Mono)
+#   fonts                      Google Fonts (Onest, Instrument Serif, JetBrains Mono)
+#   frame-src                  LinkedIn post embeds only, and only after a
+#                              visitor clicks "Show the original post"
 
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://avatars.githubusercontent.com https://opengraph.githubassets.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://avatars.githubusercontent.com https://opengraph.githubassets.com; frame-src https://www.linkedin.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

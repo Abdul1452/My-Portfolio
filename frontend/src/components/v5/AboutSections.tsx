@@ -110,7 +110,7 @@ export function QuestionsSection() {
 // ─── How this site is built ───────────────────────────────────────────────────
 
 const TOKENS = ['--bg', '--surface', '--ink', '--accent', '--ok', '--danger']
-const COMPONENTS = ['Button', 'Badge', 'Card', 'Timeline', 'Accordion', 'Copy button', 'Theme switch', 'Announcement bar']
+const COMPONENTS = ['Story globe (Three.js)', '3D book (Three.js)', 'Certificate wall', 'Business card', 'Button', 'Card', 'Timeline', 'Accordion', 'Theme switch']
 
 export function SystemSection() {
   const { theme, toggleTheme: onToggleTheme } = usePortfolioThemeContext()
@@ -126,9 +126,10 @@ export function SystemSection() {
               How this site is built
             </h2>
             <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--ink-2)' }}>
-              React, TypeScript and Vite on the front end, with an Express, Prisma and PostgreSQL API behind it.
-              The page is a small design system: semantic tokens, a short list of components, and one primary
-              action on each surface. Switch the theme to see the same tokens resolve to other values.
+              React, TypeScript and Vite on the front end, Three.js for the globe and the book, all served by one
+              Cloudflare Worker with a Hono API on D1 and files in R2. The page is a small design system: semantic
+              tokens, a short list of components, and one primary action on each surface. Switch the theme to see
+              the same tokens resolve to other values.
             </p>
           </div>
           <button type="button" className="pf5-btn pf5-btn--ghost" aria-pressed={isDark} onClick={onToggleTheme} style={{ alignSelf: 'start' }}>
@@ -152,7 +153,7 @@ export function SystemSection() {
           <div>
             <h3>Type scale</h3>
             <div style={{ display: 'grid', gap: 6 }}>
-              <p style={{ fontSize: 36, fontWeight: 600, letterSpacing: '-.04em', lineHeight: 1.1 }}>Display</p>
+              <p style={{ fontSize: 40, fontFamily: 'var(--serif)', lineHeight: 1.05 }}>Display, <em>Instrument Serif</em></p>
               <p style={{ fontSize: 24, fontWeight: 600, letterSpacing: '-.03em' }}>Heading</p>
               <p style={{ fontSize: 17, fontWeight: 600 }}>Title</p>
               <p style={{ fontSize: 15.5, color: 'var(--ink-2)' }}>Body text, Onest</p>

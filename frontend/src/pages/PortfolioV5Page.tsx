@@ -20,8 +20,10 @@ import {
   ExperienceSection,
   GitHubSection,
   HeroSection,
+  LinkedInSection,
   PortfolioShell,
   QuestionsSection,
+  ReadingSection,
   SectionBoundary,
   SkillsSection,
   SystemSection,
@@ -30,13 +32,20 @@ import {
 
 // [name for the error message, section]. Each one gets its own error
 // boundary, so a crash in one section leaves the rest of the page working.
+//
+// The order tells the story: who I am (hero) → what I built (work) →
+// proof (certificates) → what others say (LinkedIn) → what I know and
+// read → the record (activity, experience) → how to work with me.
+// Keep SECTION_META's numbers in ui.tsx in the same order.
 const SECTIONS = [
   ['hero', HeroSection],
   ['work', WorkSection],
   ['case studies', CaseStudies],
-  ['skills', SkillsSection],
-  ['GitHub', GitHubSection],
   ['credentials', CredentialsSection],
+  ['LinkedIn', LinkedInSection],
+  ['skills', SkillsSection],
+  ['reading', ReadingSection],
+  ['GitHub', GitHubSection],
   ['experience', ExperienceSection],
   ['how I work', ApproachSection],
   ['questions', QuestionsSection],

@@ -47,13 +47,35 @@ export const announcement = {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
+// WHY A STORY AND NOT A JOB TITLE:
+//   "I build software" is what every developer's homepage says, so a
+//   stranger's eyes slide past it. A story has a "before" and an "after",
+//   and the gap between them makes people want the middle. Yours is real:
+//   coordinating cargo deliveries in Lagos (2021) → building backends in
+//   Turku (2026). The globe in the hero draws that same route.
+//
+// Other true openings you can swap in (keep one line short, one long):
+//   ['From cargo records in Lagos', 'to backend systems in Turku.']
+//   ['Lagos taught me how things move.', 'Turku taught me to build what moves them.']
+//   ['I learned logistics on the job in Lagos.', 'Now I write the code that keeps things on schedule.']
 export const hero = {
   status: 'Open to work · Turku',
+  // Small line above the headline: where the story starts and where it is now.
+  kicker: 'Lagos, 2021 → Turku, today',
   // The headline is split into lines so each one can animate in turn.
-  headline: ['I build the software,', 'and I keep', 'the project'],
-  headlineMuted: 'moving.',
+  // The muted line is set in the serif italic: it's the "after" of the story.
+  headline: ['I started out tracking', 'cargo in Lagos.'],
+  headlineMuted: 'Now I build the systems that keep things moving.',
   intro:
-    'Third-year ICT engineering student at Turku University of Applied Sciences, focused on the backend: APIs, databases and system design. Two internships at theFIRMA, the university’s ICT project office, and a PRY Foundation certificate in project management.',
+    'In 2021 I coordinated deliveries and kept the records for an import company in Lagos. In 2024 I started ICT engineering in Turku. Since then: two internships building backends at theFIRMA, a PRY certificate in project management, a passed YKI Finnish exam, and a best-solution award at the Since AI hackathon.',
+  // The route under the headline. One stop per chapter, oldest first.
+  journey: [
+    { year: '2021', place: 'Lagos', text: 'Cargo deliveries & records' },
+    { year: '2024', place: 'Turku', text: 'BEng ICT begins' },
+    { year: '2025', place: 'theFIRMA', text: 'First developer internship' },
+    { year: '2026', place: 'Turku', text: 'PRY, YKI, a hackathon win' },
+    { year: '2027', place: 'Next', text: 'Graduating. Your team?' },
+  ],
   facts: [
     { label: 'Based', value: 'Turku, Finland' },
     { label: 'Studies', value: 'BEng ICT, graduating July 2027' },
@@ -285,7 +307,20 @@ export interface Certification {
   file?: string
   /** Hackathon participation is listed here but not counted as a certification. */
   kind?: 'certification' | 'hackathon'
+  /**
+   * A picture of the certificate for the certificate wall, so visitors see
+   * it without clicking. PDFs get one from
+   * `python scripts/render-certificate-previews.py` (→ /files/certificates/previews/).
+   * Without a preview the wall draws a paper card from the text fields.
+   */
+  preview?: string
+  /** The preview's pixel size [width, height]: reserves its space while it loads. */
+  previewSize?: [number, number]
 }
+
+const PREVIEWS = '/files/certificates/previews'
+// Rendered at 1200px wide; the height depends on the certificate's paper.
+const LINKEDIN_LEARNING_SIZE: [number, number] = [1200, 928]
 
 // `file` paths are certificates stored in R2 (frontend/files/certificates/
 // locally, uploaded with `pnpm files:upload`). `url` is a public page where a
@@ -297,6 +332,8 @@ export const certifications: Certification[] = [
     issuer: 'Projektiammattilaiset PRY · granted 12 May',
     year: '2026',
     file: '/files/certificates/pry-foundation-certificate-2026.pdf',
+    preview: `${PREVIEWS}/pry-foundation-certificate-2026.jpg`,
+    previewSize: [1200, 1698],
   },
   {
     mark: 'AI',
@@ -305,6 +342,8 @@ export const certifications: Certification[] = [
     year: '2026',
     file: '/files/certificates/since-ai-hackathon-2026.pdf',
     kind: 'hackathon',
+    preview: `${PREVIEWS}/since-ai-hackathon-2026.jpg`,
+    previewSize: [1200, 849],
   },
   {
     mark: 'JX',
@@ -313,6 +352,8 @@ export const certifications: Certification[] = [
     year: '2026',
     file: '/files/certificates/junctionx-turku-2026.webp',
     kind: 'hackathon',
+    preview: '/files/certificates/junctionx-turku-2026.webp',
+    previewSize: [1024, 724],
   },
   {
     mark: 'TS',
@@ -321,6 +362,8 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/9787f16d386eaf652e6533e2422f61c1ada823d850586903979614aa7df2b903/',
     file: '/files/certificates/linkedin-scalable-microservices-typescript-nodejs.pdf',
+    preview: `${PREVIEWS}/linkedin-scalable-microservices-typescript-nodejs.jpg`,
+    previewSize: LINKEDIN_LEARNING_SIZE,
   },
   {
     mark: 'TS',
@@ -329,6 +372,8 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/c617789ec8b508b8757f11fea009e47be47bb946059414b943f4e9c578b684a1/',
     file: '/files/certificates/linkedin-typescript-for-nodejs-developers.pdf',
+    preview: `${PREVIEWS}/linkedin-typescript-for-nodejs-developers.jpg`,
+    previewSize: LINKEDIN_LEARNING_SIZE,
   },
   {
     mark: 'TS',
@@ -337,6 +382,8 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/fcd7b11fa308a24a9e78b126bc0e89aaa2c5ab417635f5ad3b6819fca2f26170/',
     file: '/files/certificates/linkedin-learning-typescript.pdf',
+    preview: `${PREVIEWS}/linkedin-learning-typescript.jpg`,
+    previewSize: LINKEDIN_LEARNING_SIZE,
   },
   {
     mark: 'JS',
@@ -345,6 +392,8 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/541e8422b91e551ac25ee583ccee4fae5450e388650992d6c34c1f5087aad662/',
     file: '/files/certificates/linkedin-learning-javascript.pdf',
+    preview: `${PREVIEWS}/linkedin-learning-javascript.jpg`,
+    previewSize: LINKEDIN_LEARNING_SIZE,
   },
   {
     mark: 'DKR',
@@ -353,6 +402,8 @@ export const certifications: Certification[] = [
     year: '2026',
     url: 'https://www.linkedin.com/learning/certificates/2cfbd2eb3a5af206d43f3f379341d74707c00ab0b22554c1892291973920fd6b/',
     file: '/files/certificates/linkedin-learning-docker.pdf',
+    preview: `${PREVIEWS}/linkedin-learning-docker.jpg`,
+    previewSize: LINKEDIN_LEARNING_SIZE,
   },
   {
     mark: 'CIP',
@@ -374,7 +425,100 @@ export const certifications: Certification[] = [
     issuer: 'Akava · issued 26 Nov',
     year: '2024',
     file: '/files/certificates/start-to-finnish-akava-2024.pdf',
+    preview: `${PREVIEWS}/start-to-finnish-akava-2024.jpg`,
+    previewSize: [1200, 849],
   },
+]
+
+// ─── LinkedIn: business card + posts that feature me ──────────────────────────
+// The business card is drawn by the page (no LinkedIn script, no tracking).
+//
+// ADDING A POST:
+//   1. On LinkedIn, open the post → "…" menu → "Copy link to post". That's `url`.
+//   2. Same menu → "Embed this post" → copy the src="…" address. That's
+//      `embedUrl` (optional). Visitors see your card first and can load the
+//      original post from LinkedIn with one click. Nothing from LinkedIn
+//      loads (and sets cookies) until they ask.
+//   3. `excerpt`: the first two or three sentences, pasted as plain text.
+//   4. `image` (optional): a screenshot or the post's photo, saved to
+//      files/images/ and uploaded with `pnpm files:upload`.
+//
+//   {
+//     author: 'Since AI',                        // who posted it
+//     authorRole: 'Hackathon organiser',
+//     kind: 'features-me',                       // or 'by-me'
+//     date: 'Nov 2026',
+//     excerpt: 'Congratulations to the team behind PETs Transformer…',
+//     url: 'https://www.linkedin.com/posts/…',
+//     embedUrl: 'https://www.linkedin.com/embed/feed/update/urn:li:share:…',
+//     image: '/files/images/since-ai-winners.jpg',
+//   },
+
+export interface LinkedInPost {
+  author: string
+  authorRole?: string
+  kind: 'features-me' | 'by-me'
+  date: string
+  excerpt: string
+  url: string
+  embedUrl?: string
+  image?: string
+  imageAlt?: string
+}
+
+export const linkedin = {
+  // The back of the business card: one line on what you're looking for.
+  cardTagline: 'Backend & full-stack developer · project management (IPMA ICB)',
+  headline: 'Backend developer in the making, with a project manager’s habits',
+  posts: [] as LinkedInPost[],
+}
+
+// ─── Books on my desk ─────────────────────────────────────────────────────────
+// Shown in 3D in the "Reading" section. The cover is drawn by the page from
+// these fields (title, author, colours), so no cover images are needed.
+//
+// `note` is YOUR voice: why the book matters to you. The one below is a
+// draft; rewrite it in your own words before publishing.
+
+export interface Book {
+  id: string
+  title: string
+  subtitle?: string
+  author: string
+  publisher: string
+  year: string
+  status: 'reading' | 'read' | 'rereading'
+  note: string
+  topics: string[]
+  url?: string
+  /** Cover colours: background, title ink, accent stripe. */
+  cover: { bg: string; ink: string; accent: string }
+}
+
+export const books: Book[] = [
+  {
+    id: 'ddia',
+    title: 'Designing Data-Intensive Applications',
+    subtitle: 'The big ideas behind reliable, scalable, and maintainable systems',
+    author: 'Martin Kleppmann',
+    publisher: 'O’Reilly Media',
+    year: '2017',
+    status: 'reading',
+    note:
+      'The book I reach for when a backend question gets hard: what really happens to data once it outgrows one machine. Replication, partitioning, transactions, and why a log of events is such a powerful idea, which is exactly the shape of PetosVahti.',
+    topics: ['Replication', 'Partitioning', 'Transactions', 'Consistency & consensus', 'Stream processing'],
+    url: 'https://dataintensive.net/',
+    cover: { bg: '#141a2e', ink: '#f4efe6', accent: '#e0b45a' },
+  },
+  // Add more books here; the shelf grows with them. For example:
+  // {
+  //   id: 'pragmatic',
+  //   title: 'The Pragmatic Programmer',
+  //   author: 'David Thomas & Andrew Hunt',
+  //   publisher: 'Addison-Wesley', year: '2019', status: 'read',
+  //   note: '…', topics: ['…'],
+  //   cover: { bg: '#2c1f18', ink: '#f4efe6', accent: '#ec7a64' },
+  // },
 ]
 
 // ─── Project management guidebook ─────────────────────────────────────────────

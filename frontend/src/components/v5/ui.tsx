@@ -18,7 +18,9 @@ import {
   Briefcase,
   Compass,
   Layers,
+  Library,
   Lightbulb,
+  Linkedin,
   Mail,
   Route,
   Wrench,
@@ -27,16 +29,20 @@ import {
 
 export type Tone = 'accent' | 'ok' | 'warn' | 'neutral'
 
+// The numbers follow the order of the sections on the homepage
+// (PortfolioV5Page → SECTIONS); keep the two in step.
 export const SECTION_META = {
   work: { index: 1, label: 'Work', icon: Briefcase },
-  skills: { index: 2, label: 'Skills', icon: Wrench },
-  github: { index: 3, label: 'Activity', icon: Activity },
-  credentials: { index: 4, label: 'Credentials', icon: Award },
-  experience: { index: 5, label: 'Experience', icon: Route },
-  approach: { index: 6, label: 'How I work', icon: Compass },
-  questions: { index: 7, label: 'Questions', icon: Lightbulb },
-  system: { index: 8, label: 'System', icon: Layers },
-  contact: { index: 9, label: 'Contact', icon: Mail },
+  credentials: { index: 2, label: 'Credentials', icon: Award },
+  linkedin: { index: 3, label: 'LinkedIn', icon: Linkedin },
+  skills: { index: 4, label: 'Skills', icon: Wrench },
+  reading: { index: 5, label: 'Reading', icon: Library },
+  github: { index: 6, label: 'Activity', icon: Activity },
+  experience: { index: 7, label: 'Experience', icon: Route },
+  approach: { index: 8, label: 'How I work', icon: Compass },
+  questions: { index: 9, label: 'Questions', icon: Lightbulb },
+  system: { index: 10, label: 'System', icon: Layers },
+  contact: { index: 11, label: 'Contact', icon: Mail },
 } satisfies Record<string, { index: number; label: string; icon: LucideIcon }>
 
 export type SectionKey = keyof typeof SECTION_META

@@ -23,6 +23,7 @@ import { Announcement, SiteFooter, SiteHeader } from './SiteChrome'
 import { PortfolioThemeContext, usePortfolioTheme } from './usePortfolioTheme'
 import '@styles/portfolio-v5.css'
 import '@styles/portfolio-v6.css'
+import '@styles/portfolio-v7.css'
 
 // Same values as --bg in portfolio-v5.css. Painting <html> too means the
 // area revealed by over-scrolling (rubber-banding) matches the page.
