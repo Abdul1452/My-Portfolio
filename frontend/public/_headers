@@ -8,7 +8,7 @@
 # injected script tag or a stray third-party embed simply doesn't run.
 #   style-src 'unsafe-inline'  React's style={{ }} attributes need it
 #   img-src                    GitHub avatar + repository preview cards
-#   fonts                      Google Fonts (Onest, Instrument Serif, JetBrains Mono)
+#   fonts                      Google Fonts (Onest, JetBrains Mono)
 #   frame-src                  LinkedIn post embeds only, and only after a
 #                              visitor clicks "Show the original post"
 

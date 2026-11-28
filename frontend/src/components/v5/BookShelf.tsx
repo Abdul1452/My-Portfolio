@@ -10,10 +10,10 @@
  *
  * HOW THE BOOK IS BUILT:
  *   Four boxes: front board, back board, spine and the block of pages, so
- *   the covers overhang the pages like a real hardback. The cover, spine
- *   and back are drawn on <canvas> elements from the book's title, author
- *   and colours (no cover images to download or license), then used as
- *   textures. They're redrawn once the web fonts have loaded.
+ *   the covers overhang the pages like a real hardback. The front is the
+ *   real cover photo (book.coverImage). The spine and back are drawn on
+ *   <canvas> in the cover's colours (book.cover), since only the front is
+ *   photographed; they're redrawn once the web font has loaded.
  *
  * ACCESSIBILITY:
  *   The canvas is decorative (aria-hidden); every fact is in the text
@@ -51,9 +51,7 @@ const BOARD = 0.028 // cover board thickness
 const SPACING = 2.1 // distance between books on the shelf
 const PX = 760 // canvas pixels per scene unit
 
-const SERIF = '"Instrument Serif", Georgia, serif'
 const SANS = 'Onest, system-ui, sans-serif'
-const MONO = '"JetBrains Mono", ui-monospace, monospace'
 
 // ─── Drawing the covers on canvas ─────────────────────────────────────────────
 
@@ -81,123 +79,100 @@ function wrap(ctx: CanvasRenderingContext2D, text: string, maxWidth: number) {
   return lines
 }
 
-function alpha(hex: string, a: number) {
-  const n = parseInt(hex.replace('#', ''), 16)
-  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`
-}
-
+/**
+ * Stand-in front cover, shown until the real cover photo (book.coverImage)
+ * has loaded, or if there isn't one: the title on a band of the accent
+ * colour, the way O'Reilly covers are laid out.
+ */
 function drawFront(ctx: CanvasRenderingContext2D, book: Book, w: number, h: number) {
   const { bg, ink, accent } = book.cover
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, w, h)
 
-  // A light sheen, as if the cover catches the light.
-  const sheen = ctx.createLinearGradient(0, 0, w, h)
-  sheen.addColorStop(0, 'rgba(255,255,255,0.10)')
-  sheen.addColorStop(0.5, 'rgba(255,255,255,0)')
-  ctx.fillStyle = sheen
-  ctx.fillRect(0, 0, w, h)
-
-  // Motif: streams of data flowing across, with nodes where they meet.
-  const top = h * 0.08
-  const band = h * 0.42
-  for (let i = 0; i < 16; i++) {
-    const y0 = top + (i / 15) * band
-    ctx.beginPath()
-    for (let x = 0; x <= w; x += 8) {
-      const y = y0 + Math.sin(x / 90 + i * 0.7) * 14 + Math.sin(x / 31 + i) * 3
-      if (x === 0) ctx.moveTo(x, y)
-      else ctx.lineTo(x, y)
-    }
-    ctx.strokeStyle = alpha(accent, 0.12 + (i % 4 === 0 ? 0.28 : 0.06))
-    ctx.lineWidth = i % 4 === 0 ? 2.4 : 1.2
-    ctx.stroke()
-  }
-  for (let i = 0; i < 9; i++) {
-    const x = w * (0.12 + ((i * 37) % 76) / 100)
-    const y = top + band * (((i * 53) % 90) / 100)
-    ctx.beginPath()
-    ctx.arc(x, y, i % 3 === 0 ? 9 : 5, 0, Math.PI * 2)
-    ctx.fillStyle = alpha(accent, i % 3 === 0 ? 0.9 : 0.5)
-    ctx.fill()
-  }
-
-  const left = w * 0.09
-  const maxWidth = w * 0.82
-  let y = h * 0.58
-  ctx.fillStyle = accent
-  ctx.fillRect(left, y - 34, w * 0.14, 7)
-
-  ctx.fillStyle = ink
+  const left = w * 0.08
+  const maxWidth = w * 0.84
   ctx.textBaseline = 'alphabetic'
-  ctx.font = `400 ${Math.round(w * 0.105)}px ${SERIF}`
-  for (const line of wrap(ctx, book.title, maxWidth)) {
-    y += w * 0.105
+  ctx.font = `600 ${Math.round(w * 0.085)}px ${SANS}`
+  const lines = wrap(ctx, book.title, maxWidth)
+  const bandTop = h * 0.09
+  const bandHeight = h * 0.08 + lines.length * w * 0.095 + (book.subtitle ? h * 0.1 : 0)
+  ctx.fillStyle = accent
+  ctx.fillRect(0, bandTop, w, bandHeight)
+
+  ctx.fillStyle = bg
+  let y = bandTop + h * 0.03
+  for (const line of lines) {
+    y += w * 0.095
     ctx.fillText(line, left, y)
   }
   if (book.subtitle) {
-    y += w * 0.05
-    ctx.font = `400 ${Math.round(w * 0.032)}px ${SANS}`
-    ctx.fillStyle = alpha(ink, 0.72)
-    for (const line of wrap(ctx, book.subtitle, maxWidth * 0.9)) {
-      y += w * 0.045
+    y += h * 0.035
+    ctx.font = `500 ${Math.round(w * 0.03)}px ${SANS}`
+    for (const line of wrap(ctx, book.subtitle.toUpperCase(), maxWidth)) {
+      y += w * 0.042
       ctx.fillText(line, left, y)
     }
   }
 
   ctx.fillStyle = ink
-  ctx.font = `600 ${Math.round(w * 0.04)}px ${SANS}`
-  ctx.fillText(book.author, left, h * 0.93)
-  ctx.font = `400 ${Math.round(w * 0.024)}px ${MONO}`
-  ctx.fillStyle = alpha(ink, 0.6)
-  const pub = `${book.publisher} · ${book.year}`
-  ctx.fillText(pub, w - left - ctx.measureText(pub).width, h * 0.93)
+  ctx.font = `500 ${Math.round(w * 0.045)}px ${SANS}`
+  ctx.fillText(book.author, w - left - ctx.measureText(book.author).width, h * 0.94)
 }
 
+/** Spine: the cover's colours, the title running top to bottom, the
+ *  publisher at the foot, like the real book on a shelf. */
 function drawSpine(ctx: CanvasRenderingContext2D, book: Book, w: number, h: number) {
   const { bg, ink, accent } = book.cover
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, w, h)
+  // A soft roundness across the spine.
   const shade = ctx.createLinearGradient(0, 0, w, 0)
-  shade.addColorStop(0, 'rgba(0,0,0,0.25)')
-  shade.addColorStop(0.3, 'rgba(255,255,255,0.06)')
-  shade.addColorStop(1, 'rgba(0,0,0,0.2)')
+  shade.addColorStop(0, 'rgba(0,0,0,0.14)')
+  shade.addColorStop(0.35, 'rgba(255,255,255,0.05)')
+  shade.addColorStop(1, 'rgba(0,0,0,0.12)')
   ctx.fillStyle = shade
   ctx.fillRect(0, 0, w, h)
+  // The red band carries over from the front cover.
   ctx.fillStyle = accent
-  ctx.fillRect(0, h * 0.06, w, 6)
-  ctx.fillRect(0, h * 0.94, w, 6)
+  ctx.fillRect(0, h * 0.09, w, h * 0.5)
 
   // English spines read top to bottom: turn the canvas 90° clockwise.
   ctx.save()
   ctx.translate(w / 2, 0)
   ctx.rotate(Math.PI / 2)
-  ctx.fillStyle = ink
   ctx.textBaseline = 'middle'
-  let size = Math.round(w * 0.36)
-  ctx.font = `400 ${size}px ${SERIF}`
-  while (ctx.measureText(book.title).width > h * 0.62 && size > 12) {
+  ctx.fillStyle = bg
+  let size = Math.round(w * 0.3)
+  ctx.font = `600 ${size}px ${SANS}`
+  while (ctx.measureText(book.title).width > h * 0.46 && size > 12) {
     size -= 2
-    ctx.font = `400 ${size}px ${SERIF}`
+    ctx.font = `600 ${size}px ${SANS}`
   }
-  ctx.fillText(book.title, h * 0.1, 0)
-  ctx.font = `600 ${Math.round(w * 0.17)}px ${SANS}`
-  const surname = book.author.split(' ').slice(-1)[0].toUpperCase()
-  ctx.fillText(surname, h * 0.9 - ctx.measureText(surname).width, 0)
+  ctx.fillText(book.title, h * 0.11, 0)
+  ctx.fillStyle = ink
+  ctx.font = `500 ${Math.round(w * 0.2)}px ${SANS}`
+  ctx.fillText(book.author.split(' ').slice(-1)[0], h * 0.63, 0)
+  ctx.fillStyle = accent
+  ctx.font = `700 ${Math.round(w * 0.17)}px ${SANS}`
+  const publisher = book.publisher.split(' ')[0].toUpperCase()
+  ctx.fillText(publisher, h * 0.95 - ctx.measureText(publisher).width, 0)
   ctx.restore()
 }
 
+/** Back cover: what's inside, on the cover's colours, plus a barcode. */
 function drawBack(ctx: CanvasRenderingContext2D, book: Book, w: number, h: number) {
   const { bg, ink, accent } = book.cover
   ctx.fillStyle = bg
   ctx.fillRect(0, 0, w, h)
   const left = w * 0.1
-  let y = h * 0.14
   ctx.fillStyle = accent
-  ctx.font = `600 ${Math.round(w * 0.026)}px ${MONO}`
-  ctx.fillText('INSIDE', left, y)
+  ctx.fillRect(0, h * 0.07, w, h * 0.075)
+  ctx.fillStyle = bg
+  ctx.font = `700 ${Math.round(w * 0.032)}px ${SANS}`
+  ctx.fillText('WHAT’S INSIDE', left, h * 0.12)
+  let y = h * 0.2
   ctx.fillStyle = ink
-  ctx.font = `400 ${Math.round(w * 0.06)}px ${SERIF}`
+  ctx.font = `500 ${Math.round(w * 0.05)}px ${SANS}`
   for (const topic of book.topics) {
     y += w * 0.085
     ctx.fillText(topic, left, y)
@@ -228,7 +203,7 @@ function drawPages(ctx: CanvasRenderingContext2D, w: number, h: number, vertical
 // ─── Building one book ────────────────────────────────────────────────────────
 
 function buildBook(THREE: ThreeModule, book: Book) {
-  const textures: InstanceType<ThreeModule['CanvasTexture']>[] = []
+  const textures: InstanceType<ThreeModule['Texture']>[] = []
   const draws: (() => void)[] = []
 
   const texture = (width: number, height: number, draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void) => {
@@ -253,6 +228,18 @@ function buildBook(THREE: ThreeModule, book: Book) {
   const spine = new THREE.MeshStandardMaterial({ map: texture(D * PX, H * PX, (c, w, h) => drawSpine(c, book, w, h)), roughness: 0.5 })
   const pagesSide = new THREE.MeshStandardMaterial({ map: texture(256, 512, (c, w, h) => drawPages(c, w, h, true)), roughness: 0.9 })
   const pagesTop = new THREE.MeshStandardMaterial({ map: texture(512, 128, (c, w, h) => drawPages(c, w, h, false)), roughness: 0.9 })
+
+  // The real cover photo replaces the drawn stand-in once it has loaded
+  // (same origin, served from R2). If it fails, the stand-in stays.
+  if (book.coverImage) {
+    new THREE.TextureLoader().load(book.coverImage, photo => {
+      photo.colorSpace = THREE.SRGBColorSpace
+      photo.anisotropy = 8
+      textures.push(photo)
+      front.map = photo
+      front.needsUpdate = true
+    })
+  }
 
   const group = new THREE.Group()
   // Box faces are ordered +x, −x, +y, −y, +z, −z.
@@ -451,6 +438,9 @@ function BookPoster({ book }: { book: Book }) {
           <span className="pf7-bookposter__rule" />
           <span className="pf7-bookposter__title">{book.title}</span>
           <span className="pf7-bookposter__author">{book.author}</span>
+          {book.coverImage && (
+            <img src={book.coverImage} alt="" width={book.coverSize?.[0]} height={book.coverSize?.[1]} decoding="async" />
+          )}
         </div>
         <div className="pf7-bookposter__spine" />
       </div>
