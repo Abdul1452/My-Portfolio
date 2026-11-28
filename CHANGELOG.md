@@ -7,6 +7,20 @@ Format: [Semantic Versioning](https://semver.org/)
 ## [Unreleased]
 
 ### Added
+- Homepage redesign (v7, storytelling), styles in `portfolio-v7.css`:
+  - Story headline ("I started out tracking cargo in Lagos. Now I build the
+    systems that keep things moving.") with a journey route, 2021 → 2027.
+  - Three.js story globe in the hero: an arc from Lagos to Turku.
+  - Certificate wall: every certificate shown as a framed picture with a
+    larger view, Verify and Original links, and an All / Certifications /
+    Hackathons filter. Previews come from
+    `frontend/scripts/render-certificate-previews.py`.
+  - LinkedIn section: a flip-able 3D business card with "Save contact"
+    (.vcf), and a feed for posts that feature me (`linkedin.posts`, with
+    click-to-load LinkedIn embeds).
+  - "On my desk": the books I'm reading as a 3D book you can turn
+    (Three.js), starting with Designing Data-Intensive Applications.
+  - Instrument Serif for headings; CSP allows LinkedIn embed frames.
 - API versioning: routes now live in `backend/src/routes/v1/`, mounted by a
   version registry in `routes/index.ts`. New `GET /api` lists supported
   versions; every versioned response carries an `API-Version` header, with

@@ -1,5 +1,6 @@
 /**
- * ProfileSections.tsx — Skills, GitHub activity, exploring, credentials, experience
+ * ProfileSections.tsx — Skills, GitHub activity, exploring, experience
+ * (Certificates live in CertificateWall.tsx.)
  *
  * The "evidence" half of the page. Every section returns null when its
  * data is empty, so a section can be hidden from portfolio.data.ts alone.
@@ -7,7 +8,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  certifications,
   exploring,
   profile,
   skillGroups,
@@ -31,7 +31,6 @@ import {
   Wrench,
   type LucideIcon,
 } from 'lucide-react'
-import { GuidebookCard } from './Guidebook'
 import { IconTile, SectionEyebrow } from './ui'
 
 const TIMELINE_ICON: Record<'work' | 'study' | 'hackathon', LucideIcon> = {
@@ -264,61 +263,7 @@ export function GitHubSection() {
   )
 }
 
-// ─── Certifications + PM guidebook ────────────────────────────────────────────
-
-export function CredentialsSection() {
-  if (!certifications.length) return null
-
-  return (
-    <section id="credentials" data-screen-label="Certifications" className="pf5-section pf5-section--tight-top pf5-credentials">
-      <div className="pf5-box">
-        <div style={{ display: 'grid', gap: 6 }}>
-          <SectionEyebrow section="credentials" />
-          <h3 className="pf5-h3">Certifications</h3>
-          <p style={{ fontSize: 15, color: 'var(--ink-2)' }}>Each one links to its public credential page or to the certificate itself.</p>
-        </div>
-        <div className="pf5-rows">
-          {certifications.map(cert => {
-            const body = (
-              <>
-                <span aria-hidden="true" className="pf5-row__mark">{cert.mark}</span>
-                <span className="pf5-row__text">
-                  <span className="pf5-row__title">{cert.name}</span>
-                  <span className="pf5-row__sub">{cert.issuer} · {cert.year}</span>
-                </span>
-              </>
-            )
-            // With only one destination the whole row is the link. With both
-            // the certificate (R2) and a verification page, the row shows two
-            // separate links: "View" opens the certificate, "Verify" the issuer.
-            if (cert.file && cert.url) {
-              return (
-                <div key={cert.name} className="pf5-row">
-                  {body}
-                  <span className="pf6-rowlinks">
-                    <a href={cert.file} target="_blank" rel="noreferrer" aria-label={`View certificate: ${cert.name}`}>View</a>
-                    <a href={cert.url} target="_blank" rel="noreferrer" aria-label={`Verify on ${cert.issuer.split(' · ')[0]}: ${cert.name}`}>Verify ↗</a>
-                  </span>
-                </div>
-              )
-            }
-            const href = cert.url ?? cert.file
-            return href ? (
-              <a key={cert.name} href={href} target="_blank" rel="noreferrer" className="pf5-row">
-                {body}
-                <span className="pf5-row__aside">{cert.url ? 'Verify ↗' : 'View ↗'}</span>
-              </a>
-            ) : (
-              <div key={cert.name} className="pf5-row">{body}</div>
-            )
-          })}
-        </div>
-      </div>
-
-      <GuidebookCard />
-    </section>
-  )
-}
+// Certifications + the PM guidebook card moved to CertificateWall.tsx.
 
 // ─── Experience & studies ─────────────────────────────────────────────────────
 

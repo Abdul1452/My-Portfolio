@@ -30,10 +30,10 @@ interface NavLink { to: string; label: string; icon: LucideIcon; sectionId?: str
 
 const NAV_LINKS: NavLink[] = [
   { to: '/#work', label: 'Work', icon: SECTION_META.work.icon, sectionId: 'work' },
-  { to: '/#skills', label: 'Skills', icon: SECTION_META.skills.icon, sectionId: 'skills' },
+  { to: '/#credentials', label: 'Certificates', icon: SECTION_META.credentials.icon, sectionId: 'credentials' },
+  { to: '/#reading', label: 'Reading', icon: SECTION_META.reading.icon, sectionId: 'reading' },
   { to: '/#experience', label: 'Experience', icon: SECTION_META.experience.icon, sectionId: 'experience' },
   { to: '/pm', label: 'Guidebook', icon: GUIDEBOOK_ICON },
-  { to: '/#approach', label: 'How I work', icon: SECTION_META.approach.icon, sectionId: 'approach' },
 ]
 
 const SPY_IDS = NAV_LINKS.flatMap(link => (link.sectionId ? [link.sectionId] : []))
