@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://olamilekan-portfolio.abdullahi-abdulwasiu.workers.dev
+      url: https://abdulwasiu.dev
     steps:
       - uses: actions/checkout@v5
         with:
@@ -41,7 +41,8 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
 
-      # The token needs Workers Scripts, D1 and R2 edit permissions; both
+      # The token needs Workers Scripts, D1 and R2 edit permissions, plus
+      # Zone → Workers Routes → Edit for abdulwasiu.dev (the custom domain); both
       # values are repository secrets (Settings → Secrets and variables → Actions).
 
       # 1. Database first: new migrations are additive, so the running site
